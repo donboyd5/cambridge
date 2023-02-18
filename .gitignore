@@ -3,13 +3,15 @@
 .RData
 .Ruserdata
 
-data/
 */index_files/
 
 *.csv
+*.dat
 *.html
 *.js
 *.rds
+*.txt
+*.zip
 
 
 
