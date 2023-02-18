@@ -1,0 +1,15 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+
+data/
+*/index_files/
+
+*.csv
+*.html
+*.js
+*.rds
+
+
+

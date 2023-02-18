@@ -1,0 +1,23 @@
+/*-- scss:defaults --*/
+
+
+/*-- scss:rules --*/
+
+.title {
+  font-size: 2.25em !important; // we need !important or it will be overridden
+}
+
+
+.subtitle {
+  // color: blue;
+  font-size: 1.75em; // not needed here: !important;
+  font-style: italic;
+}
+
+
+// https://github.com/quarto-dev/quarto-cli/discussions/2579
+// https://stackoverflow.com/questions/67713297/customize-title-page-on-revealjs-presentation
+// https://stackoverflow.com/questions/73575170/quarto-revealjs-presentation-change-title-author-date-position-font-size-an
+
+//  font-size: 20px !important;
+//  font-size: 2.25em !important;
