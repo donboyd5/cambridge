@@ -69,17 +69,70 @@
 # str_detect(shortname, " UT") ~ "unorganized",  # what is this?? Chautauqua Lake UT unorganized territory
 
 # libraries and functions ------------------------------------------------------
-source(here::here("r", "libraries.r"))
 # census_apikey <- "b27cb41e46ffe3488af186dd80c64dce66bd5e87"
 # census_api_key(census_apikey, install=TRUE)
 
+source(here::here("r", "libraries.r"))
 source(here::here("r", "functions.r"))
 
 # constants ---------------------------------------------------------------
+
+# "external" folders
+xdacs <- r"(E:\data\acs\sf\2021_5year)"
+
+# folders in this project
 dacs <- here::here("data", "acs")
 dxwalks <- here::here("data", "xwalks")
 
-# get primary county for each place in NY
+
+
+# download full-table acs files -------------------------------------------
+# example
+# acsdt5y2021-b01001.dat
+# https://www2.census.gov/programs-surveys/acs/summary_file/2021/table-based-SF/data/5YRData/acsdt5y2021-b01001.dat
+
+
+tabnames <- c("B01001", "B01002", "B01003", "B07001", "B07009", "B07409", "B15003", "B25071")
+
+f <- function(tab, destdir, overwrite=FALSE){
+  urlbase <- "https://www2.census.gov/programs-surveys/acs/summary_file/2021/table-based-SF/data/5YRData"
+  
+  str_sub(tab, 1, 1) <- str_to_lower(str_sub(tab, 1, 1))
+  fname <- paste0("acsdt5y2021-", tab, ".dat")
+  url <- path(urlbase, fname)
+  
+  fpath <- path(destdir, fname)
+  if(!file_exists(fpath) | overwrite){
+    print(paste0("downloading... ", fname))
+    download.file(url, fpath, mode="wb")
+  } 
+  return()
+}
+
+purrr::map(tabnames, f, xdacs)
+
+## read from big zip file ----
+# 5YRData.zip\data\prt01\prod\sumfile_new\output\2021\5YRData
+(zpath <- path(xdacs, "5YRData.zip"))
+fname <- "acsdt5y2021-b01001.dat"
+(zsub <- path(r"(data\prt01\prod\sumfile_new\output\2021\5YRData)", fname))
+
+a <- proc.time()
+df1 <- read_delim(unz(zpath, zsub))
+b <- proc.time()
+b - a # 3.6 secs
+
+system.time(df1 <- read_delim(unz(zpath, zsub))) # 2.8 secs
+system.time(df2 <- read_delim(path(xdacs, fname))) # 1.3 secs
+
+
+fnames <- utils::unzip(zpath, list=TRUE)$Name |> path_file()
+ht(fnames)
+
+
+
+
+# get primary county for each place in NY ----
 ## get place-parts and place-part population from full-file tables for 2017-2021 ----
 # https://www2.census.gov/programs-surveys/acs/summary_file/
 # https://www2.census.gov/programs-surveys/acs/summary_file/2021/table-based-SF/documentation/
@@ -100,6 +153,34 @@ dxwalks <- here::here("data", "xwalks")
 # 12-14 county 115
 # 15-19 cousub 02561
 # 20-24 place 02550
+
+# 430C100US3697310001
+
+# "0400001US36","New York -- Urban"
+# "0400043US36","New York -- Rural"
+
+
+# rural
+# https://mtgis-portal.geo.census.gov/arcgis/apps/MapSeries/index.html?appid=49cd4bc9c8eb444ab51218c1d5001ef6
+
+
+## ONETIME get 20215 table shells ----
+df1 <- vroom(path(xdacs, "ACS20215YR_Table_Shells.txt"))
+glimpse(df1)
+
+tabvars <- df1 |> 
+  rename(table=`Table ID`,
+         variable=`Unique ID`) |> 
+  lcnames()
+
+saveRDS(tabvars, path(xdacs, "tabvars.rds"))
+
+tables <- tabvars |> 
+  select(table, title, universe) |> 
+  distinct()
+saveRDS(tables, path(xdacs, "tables.rds"))
+
+tables |> filter(str_detect(title, "EDUCATION"))
 
 
 ## get place-part county information for all NY places, directly from web (or download full file) ----
@@ -151,6 +232,64 @@ saveRDS(gpop, path(dacs, "nyplaceparts.rds"))
 # done
 
 # a few more
+
+# B15003   EDUCATIONAL ATTAINMENT FOR THE POPULATION 25 YEARS AND OVER
+tabvars |> 
+  filter(table=="B15003")
+
+# geoid elements:
+# 1-3 sumlevel 070
+# 4-7 ?? all zeros 0000
+# 8-9 US US
+# 10-11 stfips 36
+# 12-14 county 115
+# 15-19 cousub 02561
+# 20-24 place 02550
+
+# selected summary levels
+# 010	us	
+# 020	region	
+# 030	division	
+# 040	state	
+# 050	state› county	
+# 060	state› county› county subdivision	
+# 067	state› county› county subdivision› subminor civil division	
+# 070	state› county› county subdivision› place/remainder (or part)	
+# 140	state› county› tract	
+# 150	state› county› tract› block group	
+# 155	state› place› county (or part)	
+# 160	state› place	
+# 170	state› consolidated city
+# 400	urban area
+# 410	urban area› state (or part)
+# 430	urban area› state (or part)› county (or part)
+
+url <- "https://www2.census.gov/programs-surveys/acs/summary_file/2021/table-based-SF/data/5YRData/acsdt5y2021-b15003.dat"
+
+ussumlevs <- c("010", "040")
+nysumlevs <- c("050", "060", "160", "170", "400", "410", "430")
+
+# str_sub(GEO_ID, 4, 7)=="0000",
+tmp <- vroom(url) |> 
+  filter(str_sub(GEO_ID, 1, 3) %in% ussumlevs |
+         (str_sub(GEO_ID, 10, 11)=="36" &  
+            str_sub(GEO_ID, 1, 3) %in% nysumlevs) |
+           GEO_ID %in% c("0400001US36", "0400043US36"))
+tmp2 <- tmp |> filter(str_sub(GEO_ID, 1, 1)=="4")
+
+tmp2 <- tmp |> 
+  filter(GEO_ID %in% c("0400001US36", "0400043US36"))
+
+
+tmp <- vroom(url) |> 
+  filter(str_sub(GEO_ID, 1, 3) %in% sumlevs,
+         # str_sub(GEO_ID, 4, 7)=="0000",
+         str_sub(GEO_ID, 10, 11)=="36")
+
+
+
+# , col_select = c(GEO_ID, STUSAB, SUMLEVEL, COUNTY, COUSUB, PLACE, COMPONENT, NAME)
+# https://www.toptrix.net/2015/07/never-loose-download-of-large-files.html
 
 # ONETIME: get the base ACS names and codes -------------------------------------------------------
 ## get names data with population ----
