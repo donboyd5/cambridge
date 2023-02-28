@@ -129,6 +129,39 @@ system.time(df2 <- read_delim(path(xdacs, fname))) # 1.3 secs
 fnames <- utils::unzip(zpath, list=TRUE)$Name |> path_file()
 ht(fnames)
 
+tabnames <- c("B01001", "B01002", "B01003", "B07001", "B07009", "B07409", "B15003", "B25071")
+
+
+# str_sub(GEO_ID, 4, 7)=="0000",
+tmp <- vroom(url) |> 
+  filter(str_sub(GEO_ID, 1, 3) %in% ussumlevs |
+           (str_sub(GEO_ID, 10, 11)=="36" &  
+              str_sub(GEO_ID, 1, 3) %in% nysumlevs) |
+           GEO_ID %in% c("0400001US36", "0400043US36"))
+tmp2 <- tmp |> filter(str_sub(GEO_ID, 1, 1)=="4")
+
+get_acsfile <- function(tab){
+  ussumlevs <- c("010", "040")
+  nysumlevs <- c("050", "060", "160", "170", "400", "410", "430")
+  urbanrural <- c("0400001US36", "0400043US36")
+  
+  xdacs <- r"(E:\data\acs\sf\2021_5year)"
+  zpath <- fs::path(xdacs, "5YRData.zip")
+  str_sub(tab, 1, 1) <- str_to_lower(str_sub(tab, 1, 1))
+  fname <- paste0("acsdt5y2021-", tab, ".dat")
+  zsub <- path(r"(data\prt01\prod\sumfile_new\output\2021\5YRData)", fname)
+  
+  df1 <- vroom(unz(zpath, zsub)) |> 
+    filter(str_sub(GEO_ID, 1, 3) %in% ussumlevs |
+             (str_sub(GEO_ID, 10, 11)=="36" &  
+                str_sub(GEO_ID, 1, 3) %in% nysumlevs) |
+             GEO_ID %in% urbanrural)
+  
+  return(df1)
+}
+
+system.time(df1 <- get_acsfile(tabnames[4]))
+
 
 
 

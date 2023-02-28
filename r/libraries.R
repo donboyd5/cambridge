@@ -24,6 +24,7 @@ library(tidycensus)
 # boyd libraries
 library(btools)
 library(bdata)
+library(bacs)
 library(bggtools)
 library(bmaps)
 
@@ -40,6 +41,7 @@ library(knitr)
 library(kableExtra)
 library(DT)
 library(gt)
+library(gtExtras)
 library(janitor)
 
 
