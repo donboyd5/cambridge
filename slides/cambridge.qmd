@@ -1,0 +1,534 @@
+---
+title: "Cambridge, New York"
+subtitle: ""
+author: "Don Boyd"
+date: today
+date-format: long
+format:
+  
+  revealjs: 
+    slide-number: true
+    chalkboard: 
+      buttons: false
+    preview-links: auto
+    theme: [white, mycss.scss] # use white, with modifications; default also ok
+  # pdf:
+  #   toc: false
+execute:
+  eval: true
+  echo: false
+  error: false
+  warning: false
+  message: false  # not sure if allowed
+  note: false  # not sure if allowed
+  freeze: auto  # during global project renders, re-render only when source changes
+editor_options: 
+  chunk_output_type: console
+---
+
+## Topics
+
+-   Who lives here?
+
+-   What's our economy like?
+
+-   What's our housing situation?
+
+-   How have we been changing?
+
+-   What do we know about the outlook?
+
+-   What does this mean for economic development?
+
+
+::: {.content-visible when-format="html"}
+::: notes
+Who lives here? demographics (age, ), education, employment, income, commuting
+What's our economy like?
+How have we been changing?
+What does it cost to live here?
+What's the outlook?
+
+:::
+:::
+
+
+```{r}
+#| label: includes
+#| eval: true
+#| include: false
+
+source(here::here("r", "libraries.r"))
+source(here::here("r", "functions.r"))
+
+
+```
+
+
+
+```{r}
+#| label: constants
+#| eval: true
+#| include: false
+
+# key counties
+# 36091 Saratoga
+# 36113 Warren
+# 36115 Washington
+
+# key cousubs
+# 3611511836 Cambridge town
+# 3611530686 Greenwich town
+# 3611564782 Salem town
+# 3611581578 White Creek town
+# tmp <- c("3611511836", "3611530686", "3611581578")
+
+# key places
+# 3602550 Argyle village
+# 3611825 Cambridge village
+# 3630675 Greenwich village
+# 3664771 Salem CDP
+# 3665750 Schuylerville
+
+# school district
+# 3606210    Cambridge Central School District
+# 3612900    Greenwich Central School District
+# 3625470    Salem Central School District
+
+# areas of interest
+# use full affgeoid rather than shortened geoid avoids getting Alden school district for Argyle village
+# geoid 3602550 which is the same as Argyle village
+state_aoi <- c("0400000US36")
+cnty_aoi <- c("0500000US36091", "0500000US36113", "0500000US36115")
+vlg_aoi <- c("1600000US3602550", "1600000US3611825", "1600000US3630675", "1600000US3664771", "1600000US3665750") 
+twn_aoi <- c("0600000US3611511836", "0600000US3611530686", "0600000US3611581578")
+
+aoi <- c(state_aoi, cnty_aoi, vlg_aoi, twn_aoi)
+
+# xwalkny |> filter(affgeoid %in% aoi) |> select(1:4)
+
+```
+
+
+```{r}
+#| label: get-table-summary
+#| eval: false
+#| include: false
+
+acstabs_wide(c(2011, 2016, 2021))
+find_acstab("age")
+
+tmp <- find_acstab("age", acstabs_wide(c(2011, 2016, 2021))) |> 
+  filter(str_detect(title, "POVERTY"), str_detect(title, "RATIO"))
+
+find_acstab("public health insurance", acstabs_wide(c(2011, 2016, 2021)))
+
+# B17001
+df <- get_acstab("B27003")
+df2 <- enhance(df)
+
+check_var_mismatch("B27003", c(2011, 2016, 2021))
+
+covg <- tmp |> filter(year==2021, str_detect(label, "With public")) # 18 recs
+nocovg <- tmp |> filter(year==2021, str_detect(label, "No public")) # 18 recs
+
+slabels <- acsvars |> 
+  filter(table=="B27003", year==2021) |> 
+  select(line, variable, label) |> 
+  mutate(covgtype=case_when(line %in% covg$line ~ "withpublic",
+                            line %in% nocovg$line ~ "nopublic",
+                            TRUE ~ "other"))
+slabels
+
+df3 <- df2 |> 
+  left_join(slabels, by = join_by(variable, line, label)) |> 
+  filter(covgtype!="other") |> 
+  summarise(estimate=sum(estimate), .by=c(affgeoid, geoid, shortname, shortestname, nygeotype, covgtype))
+
+df4 <- df3 |> 
+  pivot_wider(names_from = covgtype, values_from = estimate) |> 
+  mutate(total=withpublic + nopublic,
+         pubpct=withpublic / total)
+
+df4 |> 
+  filter(geoid %in% aoi, !affgeoid %in% badgeos) |> 
+  arrange(desc(pubpct))
+  
+
+```
+
+
+
+```{r}
+#| label: functions-utility
+#| eval: true
+#| include: false
+
+stacktab <- function(tabname, years=c(2011, 2016, 2021)){
+  fnames <- paste0(tabname, "_", years, ".rds")
+  fpaths <- path(here::here("data", "acs"), fnames)
+  purrr::map_dfr(fpaths, readRDS)
+}
+
+# tablename <- function(shortname, nygeotype){
+#   case_when(nygeotype=="state" & shortname=="New York" ~ "New York State",
+#             TRUE ~ shortname)
+# }
+
+tablename <- function(shortname){
+  ifelse(shortname=="New York", "New York State", shortname)
+}
+
+evens <- function(nrows){
+  seq(2, nrows, 2)
+}
+# evens(8)
+# evens(9)
+
+odds <- function(nrows){
+  seq(1, nrows, 2)
+}
+# odds(9)
+# odds(10)
+
+
+```
+
+
+
+```{r}
+#| label: load-basic-data
+#| eval: true
+#| include: false
+
+# xwalkny <- readRDS(here::here("data", "xwalkny_acs.rds"))
+data(xwalkny)
+data(geometry)
+
+```
+
+
+
+```{r}
+#| label: load-table-data
+#| eval: true
+#| include: false
+
+
+# B15002 <- readRDS(here::here("data", "B15002_2021"))
+
+
+```
+
+
+# Who lives here?
+
+## We are older than our neighbors
+
+```{r}
+#| label: age-data
+#| eval: true
+#| include: false
+
+find_acstab("age")
+
+b01002 <- stacktab("B01002")
+count(b01002, year)
+
+```
+
+
+```{r}
+#| label: age-median
+#| eval: true
+#| include: true
+
+tabdata <- b01002 |> 
+  filter(affgeoid %in% aoi) |> 
+  filter(variable=="B01002_001") |>  # to do: enhanced does not have line for 2011??
+  select(affgeoid, shortname, variable, line, label, year, estimate, universe) |>
+  mutate(tablename=tablename(shortname)) |>  
+  select(affgeoid, tablename, year, estimate) |> 
+  pivot_wider(names_from = year, values_from = estimate) |> 
+  mutate(change=`2021` - `2011`) |> 
+  arrange(affgeoid)
+  # arrange(desc(`2021`))
+# tabdata
+
+fnote <- "Note: Median age can be influenced by opening and closing of senior housing and congregate facilities."
+tab <- tabdata |> 
+  select(-affgeoid) |> 
+  gt() |> 
+  tab_header(
+    title = "Median age, selected years",
+    subtitle="Sorted by 2021 median age"
+  ) |> 
+  cols_label(tablename="Area",
+             `2011`="2011",
+             `2016`="2016",
+             `2021`="2021",
+             change=html("Change from <br>2011 to 2021")) |> 
+  fmt_number(columns=-tablename, decimals=1) |>
+  # gt_highlight_rows(rows = evens(nrow(tabdata)), font_weight="normal", fill="grey97") |>
+  tab_footnote(footnote=fnote,
+               locations = cells_title(groups="title")) |> 
+  tab_source_note(source_note="Source: 5-year ACS ending in years shown.") |> 
+  gt_theme_guardian()
+tab  
+
+```
+
+## Race and ethnicity
+```{r}
+#| label: race-explore
+#| eval: false
+#| include: false
+
+tmp <- find_acstab("race") # B02001
+acstabs_wide(c(2011, 2016, 2021)) |> filter(table=="B02001")
+check_var_mismatch("B02001", c(2011, 2016, 2021))
+acsvars |> filter(table=="B02001", year==2011)
+
+b02001 <- stacktab("B02001")
+check <- b02001 |> filter(year==2011)
+check <- acsvars |> filter(year==2011, table=="B02001")
+
+
+```
+
+
+```{r}
+#| label: race-data
+#| eval: true
+#| include: false
+
+b02001 <- stacktab("B02001")
+
+racevacs <- acsvars |> 
+  filter(table=="B02001", year %in% c(2011, 2016, 2021)) |> 
+  mutate(race=case_when(
+    line == 1 ~ "total",
+    line == 2 ~ "white",
+    line == 3 ~ "black",
+    TRUE ~ "other"))
+racevacs
+
+tabdata1 <- b02001 |> 
+  select(affgeoid, shortname, nygeotype, line, label, variable, year, estimate) |> 
+  left_join(racevacs |> select(line, year, race), by = join_by(line, year)) |> 
+  summarise(estimate=sum(estimate), .by=c(affgeoid, nygeotype, shortname, year, race)) |> 
+  pivot_wider(names_from = race, values_from = estimate) |> 
+  filter(affgeoid %in% aoi) |> 
+  mutate(pctwhite=white / total, pctblack=black / total)
+
+
+tabdata <- tabdata1 |> 
+  mutate(tablename=tablename(shortname)) |> 
+  select(affgeoid, tablename, year, pctwhite) |> 
+  arrange(year) |> 
+  pivot_wider(names_from = year, values_from = pctwhite) |> 
+  mutate(change=`2021` - `2011`) |> 
+  arrange(affgeoid)
+tabdata
+
+```
+
+
+```{r}
+#| label: race-tab
+#| eval: true
+#| include: true
+
+
+fnote <- "Note: Percentages can have large margins of error in small geographic areas due to small sample sizes."
+tab <- tabdata |> 
+  select(-affgeoid) |> 
+  gt() |> 
+  tab_header(
+    title = "Percent of population that is white"
+  ) |> 
+  cols_label(tablename="Area",
+             `2011`="2011",
+             `2016`="2016",
+             `2021`="2021",
+             change=html("Change from 2011 to 2021<br>(percentage points)")) |> 
+  fmt_percent(columns=-tablename, decimals=1) |>
+  # gt_highlight_rows(rows = evens(nrow(tabdata)), font_weight="normal", fill="grey97") |>
+  tab_footnote(footnote=fnote,
+               locations = cells_title(groups="title")) |> 
+  tab_source_note(source_note="Source: 5-year ACS ending in years shown.") |> 
+  gt_theme_guardian()
+tab  
+
+
+```
+
+
+## Education
+
+```{r}
+#| label: ed-data
+#| eval: false
+#| include: false
+
+b15002 <- readRDS(here::here("data", "acs", "B15002_2021.rds"))
+
+edvacs1 <- b15002 |> 
+  select(variable, line, label) |> 
+  distinct()
+edvacs1
+
+edvacs <- edvacs1 |> 
+  mutate(gender=case_when(
+    line == 1 ~ "all",
+    line %in% 2:18 ~ "male",
+    line %in% 19:35 ~ "female",
+    TRUE ~ "ERROR"),
+    slabel=case_when(
+    line == 1 ~ "all",
+    line == 2 ~ "male-all",
+    line == 19 ~ "female-all",
+    line %in% c(3:10, 20:27) ~ "lths",
+    line %in% c(11:13, 28:30) ~ "hs",
+    line %in% c(14, 31) ~ "aa",
+    line %in% c(15, 32) ~ "ba",
+    line %in% c(16:18, 33:35) ~ "maplus",
+    TRUE ~ "ERROR"))
+edvacs
+count(edvacs, gender)
+count(edvacs, slabel)
+
+df1 <- b15002 |> 
+  left_join(edvacs |>
+              select(variable, line, gender, slabel),
+            by = join_by(variable))
+count(df1, slabel)  
+count(df1, geotype)
+
+
+df2 <- df1 |> 
+  summarise(estimate=sum(estimate),
+            .by=c(affgeoid, geoid, stabbr, county, nygeotype, countyname, shortname, shortestname, slabel)) |> 
+  pivot_wider(names_from = slabel, values_from = estimate) |> 
+  mutate(ltaapct=(lths + hs) / all,
+         aapct=aa / all, 
+         bapct=ba / all, 
+         mapluspct=maplus / all) |> 
+  rename(universe=all)
+
+df3 <- df2 |> 
+  select(affgeoid, geoid, stabbr, county, nygeotype, countyname, shortname, shortestname, contains("pct"), universe) |> 
+  arrange(desc(ltaapct)) |> 
+  mutate(rank=row_number(), n=n())
+
+
+```
+
+```{r}
+#| label: ed-table
+#| eval: false
+#| include: false
+
+tabdata <- df3 |>
+  filter(affgeoid %in% aoi) |> 
+  mutate(baplus=bapct + mapluspct,
+         tablename=str_to_title(shortname) |>
+           str_replace("Cdp", "CDP"),
+         tablename=case_when(nygeotype=="state" & shortname=="New York" ~ "New York State",
+                             TRUE ~ tablename)) |> 
+  relocate(baplus, .before=universe) |> 
+  arrange(desc(baplus))
+
+# tabdata |> 
+#   select(-geoid, -stabbr, -county, -n, -rank) 
+
+tab <- tabdata |> 
+  select(tablename, baplus) |> 
+  gt() |> 
+  tab_header(
+    title = "Percentage of population age 25+ with BA or higher"
+  ) |> 
+  cols_label(tablename="Area",
+             # countyname = "County",
+             baplus="% with BA+") |> 
+  fmt_percent(columns=baplus, decimals=1) |>
+  tab_source_note(source_note="Source: 5-year ACS ending 2021")
+
+  
+tab  
+
+
+```
+
+# Trends and Outlook
+
+# Implications for Economic Development
+
+------------------------------------------------------------------------
+
+<!-- ![](images/budget_actors.png) -->
+
+something here
+
+
+
+```{=html}
+<!--
+
+Rendering:
+
+# quarto render
+# quarto render index.qmd --to html
+# quarto render index.qmd --to pdf
+
+
+Publishing to the web:
+
+quarto publish netlify index.qmd
+quarto publish netlify index.qmd --no-render --no-browser --no-prompt
+quarto publish netlify index.qmd --no-browser --no-prompt
+
+https://boyd-cambridge.netlify.app
+
+The <dd> tag is used to describe a term/name in a description list.
+
+The <dd> tag is used in conjunction with <dl> (defines a description list) and <dt> (defines terms/names).
+
+Inside a <dd> tag you can put paragraphs, line breaks, images, links, lists, etc.
+
+Document font size - see process for live review
+https://www.youtube.com/watch?v=yAlhq8yhLsw
+
+ {.smaller}
+
+-->
+```
+
+
+
+```{r}
+#| label: CAUTION-ONETIME-acs-tables
+#| eval: false
+#| include: false
+
+tabnames <- c("B01001", "B01002", "B01003", "B07001", "B07009", "B07409", "B15002", "B15003", "B02001", "B25071")
+
+# tabnames <- "B02001"
+# get_enhanced("B02001", year=2011)
+
+f <- function(tabname, year=2021){
+  df <- get_enhanced(tabname, year)
+  outname <- paste0(tabname, "_", year, ".rds")
+  saveRDS(df, here::here("data", "acs", outname))
+}
+
+# f("B15003", year=2011) # not available until 2012
+# acstabs_wide(2011:2016) |> filter(table=="B15003")
+
+purrr::map(tabnames[-8], f, 2011)  # exclude B15003 when doing this
+purrr::map(tabnames, f, 2016)
+purrr::map(tabnames, f, 2021)
+
+```
+
+

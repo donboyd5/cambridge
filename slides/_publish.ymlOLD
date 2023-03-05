@@ -1,0 +1,4 @@
+- source: howto_kbr.qmd
+  netlify:
+    - id: 2d090ff5-5e06-450b-87fc-1f1f710cb92e
+      url: 'https://boyd-keeprolling2.netlify.app'

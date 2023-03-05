@@ -3,6 +3,8 @@
 .RData
 .Ruserdata
 
+_freeze/
+cambridge_files/
 index_files/
 
 *.csv
