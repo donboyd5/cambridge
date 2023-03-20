@@ -202,7 +202,7 @@ odds <- function(nrows){
 #| include: false
 
 # xwalkny <- readRDS(here::here("data", "xwalkny_acs.rds"))
-data(xwalkny)
+data(xwalk)
 data(geometry)
 
 ```
@@ -213,9 +213,6 @@ data(geometry)
 #| label: load-table-data
 #| eval: true
 #| include: false
-
-
-# B15002 <- readRDS(here::here("data", "B15002_2021"))
 
 
 ```
@@ -233,7 +230,14 @@ data(geometry)
 find_acstab("age")
 
 b01002 <- stacktab("B01002")
+b01002 <- stacktab("B01002", years=c(2011, 2016, 2019, 2021))
 count(b01002, year)
+
+
+fname <- paste0("B01002", "_", 2019, ".rds")
+fpath <- path(here::here("data", "acs"), fname)
+tmp <- readRDS(fpath)
+
 
 ```
 
@@ -260,12 +264,13 @@ tab <- tabdata |>
   select(-affgeoid) |> 
   gt() |> 
   tab_header(
-    title = "Median age, selected years",
-    subtitle="Sorted by 2021 median age"
+    title = "Median age over time",
+    subtitle="For the 5-year period ending in year shown"
   ) |> 
   cols_label(tablename="Area",
              `2011`="2011",
              `2016`="2016",
+             `2019`="2019",
              `2021`="2021",
              change=html("Change from <br>2011 to 2021")) |> 
   fmt_number(columns=-tablename, decimals=1) |>
@@ -286,10 +291,11 @@ tab
 
 tmp <- find_acstab("race") # B02001
 acstabs_wide(c(2011, 2016, 2021)) |> filter(table=="B02001")
-check_var_mismatch("B02001", c(2011, 2016, 2021))
+check_var_mismatch("B02001", c(2011, 2016, 2019, 2021))
 acsvars |> filter(table=="B02001", year==2011)
 
-b02001 <- stacktab("B02001")
+b02001 <- stacktab("B02001", years=c(2011, 2016, 2019, 2021))
+count(b02001, year)
 check <- b02001 |> filter(year==2011)
 check <- acsvars |> filter(year==2011, table=="B02001")
 
@@ -302,10 +308,10 @@ check <- acsvars |> filter(year==2011, table=="B02001")
 #| eval: true
 #| include: false
 
-b02001 <- stacktab("B02001")
+# b02001 <- stacktab("B02001")
 
 racevacs <- acsvars |> 
-  filter(table=="B02001", year %in% c(2011, 2016, 2021)) |> 
+  filter(table=="B02001", year %in% c(2011, 2016, 2019, 2021)) |> 
   mutate(race=case_when(
     line == 1 ~ "total",
     line == 2 ~ "white",
@@ -350,6 +356,7 @@ tab <- tabdata |>
   cols_label(tablename="Area",
              `2011`="2011",
              `2016`="2016",
+             `2019`="2019",
              `2021`="2021",
              change=html("Change from 2011 to 2021<br>(percentage points)")) |> 
   fmt_percent(columns=-tablename, decimals=1) |>
@@ -367,15 +374,40 @@ tab
 ## Education
 
 ```{r}
+#| label: ed-explore
+#| eval: false
+#| include: false
+
+tmp <- find_acstab("education") # B02001
+acstabs_wide(c(2011, 2016, 2021)) |> filter(table=="B15002")
+check_var_mismatch("B15002", c(2011, 2016, 2021))
+acsvars |> filter(table=="B15002", year==2011)
+
+b15002 <- stacktab("B15002")
+check <- acsvars |> filter(year==2011)
+check <- acsvars |> filter(year==2021, table=="B15002")
+check
+
+
+```
+
+
+```{r}
 #| label: ed-data
 #| eval: false
 #| include: false
 
-b15002 <- readRDS(here::here("data", "acs", "B15002_2021.rds"))
+b15002 <- stacktab("B15002")
+count(b15002, year)
+skim(b15002)
 
-edvacs1 <- b15002 |> 
-  select(variable, line, label) |> 
-  distinct()
+d1 <- b15002 |> filter(is.na(fullname))
+count(d1, affgeoid) # 27 areas, repeated 35 or 70 times -- 
+count(d1, year) # in 2011 and 2016
+
+edvacs1 <- acsvars |> 
+  filter(table=="B15002", year==2021) |> 
+  select(variable, line, label)
 edvacs1
 
 edvacs <- edvacs1 |> 
@@ -404,6 +436,11 @@ df1 <- b15002 |>
             by = join_by(variable))
 count(df1, slabel)  
 count(df1, geotype)
+
+# TODO:
+#   df1 has line.x, line.y
+#   and for 2011 and 2016 has NA for geotype -- perhaps I did not match geotypes well?
+#  ??
 
 
 df2 <- df1 |> 
@@ -525,8 +562,9 @@ f <- function(tabname, year=2021){
 # f("B15003", year=2011) # not available until 2012
 # acstabs_wide(2011:2016) |> filter(table=="B15003")
 
-purrr::map(tabnames[-8], f, 2011)  # exclude B15003 when doing this
+purrr::map(setdiff(tabnames, "B15003"), f, 2011)
 purrr::map(tabnames, f, 2016)
+purrr::map(tabnames, f, 2019)
 purrr::map(tabnames, f, 2021)
 
 ```
