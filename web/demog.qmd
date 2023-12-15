@@ -29,14 +29,6 @@ data <- r"(E:\data\acs\sf\2022_5year)"
 
 ```
 
-```{r}
-#| label: get-codes
-#| eval: false
-
-v2022 <- readRDS(path(dacs, "vars_acs2022.rds"))
-geo2022 <- readRDS(path(dacs, "geocoded_acs2022.rds"))
-
-```
 
 ```{r}
 #| label: sumlevel
@@ -87,7 +79,6 @@ sumlevels <- read_csv(
 160, place
 170, concity
 ")
-
 
 
 ```
@@ -221,16 +212,22 @@ aoi <- glabs |>
 table <- "B01002"
 
 agelab <- vlabs |> 
-  filter(table==!!table)
+  filter(table==!!table) |> 
+  mutate(label=str_remove(label, ":"))
 agelab
 
-system.time(agedata1 <- get_acsfile(table))
+system.time(agedata1 <- get_acstable(table))
 glimpse(agedata1)
+
+geokeep <- glabs |> 
+  filter(sumlevel %in% sumlevels$sumlevel, stabbr %in% c("NY"))
 
 agedata2 <- agedata1 |> 
   lcnames() |> 
-  filter(geo_id %in% aoi$geo_id) |> 
-  left_join(aoi, by="geo_id") |> 
+  # filter(geo_id %in% aoi$geo_id) |> 
+  filter(geo_id %in% geokeep$geo_id) |> 
+  left_join(geokeep |> 
+              select(stabbr, geo_id, geotype, geoname, state, county, cousub, place), by="geo_id") |> 
   pivot_longer(starts_with(str_to_lower(table))) |> 
   mutate(value=ifelse(value==-555555555,
                       NA_real_,
@@ -252,13 +249,23 @@ agedata <- agedata2 |>
 tmp <- count(agedata, geotype, county, geo_id, geoname)
 count(agedata, variable, label)
 
-agedata |> 
-  filter(vtype=="estimate", variable=="b01002_001") |> 
+tabdata <- agedata |> 
+  filter(vtype=="estimate", variable=="b01002_001", geo_id %in% aoi$geo_id) |> 
   select(geotype, geoname, value)
+
+tabdata
+
+agedata |> 
+  filter(vtype=="estimate", geo_id %in% aoi$geo_id) |> 
+  select(geotype, label, geoname, value) |> 
+  pivot_wider(names_from = label) |> 
+  relocate(Total, .after = last_col())
 
 
 ```
 
+
+OLDER STUFF BELOW HERE.
 
 
 ```{r}
