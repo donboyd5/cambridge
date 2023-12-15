@@ -1,0 +1,398 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
+
+# Demographics
+
+<!-- Notes to self: I use the R package censusapi, rather than tidycensus, because it gives more control over access to Census data, and it allows me to obtain full Census geocodes (usually called GEO_ID).
+
+Run prep_geocodes.R before starting this.
+
+-->
+
+
+```{r includes}
+#| label: includes
+#| eval: true
+#| include: false
+
+source(here::here("r", "libraries.r"))
+source(here::here("r", "functions.r"))
+sessioninfo::session_info()
+
+# https://sessioninfo.r-lib.org/
+
+dacs <- here::here("acs")
+data <- r"(E:\data\acs\sf\2022_5year)"
+
+
+```
+
+```{r}
+#| label: get-codes
+#| eval: false
+
+v2022 <- readRDS(path(dacs, "vars_acs2022.rds"))
+geo2022 <- readRDS(path(dacs, "geocoded_acs2022.rds"))
+
+```
+
+```{r}
+#| label: sumlevel
+
+
+# sumlevel
+# https://mcdc.missouri.edu/geography/sumlevs/
+# https://mcdc.missouri.edu/geography/sumlevs/sumlev-master-list.csv
+# 010: Nation The whole United States, including Puerto Rico and the U.S. Pacific Islands. GeoID: 01000US
+# 020: Region One of four large statistical groups of U.S. states and the District of Columbia (map). Example: Midwest Region (02000US2)
+# 030: Division One of nine statistical subdivisions of regions, about four to eight states each (map). Example: Mountain Division, part of West Region (03000US8)
+# 040: State One of the 50 U.S. states, Puerto Rico, and the District of Columbia. Example: Missouri (04000US29)
+# 050: County U.S. county or county equivalent. Example: Boone County, MO (05000US29019)
+# 060: Minor Civil Division (MCD) An administrative or legal division of a county, such as township or precinct. Not all states or counties have MCDs. Example: Galena township, Jasper County, MO (06000US2909726236)
+# 160: Place Loosely defined, any concentration of population. In practice, places include incorporated cities, towns and villages (legal entities) and Census Designated Places (populated areas that lack separate government, but are useful for statistical purposes). Example: Alba city, MO (16000US2900496)
+# 170	Consolidated City	
+# 400	Urban Area
+# 410	Urban Area-State
+# 420	State-Urban Area
+# 430	Urban Area-State-County
+
+# selected summary levels
+# 010	us	
+# 020	region	
+# 030	division	
+# 040	state	
+# 050	state› county	
+# 060	state› county› county subdivision	
+# 067	state› county› county subdivision› subminor civil division	
+# 070	state› county› county subdivision› place/remainder (or part)	
+# 140	state› county› tract	
+# 150	state› county› tract› block group	
+# 155	state› place› county (or part)	
+# 160	state› place	
+# 170	state› consolidated city
+# 400	urban area
+# 410	urban area› state (or part)
+# 430	urban area› state (or part)› county (or part)
+
+sumlevels <- read_csv(
+"sumlevel, geotype
+010, nation
+020, region
+030, division
+040, state
+050, county
+060, cousub
+160, place
+170, concity
+")
+
+
+
+```
+
+
+
+```{r}
+#| label: codes
+
+vlabsfn <- "ACS20225YR_Table_Shells.txt"
+vlabs1 <- vroom(path(data, vlabsfn))
+vlabs <- vlabs1 |> 
+  rename(table=1, variable=4) |> 
+  lcnames() |> 
+  mutate(variable=str_to_lower(variable))
+
+# Census fips codes
+# https://www.census.gov/library/reference/code-lists/ansi.html
+# https://www.census.gov/library/reference/code-lists/ansi.html#states
+# https://www2.census.gov/geo/docs/reference/codes2020/national_state2020.txt
+# stfn <- "national_state2020.txt"
+# stcodes <- vroom(path(data, stfn)) |> 
+#   lcnames()
+# stcodes
+
+glabsfn <- "Geos20225YR.txt"
+glabs1 <- vroom(path(data, glabsfn))
+glabs <- glabs1 |> 
+  lcnames() |> 
+  mutate(geotype=factor(sumlevel, levels=sumlevels$sumlevel, labels=sumlevels$geotype)) |> 
+  relocate(geotype, geo_id, name, .after = component) |> 
+  rename(stabbr=stusab, geoname=name)
+names(glabs)
+glimpse(glabs)
+count(glabs, sumlevel, geotype)
+
+
+```
+
+
+```{r}
+#| label: functions
+
+get_acstable <- function(tab){
+
+  # ussumlevs <- c("010", "040")
+  # # nysumlevs <- c("050", "060", "160", "170", "400", "410", "430")
+  # nysumlevs <- c("050", "060", "160", "170")
+  # urbanrural <- c("0400001US36", "0400043US36")
+  
+  xdacs <- r"(E:\data\acs\sf\2022_5year)"
+  zpath <- fs::path(xdacs, "5YRData.zip")
+  str_sub(tab, 1, 1) <- str_to_lower(str_sub(tab, 1, 1))
+  fname <- paste0("acsdt5y2022-", tab, ".dat")
+  # zsub <- path(r"(data\prt01\prod\sumfile_new\output\2021\5YRData)", fname)
+  
+  # df1 <- vroom(unz(zpath, fname)) |>  # vroom(unz(zpath, zsub)) for 2021
+  #   filter(str_sub(GEO_ID, 1, 3) %in% ussumlevs |
+  #            (str_sub(GEO_ID, 10, 11)=="36" &  
+  #               str_sub(GEO_ID, 1, 3) %in% nysumlevs) |
+  #            GEO_ID %in% urbanrural)
+  
+  df1 <- vroom(unz(zpath, fname))
+  
+  return(df1)
+}
+
+```
+
+
+
+```{r constants}
+#| label: constants
+#| eval: true
+#| include: false
+
+# key counties
+# 36091 Saratoga
+# 36113 Warren
+# 36115 Washington
+
+# key cousubs
+# 3611511836 Cambridge town
+# 3611530686 Greenwich town
+# 3611564782 Salem town
+# 3611581578 White Creek town
+# tmp <- c("3611511836", "3611530686", "3611581578")
+
+# key places
+# 3602550 Argyle village
+# 3611825 Cambridge village
+# 3630675 Greenwich village
+# 3664771 Salem CDP
+# 3665750 Schuylerville
+
+# school district
+# 3606210    Cambridge Central School District
+# 3612900    Greenwich Central School District
+# 3625470    Salem Central School District
+
+# areas of interest
+# use full affgeoid rather than shortened geoid avoids getting Alden school district for Argyle village
+# geoid 3602550 which is the same as Argyle village
+state_aoi <- c("0400000US36")
+cnty_aoi <- c("0500000US36091", "0500000US36113", "0500000US36115")
+vlg_aoi <- c("1600000US3602550", "1600000US3611825", "1600000US3630675", "1600000US3664771", "1600000US3665750") 
+twn_aoi <- c("0600000US3611511836", "0600000US3611530686", "0600000US3611581578")
+              
+
+aoi <- glabs |> 
+  filter(stabbr=="NY",
+         geotype=="state" & geo_id %in% c("0400000US36", "040C201US36", "040C243US36") |
+           geotype=="county" & county %in% c("091", "113", "115") |
+           geotype=="cousub" & geo_id %in% twn_aoi |
+           geotype=="place" & geo_id %in% vlg_aoi) |> 
+  select(geo_id, sumlevel, stabbr, geoname, geotype, state, county, cousub, place)
+
+```
+
+
+
+## Age
+
+```{r}
+#| label: median-age
+#| eval: true
+#| include: false
+
+# B02001 median age
+
+table <- "B01002"
+
+agelab <- vlabs |> 
+  filter(table==!!table)
+agelab
+
+system.time(agedata1 <- get_acsfile(table))
+glimpse(agedata1)
+
+agedata2 <- agedata1 |> 
+  lcnames() |> 
+  filter(geo_id %in% aoi$geo_id) |> 
+  left_join(aoi, by="geo_id") |> 
+  pivot_longer(starts_with(str_to_lower(table))) |> 
+  mutate(value=ifelse(value==-555555555,
+                      NA_real_,
+                      value),
+         vtype=case_when(str_detect(name, "_e") ~ "estimate",
+                         str_detect(name, "_m") ~ "moe",
+                         TRUE ~ "ERROR"),
+         variable=str_replace(name, "_e", "_"),
+         variable=str_replace(variable, "_m", "_")) |> 
+  select(-name)
+  
+glimpse(agedata2)
+count(agedata2, vtype)
+count(agedata2, variable)
+
+agedata <- agedata2 |> 
+  left_join(agelab, by = join_by(variable))
+
+tmp <- count(agedata, geotype, county, geo_id, geoname)
+count(agedata, variable, label)
+
+agedata |> 
+  filter(vtype=="estimate", variable=="b01002_001") |> 
+  select(geotype, geoname, value)
+
+
+```
+
+
+
+```{r}
+# B02001 median age
+
+acstab <- "B02001"
+year <- 2022
+
+v2022 |> filter(str_detect(name, "B02001"))
+
+nation <- get_acs(geography = "us",
+                  table = acstab,
+                  year=year,
+                  survey="acs5",
+                  state=NULL,
+                  geometry = FALSE,
+                  keep_geo_vars = FALSE,  # TRUE only works if we set geometry=TRUE
+                  cache_table = TRUE) |>
+    mutate(geotype="nation")
+
+state <- get_acs(geography = "state",
+                 table = acstab,
+                 year=year,
+                 survey="acs5",
+                 state=c("NY", "VT"),
+                 geometry = FALSE,
+                 keep_geo_vars = FALSE,  # TRUE only works if we set geometry=TRUE
+                 cache_table = TRUE) |>
+    mutate(geotype="state")
+
+county <- get_acs(geography = "county",
+                 table = acstab,
+                 year=year,
+                 survey="acs5",
+                 state=c("NY", "VT"),
+                 geometry = FALSE,
+                 keep_geo_vars = FALSE,  # TRUE only works if we set geometry=TRUE
+                 cache_table = TRUE) |>
+    mutate(geotype="county")
+
+cousubs <- get_acs(geography="county subdivision",
+                   table=acstab,
+                   year=year,
+                   state="NY",
+                   # county=cosubs_county,
+                   geometry = FALSE,
+                   keep_geo_vars = FALSE,
+                   cache_table = TRUE
+                   ) |>
+  mutate(geotype="cousub")
+
+
+get_acs(
+  geography,
+  variables = NULL,
+  table = NULL,
+  cache_table = FALSE,
+  year = 2021,
+  output = "tidy",
+  state = NULL,
+  county = NULL,
+  zcta = NULL,
+  geometry = FALSE,
+  keep_geo_vars = FALSE,
+  shift_geo = FALSE,
+  summary_var = NULL,
+  key = NULL,
+  moe_level = 90,
+  survey = "acs5",
+  show_call = FALSE,
+  ...
+)
+
+```
+
+
+
+```{r}
+# https://www.census.gov/programs-surveys/acs/data/summary-file.html
+
+
+tabnames <- c("B01001", "B01002", "B01003", "B07001", "B07009", "B07409", "B15003", "B25071")
+
+system.time(df1 <- get_acsfile(tabnames[2]))
+system.time(df1 <- get_acsfile("B02001"))
+
+df2 <- df1 |> 
+  lcnames()
+
+tmp <- df2 |> filter(str_detect(geo_id, "US36"))
+
+geo2022 |> filter(geo_id=="0600000US3600354523")
+
+df3 <- geo2022 |> 
+  select(geo_id, stabbr, name, geotype, state, county, cousub, place, sumlevel, b01003_001e) |> 
+  left_join(df2, by = join_by(geo_id)) |> 
+  filter(b01002_e001 >= 0)
+
+
+```
+
+
+
+```{r}
+#| label: tables-of-interest
+
+v2022 |> filter(str_detect(concept, "Age"))
+v2022 |> filter(str_detect(name, "B02001"))
+v2022 |> filter(group=="B01002") # median age B01002_001E
+
+v2022 |> filter(str_detect(concept, "Race"))
+v2022 |> filter(str_detect(name, "B02001"))
+
+
+
+
+
+```
+
+```{r}
+#| label: get-full-geo
+
+acstab <- "B01003"
+year <- 2022
+
+gnation <- get_acs(geography = "us",
+                  table = acstab,
+                  year=year,
+                  survey="acs5",
+                  state=NULL,
+                  geometry = TRUE,
+                  keep_geo_vars = TRUE,  # TRUE only works if we set geometry=TRUE
+                  cache_table = TRUE) 
+
+```
+
+

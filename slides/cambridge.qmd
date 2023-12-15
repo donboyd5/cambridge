@@ -53,7 +53,7 @@ What's the outlook?
 :::
 
 
-```{r}
+```{r includes}
 #| label: includes
 #| eval: true
 #| include: false
@@ -66,7 +66,7 @@ source(here::here("r", "functions.r"))
 
 
 
-```{r}
+```{r constants}
 #| label: constants
 #| eval: true
 #| include: false
@@ -110,7 +110,7 @@ aoi <- c(state_aoi, cnty_aoi, vlg_aoi, twn_aoi)
 ```
 
 
-```{r}
+```{r get-table-summary}
 #| label: get-table-summary
 #| eval: false
 #| include: false

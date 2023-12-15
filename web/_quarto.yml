@@ -1,0 +1,53 @@
+project:
+  type: book
+  output-dir: _web
+
+# quarto render
+# quarto publish netlify --no-render
+# quarto publish netlify --no-browser --no-prompt
+# quarto publish netlify --no-render --no-browser --no-prompt
+
+# https://model-risk-final.netlify.app/
+
+execute:
+  eval: true
+  echo: false
+  error: false
+  warning: false
+  message: false  # not sure if allowed
+  note: false  # not sure if allowed
+  freeze: auto  # during global project renders, re-render only when source changes
+  
+editor_options:
+  chunk_output_type: console
+  
+editor:
+  markdown:
+    canonical: true  
+  
+format:
+  html:
+    number-sections: true
+    toc-depth: 5
+    theme: cosmo
+    fig-width: 8
+    fig-height: 6
+  # pdf:
+  #   documentclass: scrreprt
+
+book:
+  title: "Cambridge area"
+  subtitle: "Situation and trends"
+  author: "Don Boyd"
+  date: today
+  date-format: long
+  chapters:
+    - index.qmd
+    - part: "Demographics"
+      chapters:
+      - demog.qmd
+#     - bibliography.qmd      
+#     
+# bibliography: _bibliography_web.bib
+# nocite: |
+#   @*
