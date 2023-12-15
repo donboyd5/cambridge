@@ -6,14 +6,19 @@
 _freeze/
 cambridge_files/
 index_files/
+web/_web/
+web/_web/site_libs/
+web/_web/site_libs/bootstrap/
 
 *.csv
 *.dat
 *.html
 *.js
+*.mhtml
 *.rds
 *.txt
 *.zip
+
 
 
 
