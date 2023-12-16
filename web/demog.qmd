@@ -31,8 +31,9 @@ data <- r"(E:\data\acs\sf\2022_5year)"
 
 
 ```{r}
-#| label: sumlevel
-
+#| label: sumlevels
+#| eval: true
+#| include: false
 
 # sumlevel
 # https://mcdc.missouri.edu/geography/sumlevs/
@@ -79,14 +80,15 @@ sumlevels <- read_csv(
 160, place
 170, concity
 ")
-
+sumlevels
 
 ```
 
 
-
 ```{r}
-#| label: codes
+#| label: var-codes
+#| eval: false
+#| include: false
 
 vlabsfn <- "ACS20225YR_Table_Shells.txt"
 vlabs1 <- vroom(path(data, vlabsfn))
@@ -94,6 +96,16 @@ vlabs <- vlabs1 |>
   rename(table=1, variable=4) |> 
   lcnames() |> 
   mutate(variable=str_to_lower(variable))
+saveRDS(vlabs, path(data, "varlabels.rds"))
+
+```
+
+
+
+```{r}
+#| label: geo-codes
+#| eval: false
+#| include: false
 
 # Census fips codes
 # https://www.census.gov/library/reference/code-lists/ansi.html
@@ -115,6 +127,77 @@ names(glabs)
 glimpse(glabs)
 count(glabs, sumlevel, geotype)
 
+saveRDS(glabs, path(data, "geolabels.rds"))
+
+
+```
+
+
+```{r}
+#| label: dominant-county
+#| eval: false
+#| include: false
+
+# https://mcdc.missouri.edu/applications/geocorr2022.html
+# placefn <- "geocorr2022_2335008340.csv" # NY, VT obtained from link above
+placefn <- "geocorr2022_2335003860.csv" # all states
+places1 <- vroom(path(data, placefn), skip = 1, 
+                 col_types = cols(.default = col_character()),
+                 locale=locale(encoding = "latin1")) # latin1 aka ISO-8859-1 -- so that accents in places in Puerto Rico show properly
+# state, place, county, stab, CountyName, PlaceName, pop20, afact2, afact
+# State code, Place code, County code, State abbr., County name, Place name, Total population (2020 Census), county-to-place allocation factor, place-to-county allocation factor
+glimpse(places1)
+
+places2 <- places1 |> 
+  rename(state=1, place=2, stcounty=3, stabbr=4, county=5, plname=6, pop2020=7, coplaceaf=8, placecoaf=9) |> 
+  mutate(across(c(pop2020, coplaceaf, placecoaf), as.numeric))
+
+places2 |> 
+  filter(stcounty=="36115")
+
+places2 |> 
+  filter(str_detect(plname, "Juana D"))
+
+places2 |> 
+  filter(stabbr=="NY", place!="99999", placecoaf < 1)
+
+places2 |> 
+  filter(stabbr=="NY", place=="01440")
+
+domcounty1 <- places2 |> 
+  group_by(state, place) |> 
+  slice_max(placecoaf) |> 
+  ungroup()
+
+skim(domcounty1)
+  
+domcounty1 |> 
+  filter(stabbr=="NY", place=="01440")
+
+places2 |> 
+  filter(stabbr=="NY", place=="01440")
+
+domcounty1 |> filter(place != "99999") |> slice_min(placecoaf, n=5)
+
+places2 |> 
+  filter(stabbr=="GA", place=="10076")
+
+domcounty1 |> 
+  filter(str_sub(county, -3, -1) != paste0(" ", stabbr))
+
+domcounty <- domcounty1 |> 
+  mutate(county=ifelse(!str_detect(county, paste0(", ", stabbr)),
+                       str_replace(county, paste0(" ", stabbr), paste0(", ", stabbr)),
+                       county),
+         county=ifelse(stabbr=="AK" & str_sub(county, -4, -1)=="Area",
+                       paste0(county, ", ", stabbr),
+                       county)) |>  # may not be perfect?
+  arrange(stabbr, place, stcounty)
+
+domcounty |> 
+  filter(str_sub(county, -4, -1) != paste0(", ", stabbr))
+
+saveRDS(domcounty, path(data, "dominant_county.rds"))
 
 ```
 
@@ -122,7 +205,7 @@ count(glabs, sumlevel, geotype)
 ```{r}
 #| label: functions
 
-get_acstable <- function(tab){
+get_acstable_all <- function(tab){
 
   # ussumlevs <- c("010", "040")
   # # nysumlevs <- c("050", "060", "160", "170", "400", "410", "430")
