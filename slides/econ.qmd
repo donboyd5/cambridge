@@ -1,0 +1,56 @@
+# Economy
+
+```{r}
+#| label: get_econ
+#| eval: false
+#| output: false
+
+nyvtco <- get_acs(geography = "county", variables = "B19013_001", state = c("NY", "VT"), year = 2023)
+
+data <- nyvtco |> 
+  filter(GEOID %in% keepcos) |>
+  mutate(NAME = str_remove(NAME, " County, New York"),
+         NAME = str_replace(NAME, " County, Vermont", ", VT"))
+saveRDS(data, fs::path(ddir, "income_county.rds"))
+
+
+nyvtplaces <- get_acs(geography = "place", variables = "B19013_001", state = c("NY", "VT"), year = 2023)
+
+data <- nyvtplaces |> 
+  filter(GEOID %in% nyplaces) |>
+  mutate(NAME = str_remove(NAME, ", New York"),
+         NAME = str_replace(NAME, ", Vermont", ", VT"))
+saveRDS(data, fs::path(ddir, "income_place.rds"))
+
+```
+
+## Washington County has lower household income than most area counties
+
+```{r}
+#| label: plot_county_income
+
+special <- "36115"
+data <- readRDS(fs::path(ddir, "income_county.rds")) |> 
+  mutate(special=GEOID==special)
+
+yint <- data |> filter(special) |> pull(estimate)
+
+barline(data, "Household income, selected area counties", "Dollars", seq(0, 100e3, 5e3), yint)
+
+```
+
+## Cambridge has slightly lower household income than nearby places
+
+```{r}
+#| label: plot_place_income
+
+special <- "3611825"
+data <- readRDS(fs::path(ddir, "income_place.rds")) |> 
+  mutate(special=GEOID==special)
+
+yint <- data |> filter(special) |> pull(estimate)
+
+barline(data, "Household income, selected area villages and places", "Dollars", seq(0, 100e3, 5e3), yint)
+
+```
+

@@ -1,0 +1,104 @@
+# Introduction
+
+Cambridge was established in year by X.
+
+
+```{r includes}
+#| label: includes
+#| eval: true
+#| include: false
+
+source(here::here("r", "libraries.r"))
+source(here::here("r", "functions.r"))
+
+```
+
+```{r constants}
+#| label: constants
+#| eval: true
+#| include: false
+
+# key counties
+# 36091 Saratoga
+# 36113 Warren
+# 36115 Washington
+
+# key cousubs
+# 3611511836 Cambridge town
+# 3611530686 Greenwich town
+# 3611564782 Salem town
+# 3611581578 White Creek town
+# tmp <- c("3611511836", "3611530686", "3611581578")
+
+# key places
+# 3602550 Argyle village
+# 3611825 Cambridge village
+# 3630675 Greenwich village
+# 3664771 Salem CDP
+# 3665750 Schuylerville
+
+# school district
+# 3606210    Cambridge Central School District
+# 3612900    Greenwich Central School District
+# 3625470    Salem Central School District
+
+# areas of interest
+# use full affgeoid rather than shortened geoid avoids getting Alden school district for Argyle village
+# geoid 3602550 which is the same as Argyle village
+state_aoi <- c("0400000US36")
+cnty_aoi <- c("0500000US36091", "0500000US36113", "0500000US36115")
+vlg_aoi <- c("1600000US3602550", "1600000US3611825", "1600000US3630675", "1600000US3664771", "1600000US3665750") 
+twn_aoi <- c("0600000US3611511836", "0600000US3611530686", "0600000US3611581578")
+
+aoi <- c(state_aoi, cnty_aoi, vlg_aoi, twn_aoi)
+
+# xwalkny |> filter(affgeoid %in% aoi) |> select(1:4)
+
+```
+
+```{r get-table-summary}
+#| label: get-table-summary
+#| eval: false
+#| include: false
+
+acstabs_wide(c(2011, 2016, 2021))
+find_acstab("age")
+
+tmp <- find_acstab("age", acstabs_wide(c(2011, 2016, 2021))) |> 
+  filter(str_detect(title, "POVERTY"), str_detect(title, "RATIO"))
+
+find_acstab("public health insurance", acstabs_wide(c(2011, 2016, 2021)))
+
+# B17001
+df <- get_acstab("B27003")
+df2 <- enhance(df)
+
+check_var_mismatch("B27003", c(2011, 2016, 2021))
+
+covg <- tmp |> filter(year==2021, str_detect(label, "With public")) # 18 recs
+nocovg <- tmp |> filter(year==2021, str_detect(label, "No public")) # 18 recs
+
+slabels <- acsvars |> 
+  filter(table=="B27003", year==2021) |> 
+  select(line, variable, label) |> 
+  mutate(covgtype=case_when(line %in% covg$line ~ "withpublic",
+                            line %in% nocovg$line ~ "nopublic",
+                            TRUE ~ "other"))
+slabels
+
+df3 <- df2 |> 
+  left_join(slabels, by = join_by(variable, line, label)) |> 
+  filter(covgtype!="other") |> 
+  summarise(estimate=sum(estimate), .by=c(affgeoid, geoid, shortname, shortestname, nygeotype, covgtype))
+
+df4 <- df3 |> 
+  pivot_wider(names_from = covgtype, values_from = estimate) |> 
+  mutate(total=withpublic + nopublic,
+         pubpct=withpublic / total)
+
+df4 |> 
+  filter(geoid %in% aoi, !affgeoid %in% badgeos) |> 
+  arrange(desc(pubpct))
+  
+
+```

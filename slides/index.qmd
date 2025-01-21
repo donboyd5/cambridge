@@ -1,0 +1,15 @@
+---
+title: "Cambridge"
+subtitle: "Our people and our economy"
+author: "Don Boyd"
+date: today
+date-format: long
+---
+
+{{< include setup.qmd >}}
+
+{{< include intro.qmd >}}
+
+{{< include demog.qmd >}}
+
+{{< include econ.qmd >}}
