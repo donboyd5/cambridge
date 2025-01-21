@@ -26,7 +26,6 @@ sessioninfo::session_info()
 dacs <- here::here("acs")
 data <- r"(E:\data\acs\sf\2022_5year)"
 
-
 ```
 
 
@@ -80,7 +79,6 @@ sumlevels <- read_csv(
 160, place
 170, concity
 ")
-sumlevels
 
 ```
 
@@ -97,6 +95,9 @@ vlabs <- vlabs1 |>
   lcnames() |> 
   mutate(variable=str_to_lower(variable))
 saveRDS(vlabs, path(data, "varlabels.rds"))
+
+vlabs <- readRDS(path(data, "varlabels.rds"))
+
 
 ```
 
@@ -129,12 +130,14 @@ count(glabs, sumlevel, geotype)
 
 saveRDS(glabs, path(data, "geolabels.rds"))
 
+glabs <- readRDS(path(data, "geolabels.rds"))
+
 
 ```
 
 
 ```{r}
-#| label: dominant-county
+#| label: dominant-county-start
 #| eval: false
 #| include: false
 
@@ -199,7 +202,73 @@ domcounty |>
 
 saveRDS(domcounty, path(data, "dominant_county.rds"))
 
+domcounty <- readRDS(path(data, "dominant_county.rds"))
+
+domcounty |> 
+  filter(stabbr=="NY", str_detect(plname, "Cambridge"))
+
+
 ```
+
+
+```{r}
+#| label: dominant-county-finish
+#| eval: false
+#| include: false
+
+# merge dominant county for places with the place geolabels, to get geo_id ----
+domcounty <- readRDS(path(data, "dominant_county.rds"))
+glimpse(domcounty)
+
+places <- readRDS(path(data, "geolabels.rds")) |> 
+  filter(geotype=="place") |> 
+  select(geo_id, geoname, stabbr, sumlevel, component, geotype, state, county, cousub, place)
+glimpse(places)
+glimpse(domcounty)
+
+p1 <- places |> 
+  filter(stabbr=="NY") |> 
+  arrange(geoname)
+
+# all places start with 1600000
+# tmp <- p1 |> 
+#   mutate(gstart = str_extract_before_first(geo_id, "US"))
+# count(tmp, gstart)
+
+d1 <- domcounty |> 
+  filter(stabbr=="NY") |> 
+  arrange(plname)
+
+head(p1); head(d1)
+d2 <- d1 |> 
+  mutate(geo_id=paste0("1600000US",
+                       state,
+                       place)) |> 
+  rename(coname=county)
+
+dp1 <- d2 |> 
+  left_join(p1, by = join_by(state, place, stabbr, geo_id))
+ht(dp1)
+
+dp1 |> filter(is.na(geoname))
+
+tmp <- dp1 |> 
+  filter(!is.na(geoname)) |> 
+  select(geo_id, geoname, plname, coname, pop2020, placecoaf) |> 
+  mutate(
+    plname2=str_replace(plname, ", NY", ", New York"),
+    coname= str_replace(coname, ",[^,]*$", "")) # replace everything from last comma to the end
+count(tmp, coname)
+tmp |> filter(coname=="Kings")
+
+tmp |> 
+  filter(geoname!=plname2) |> 
+  relocate(plname2, .before = plname)
+
+
+
+```
+
 
 
 ```{r}
