@@ -44,7 +44,10 @@ barline(data, "Median age, selected area villages and places", "Median age", seq
 
 ```
 
+::: {style="font-size: 0.4em;"}
 Caveat: Perhaps this reflects a concentration of senior housing?
+:::
+
 
 ## White Creek and Jackson towns are older than nearby towns
 
