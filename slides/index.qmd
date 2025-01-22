@@ -1,6 +1,6 @@
 ---
-title: "Cambridge"
-subtitle: "Our people and economy"
+title: "Cambridge, NY"
+subtitle: "Demographics and economy"
 author: "Don Boyd"
 date: today
 date-format: long
@@ -9,8 +9,6 @@ date-format: long
 {{< include setup.qmd >}}
 
 {{< include get-data.qmd >}}
-
-{{< include intro.qmd >}}
 
 {{< include demographics.qmd >}}
 

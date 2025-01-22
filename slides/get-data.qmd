@@ -5,60 +5,20 @@ editor_options:
 
 
 ```{r}
-#| label: setup
-#| output: false
-
-library(tidyverse)
-library(tidycensus)
-library(ggpattern)
-
-ddir <- here::here("data")
-
-nykeep <- paste0("36", c("001", "083", "091", "093", "113", "115"))
-vtkeep <- "50003"
-keepcos <- c(nykeep, vtkeep)
-
-nyplaces <- c("3611825", "3630675", "3664771", "3665750") 
-
-```
-
-```{r}
-#| label: functions
-#| output: false
-
-barline <- function(data, title, ylab, ybreaks, yint){
-  data |> 
-    ggplot(aes(x = reorder(NAME, estimate), y = estimate, fill = special)) +
-    geom_col(width = 0.2) +
-    scale_fill_manual(values = c("lightblue", "blue")) +
-    geom_hline(yintercept = yint, color = "red", linetype = "solid", linewidth = .75) +
-    scale_y_continuous(name=ylab, labels = scales::label_comma(),
-                       breaks = ybreaks) +
-    labs(title = title,
-       subtitle = "2019-2023 American Community Survey",
-       x = NULL) +
-    theme_minimal() +
-    theme(legend.position = "None")
-}
-
-```
-
-```{r}
-#| label: links
+#| label: data-links
 #| eval: false
 #| output: false
-
-# https://bookdown.org/yihui/rmarkdown-cookbook/reuse-chunks.html
 
 # https://walkerke.github.io/tidycensus/articles/basic-usage.html#geography-in-tidycensus
 # 
  
 ```
 
+
 ```{r}
+#| label: selected-variables
 #| eval: false
 #| output: false
-#| label: variables
 
 # B01003_001E population
 # B01002_001E median age
@@ -86,12 +46,127 @@ barline <- function(data, title, ylab, ybreaks, yint){
 # 3665750 Schuylerville village
 # 5004750 Bennington CDP
 
-nyplaces <- c("3611825", "3630675", "3664771", "3665750") 
- 
-nyvt <- get_acs(geography = "place", variables = "B01003_001E", state = c("NY", "VT"), year = 2023)
-
-pname <- "Bennington"
-nyvtco |> 
-  filter(str_detect(NAME, coll(pname, ignore_case = TRUE)))
+# nyplaces <- c("3611825", "3630675", "3664771", "3665750") 
+#  
+# nyvt <- get_acs(geography = "place", variables = "B01003_001E", state = c("NY", "VT"), year = 2023)
+# 
+# pname <- "Bennington"
+# nyvtco |> 
+#   filter(str_detect(NAME, coll(pname, ignore_case = TRUE)))
          
+```
+
+```{r}
+#| label: ONETIME-save-acs-variable-info
+#| eval: false
+#| output: false
+
+# explore tables:
+# https://censusreporter.org/topics/table-codes/
+
+acsvars <- load_variables(2023, "acs5", cache = TRUE)
+count(acsvars, geography)
+unique(acsvars$concept) |> sort()
+
+acsvars2 <- acsvars |> 
+  select(-geography) |> # missing for all
+  separate_wider_delim(cols = name, 
+                       delim = "_",
+                       names = c("table", "vnum"),
+                       too_few = "align_start",
+                       cols_remove = FALSE)  |>
+  mutate(numvars=n(), .by=c(table, concept)) |> 
+  arrange(table, numvars, name)
+# acsvars2$vnum |> unique() |> sort()
+
+acs_tables <- acsvars2 |> 
+  select(table, concept, numvars) |> 
+  distinct()
+
+saveRDS(acsvars2, fs::path(ddir, "acs_variables.rds"))
+saveRDS(acs_tables, fs::path(ddir, "acs_tables.rds"))
+
+```
+
+
+```{r}
+#| label: decide-tables
+#| eval: false
+#| output: false
+
+acs_variables <- readRDS(fs::path(ddir, "acs_variables.rds"))
+acs_tables <- readRDS(fs::path(ddir, "acs_tables.rds"))
+
+get_concept <- function(aconcept){
+  acs_tables |> 
+  filter(str_detect(concept, coll(aconcept, ignore_case = TRUE))) |> 
+  arrange(numvars) |> 
+  select(table, concept, numvars)
+}
+
+poptabs <- get_concept("population")
+inctabs <- get_concept("income")
+
+# selected tables and concepts
+# B01003  Total Population  
+# B25008  Total Population in Occupied Housing Units by Tenure
+# B19013  Median Household Income in the Past 12 Months (in 2023 Inflation-Adjusted Dollars)
+# B25071  Median Gross Rent as a Percentage of Household Income in the Past 12 Months (Dollars)
+
+keeptabs <- acsvars2 |> 
+  filter(table %in% c("B01003", "B01002", "B25008", "B19013", "B25071")) |> 
+  select(table, concept, numvars) |> 
+  distinct()
+
+```
+
+```{r}
+#| label: get-save-data
+#| eval: false
+#| output: false
+
+f <- function(tab, geo){
+  print(tab)
+  get_acs(geography = geo, table = tab, state = c("NY", "VT"), year = 2023)
+}
+
+states <- purrr::map(keeptabs$table, \(x) f(x, geo = "state")) |> 
+  list_rbind() |> 
+  mutate(geotype = "state")
+
+counties <- purrr::map(keeptabs$table, \(x) f(x, geo = "county")) |> 
+  list_rbind() |> 
+  mutate(geotype = "county")
+
+places <- purrr::map(keeptabs$table, \(x) f(x, geo = "place")) |> 
+  list_rbind() |> 
+  mutate(geotype = "place")
+
+acs_data <- bind_rows(states, counties, places) |> 
+  rename(geoid=GEOID, geoname=NAME) |> 
+  mutate(year5=2023,
+         stfips = str_sub(geoid, 1, 2)) |> 
+  left_join(usmap::statepop |> 
+              select(stfips=fips, stabbr=abbr, stname=full),
+            by = join_by(stfips)) |> 
+  left_join(acs_variables |> 
+              mutate(label = str_remove(label, "Estimate!!")) |> 
+              select(variable = name, table, concept, vnum, label),
+            by = join_by(variable)) |> 
+  mutate(trimname = str_remove(geoname, ", New York"),
+         trimname = str_remove(trimname, ", Vermont"),
+         trimname = case_when(
+           geotype == "county" ~ str_remove(trimname, " County"),
+           # geotype == "place" ~ str_remove(trimname, " village"),
+           .default = trimname),
+         trimname = ifelse(geotype == "county" & stabbr == "VT",
+                           paste0(trimname, ", VT"),
+                           trimname))
+
+check <- count(acs_data, geoid, geotype, geoname, trimname)
+
+saveRDS(acs_data, fs::path(ddir, "acs_data.rds"))
+
+count(acs_data, variable, concept, label)
+
 ```

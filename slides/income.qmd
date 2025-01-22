@@ -1,26 +1,11 @@
 # Income and Poverty
 
 ```{r}
-#| label: get_econ
-#| eval: false
 #| output: false
 
-nyvtco <- get_acs(geography = "county", variables = "B19013_001", state = c("NY", "VT"), year = 2023)
-
-data <- nyvtco |> 
-  filter(GEOID %in% keepcos) |>
-  mutate(NAME = str_remove(NAME, " County, New York"),
-         NAME = str_replace(NAME, " County, Vermont", ", VT"))
-saveRDS(data, fs::path(ddir, "income_county.rds"))
-
-
-nyvtplaces <- get_acs(geography = "place", variables = "B19013_001", state = c("NY", "VT"), year = 2023)
-
-data <- nyvtplaces |> 
-  filter(GEOID %in% nyplaces) |>
-  mutate(NAME = str_remove(NAME, ", New York"),
-         NAME = str_replace(NAME, ", Vermont", ", VT"))
-saveRDS(data, fs::path(ddir, "income_place.rds"))
+# get acs data ----
+acs_data <- readRDS(fs::path(ddir, "acs_data.rds"))
+count(acs_data, variable, concept, label)
 
 ```
 
@@ -30,12 +15,13 @@ saveRDS(data, fs::path(ddir, "income_place.rds"))
 #| label: plot_county_income
 
 special <- "36115"
-data <- readRDS(fs::path(ddir, "income_county.rds")) |> 
-  mutate(special=GEOID==special)
+data <- acs_data |> 
+  filter(variable == "B19013_001", geotype == "county", geoid %in% keepcos) |> 
+  mutate(special=geoid==special)
 
 yint <- data |> filter(special) |> pull(estimate)
 
-barline(data, "Household income, selected area counties", "Dollars", seq(0, 100e3, 5e3), yint)
+barline(data, "Median household income, selected area counties", "Dollars", seq(0, 100e3, 5e3), yint)
 
 ```
 
@@ -45,12 +31,13 @@ barline(data, "Household income, selected area counties", "Dollars", seq(0, 100e
 #| label: plot_place_income
 
 special <- "3611825"
-data <- readRDS(fs::path(ddir, "income_place.rds")) |> 
-  mutate(special=GEOID==special)
+data <- acs_data |> 
+  filter(variable == "B19013_001", geotype == "place", geoid %in% nyplaces) |> 
+  mutate(special=geoid==special)
 
 yint <- data |> filter(special) |> pull(estimate)
 
-barline(data, "Household income, selected area villages and places", "Dollars", seq(0, 100e3, 5e3), yint)
+barline(data, "Median household income, selected area villages and places", "Dollars", seq(0, 100e3, 5e3), yint)
 
 ```
 

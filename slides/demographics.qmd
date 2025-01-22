@@ -1,43 +1,24 @@
 # Demographics
 
-## Washington County is older than most area counties
-
 ```{r}
-#| label: get_demog
-#| eval: false
 #| output: false
 
-# B01002_001	median age
-
-nyvtco <- get_acs(geography = "county", variables = "B01002_001", state = c("NY", "VT"), year = 2023)
-# nyvtco |> select(GEOID, NAME)
-
-data <- nyvtco |> 
-  filter(GEOID %in% keepcos) |>
-  mutate(NAME = str_remove(NAME, " County, New York"),
-         NAME = str_replace(NAME, " County, Vermont", ", VT"))
-saveRDS(data, fs::path(ddir, "median_age_county.rds"))
-
-
-nyvtplaces <- get_acs(geography = "place", variables = "B01002_001", state = c("NY", "VT"), year = 2023)
-# nyvtco |> select(GEOID, NAME)
-
-data <- nyvtplaces |> 
-  filter(GEOID %in% nyplaces) |>
-  mutate(NAME = str_remove(NAME, ", New York"),
-         NAME = str_replace(NAME, ", Vermont", ", VT"))
-saveRDS(data, fs::path(ddir, "median_age_place.rds"))
-
+# get acs data ----
+acs_data <- readRDS(fs::path(ddir, "acs_data.rds"))
+count(acs_data, variable, concept, label)
 
 ```
+
+## Washington County is older than most area counties
 
 
 ```{r}
 #| label: plot_county_age
 
 special <- "36115"
-data <- readRDS(fs::path(ddir, "median_age_county.rds")) |> 
-  mutate(special=GEOID==special)
+data <- acs_data |> 
+  filter(variable == "B01002_001", geotype == "county", geoid %in% keepcos) |> 
+  mutate(special=geoid==special)
 
 yint <- data |> filter(special) |> pull(estimate)
 
@@ -51,8 +32,11 @@ barline(data, "Median age, selected area counties", "Median age", seq(0, 100, 5)
 #| label: plot_place_age
 
 special <- "3611825"
-data <- readRDS(fs::path(ddir, "median_age_place.rds")) |> 
-  mutate(special=GEOID==special)
+
+data <- acs_data |> 
+  filter(variable == "B01002_001", geotype == "place", geoid %in% nyplaces) |> 
+  mutate(special=geoid==special)
+
 
 yint <- data |> filter(special) |> pull(estimate)
 

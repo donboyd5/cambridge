@@ -10,7 +10,16 @@ editor_options:
 
 library(tidyverse)
 library(tidycensus)
-library(ggpattern)
+library(usmap)
+
+# library(ggpattern)
+
+```
+
+
+```{r}
+#| label: constants
+#| output: false
 
 ddir <- here::here("data")
 
@@ -22,13 +31,14 @@ nyplaces <- c("3611825", "3630675", "3664771", "3665750")
 
 ```
 
+
 ```{r}
 #| label: functions
 #| output: false
 
 barline <- function(data, title, ylab, ybreaks, yint){
   data |> 
-    ggplot(aes(x = reorder(NAME, estimate), y = estimate, fill = special)) +
+    ggplot(aes(x = reorder(trimname, estimate), y = estimate, fill = special)) +
     geom_col(width = 0.2) +
     scale_fill_manual(values = c("lightblue", "blue")) +
     geom_hline(yintercept = yint, color = "red", linetype = "solid", linewidth = .75) +
@@ -43,55 +53,14 @@ barline <- function(data, title, ylab, ybreaks, yint){
 
 ```
 
+
+
 ```{r}
-#| label: links
+#| label: quarto-links
 #| eval: false
 #| output: false
 
 # https://bookdown.org/yihui/rmarkdown-cookbook/reuse-chunks.html
 
-# https://walkerke.github.io/tidycensus/articles/basic-usage.html#geography-in-tidycensus
-# 
- 
 ```
 
-```{r}
-#| eval: false
-#| output: false
-#| label: variables
-
-# B01003_001E population
-# B01002_001E median age
-# B19013_001E median income
-# B25077_001E median home value
-# B25064_001E median gross rent
-# B25003_001E total housing units
-# B25002_002E owner occupied housing units
-# B25002_003E renter occupied housing units
-# B25002_001E total occupied housing units 
-# B25002_001E - B25003_001E vacant housing units
-# ai did the following VERIFY
-# B25002_001E / B25003_001E vacancy rate
-# B25002_001E / B01003_001E housing units per person
-# B25002_001E / B01002_001E housing units per person
-# B25002_001E / B19013_001E housing units per dollar of income
-
-# villages (and places)
-# 3602550 Argyle village
-# 3611825 Cambridge village
-# 3630675 Greenwich village
-# 3635474 Hoosick Falls village
-# 3664771 Salem CDP
-# 3665255 Saratoga Springs city
-# 3665750 Schuylerville village
-# 5004750 Bennington CDP
-
-nyplaces <- c("3611825", "3630675", "3664771", "3665750") 
- 
-nyvt <- get_acs(geography = "place", variables = "B01003_001E", state = c("NY", "VT"), year = 2023)
-
-pname <- "Bennington"
-nyvtco |> 
-  filter(str_detect(NAME, coll(pname, ignore_case = TRUE)))
-         
-```
