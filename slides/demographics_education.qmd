@@ -1,0 +1,12 @@
+
+<!-- # Demographics -->
+
+```{r}
+#| output: false
+
+# get acs data ----
+acs_data <- readRDS(fs::path(ddir, "acs_data.rds"))
+count(acs_data, variable, concept, label)
+
+```
+

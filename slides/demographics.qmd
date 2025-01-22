@@ -49,7 +49,7 @@ Caveat: Perhaps this reflects a concentration of senior housing?
 :::
 
 
-## White Creek and Jackson towns are older than nearby towns
+## Jackson and White Creek towns are older than nearby towns
 
 ```{r}
 #| label: plot_age_cousub

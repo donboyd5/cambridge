@@ -12,6 +12,8 @@ date-format: long
 
 {{< include demographics.qmd >}}
 
+{{< include demographics_education.qmd >}}
+
 {{< include income.qmd >}}
 
 {{< include employment.qmd >}}
