@@ -19,6 +19,8 @@ editor:
     wrap: 72
     canonical: true
     
-editor_options:
+# editor_options:
   chunk_output_type: console
     
+# quarto publish netlify --no-browser --no-prompt
+# quarto publish netlify --no-browser --no-render --no-prompt

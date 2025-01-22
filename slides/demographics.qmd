@@ -13,11 +13,11 @@ count(acs_data, variable, concept, label)
 
 
 ```{r}
-#| label: plot_county_age
+#| label: plot_age_county
 
 special <- "36115"
 data <- acs_data |> 
-  filter(variable == "B01002_001", geotype == "county", geoid %in% keepcos) |> 
+  filter(variable == "B01002_001", geotype == "county", geoid %in% keep_cos) |> 
   mutate(special=geoid==special)
 
 yint <- data |> filter(special) |> pull(estimate)
@@ -26,21 +26,40 @@ barline(data, "Median age, selected area counties", "Median age", seq(0, 100, 5)
 
 ```
 
-## Cambridge is older than nearby places
+## Cambridge village is older than nearby places
 
 ```{r}
-#| label: plot_place_age
+#| label: plot_age_place
 
 special <- "3611825"
 
 data <- acs_data |> 
-  filter(variable == "B01002_001", geotype == "place", geoid %in% nyplaces) |> 
+  filter(variable == "B01002_001", geotype == "place", geoid %in% keep_places) |> 
   mutate(special=geoid==special)
 
 
 yint <- data |> filter(special) |> pull(estimate)
 
 barline(data, "Median age, selected area villages and places", "Median age", seq(0, 100, 5), yint)
+
+```
+
+Caveat: Perhaps this reflects a concentration of senior housing?
+
+## White Creek and Jackson towns are older than nearby towns
+
+```{r}
+#| label: plot_age_cousub
+
+special <- "3611511836"
+
+data <- acs_data |> 
+  filter(variable == "B01002_001", geotype == "cousub", geoid %in% keep_cousubs) |> 
+  mutate(special=geoid==special)
+
+yint <- data |> filter(special) |> pull(estimate)
+
+barline(data, "Median age, selected area towns", "Median age", seq(0, 100, 5), yint)
 
 ```
 

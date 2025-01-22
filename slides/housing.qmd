@@ -1,2 +1,71 @@
 
 # Housing
+
+```{r}
+# B25071_001 Median Gross Rent as a Percentage of Household Income in the Past 12 Months (Dollars) 
+```
+
+
+```{r}
+#| output: false
+
+# get acs data ----
+acs_data <- readRDS(fs::path(ddir, "acs_data.rds"))
+count(acs_data, variable, concept, label)
+
+```
+
+## Washington County rent % of income is near middle of area counties
+
+```{r}
+#| label: plot_rentpct_county
+
+special <- "36115"
+data <- acs_data |> 
+  filter(variable == "B25071_001", geotype == "county", geoid %in% keep_cos) |> 
+  mutate(special=geoid==special)
+
+yint <- data |> filter(special) |> pull(estimate)
+
+barline(data, "Median gross rent as a percentage of household income, selected area counties", "% of income", seq(0, 100, 5), yint)
+
+```
+
+
+## Cambridge village rent % of income is high relative to nearby places
+
+```{r}
+#| label: plot_rentpct_place
+
+special <- "3611825"
+
+data <- acs_data |> 
+  filter(variable == "B25071_001", geotype == "place", geoid %in% keep_places) |> 
+  mutate(special=geoid==special)
+
+
+yint <- data |> filter(special) |> pull(estimate)
+
+barline(data, "Median gross rent as a percentage of household income, selected area villages and places", "% of income", seq(0, 100, 5), yint)
+
+```
+
+
+## Cambridge and White Creek town rent % of income is high relative to nearby towns
+
+```{r}
+#| label: plot_rentpct_cousub
+
+special <- "3611511836"
+
+data <- acs_data |> 
+  filter(variable == "B25071_001", geotype == "cousub", geoid %in% keep_cousubs) |> 
+  mutate(special=geoid==special)
+
+yint <- data |> filter(special) |> pull(estimate)
+
+barline(data, "Median gross rent as a percentage of household income, selected area towns", "% of income", seq(0, 100, 5), yint)
+
+```
+
+

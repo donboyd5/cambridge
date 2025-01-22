@@ -24,11 +24,17 @@ library(usmap)
 ddir <- here::here("data")
 tdir <- fs::path(ddir, "acs_tables")
 
-nykeep <- paste0("36", c("001", "083", "091", "093", "113", "115"))
-vtkeep <- "50003"
-keepcos <- c(nykeep, vtkeep)
+# examine geograhies to define areas to focus on
+# geographies <- readRDS(fs::path(ddir, "acs_geographies.rds"))
 
-nyplaces <- c("3611825", "3630675", "3664771", "3665750") 
+nycos <- paste0("36", c("001", "083", "091", "093", "113", "115"))
+vtcos <- "50003"
+keep_cos <- c(nycos, vtcos)
+
+keep_places <- c("3602550", "3611825", "3630675", "3664771", "3665750", "3635474")
+
+keep_cousubs <- c("3611511836", "3611530686", "3611564782", "3611581578", "3609165244", "3611502561", "3608335463", "3611538143")
+# geographies |> filter(geoid %in% keep_cousubs)
 
 ```
 

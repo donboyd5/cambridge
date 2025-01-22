@@ -46,7 +46,7 @@ editor_options:
 # 3665750 Schuylerville village
 # 5004750 Bennington CDP
 
-# nyplaces <- c("3611825", "3630675", "3664771", "3665750") 
+# keep_places <- c("3611825", "3630675", "3664771", "3665750") 
 #  
 # nyvt <- get_acs(geography = "place", variables = "B01003_001E", state = c("NY", "VT"), year = 2023)
 # 
@@ -198,6 +198,13 @@ check <- count(acs_data, geoid, geotype, stabbr, geoname, trimname)
 saveRDS(acs_data, fs::path(ddir, "acs_data.rds"))
 
 count(acs_data, variable, concept, label)
+count(acs_data, geotype)
+
+geographies <- acs_data |> 
+  select(geoid, geotype, stabbr, geoname, trimname) |> 
+  distinct()
+saveRDS(geographies, fs::path(ddir, "acs_geographies.rds"))
+
 
 ```
 
