@@ -106,14 +106,18 @@ get_concept <- function(aconcept){
 
 poptabs <- get_concept("population")
 inctabs <- get_concept("income")
+edtabs <- get_concept("education")
+
 
 # selected tables and concepts
 # B01003  Total Population  
-# B25008  Total Population in Occupied Housing Units by Tenure
+# B15003  Educational Attainment for the Population 25 Years and Over
 # B19013  Median Household Income in the Past 12 Months (in 2023 Inflation-Adjusted Dollars)
+# B25008  Total Population in Occupied Housing Units by Tenure
 # B25071  Median Gross Rent as a Percentage of Household Income in the Past 12 Months (Dollars)
 
-keeptabs <- acsvars2 |> 
+
+keeptabs <- acs_variables |> 
   filter(table %in% c("B01002", "B01003", "B25008", "B19013", "B25071")) |> 
   select(table, concept, numvars) |> 
   distinct()
@@ -129,8 +133,8 @@ saved <- fs::dir_ls(tdir) |>
 saved
 
 # define new tables of interest and just get them in the next step
-newtabs <- acsvars2 |> 
-  filter(table %in% c("B01003", "B01002", "B25008", "B19013", "B25071")) |> 
+newtabs <- acs_variables |> 
+  filter(table %in% c("B15003")) |> 
   select(table, concept, numvars) |> 
   distinct()
 
@@ -156,7 +160,7 @@ f <- function(tab){
 }
 
 # provide vector of desired (new) table names to walk
-purrr::walk(keeptabs$table, f)
+purrr::walk(newtabs$table, f)
  
 ```
 

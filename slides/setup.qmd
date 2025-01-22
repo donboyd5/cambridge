@@ -12,6 +12,9 @@ library(tidyverse)
 library(tidycensus)
 library(usmap)
 
+tprint <- 30
+options(tibble.print_max = tprint, tibble.print_min = tprint) 
+
 # library(ggpattern)
 
 ```

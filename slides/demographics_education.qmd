@@ -1,5 +1,6 @@
 
-<!-- # Demographics -->
+## Demographics: Educational attainment
+
 
 ```{r}
 #| output: false
@@ -7,6 +8,79 @@
 # get acs data ----
 acs_data <- readRDS(fs::path(ddir, "acs_data.rds"))
 count(acs_data, variable, concept, label)
+
+acs_data  |> 
+  filter(stabbr=="NY", geotype=="state", table == "B15003")
+
+```
+
+
+```{r}
+#| output: false
+
+# data preparation ----
+
+ed_data <- acs_data |> 
+  filter(table == "B15003") |> 
+  filter(as.numeric(vnum) %in% c(1, 22:25)) |> 
+  filter(geoid %in% c("NY", "VT", keep_cos, keep_places, keep_cousubs)) |> 
+  mutate(edgroup=ifelse(vnum=="001", "total", "college")) |> 
+  summarise(estimate = sum(estimate), .by=c(geoid, stabbr, trimname, geotype, edgroup)) |>
+  pivot_wider(names_from=edgroup, values_from=estimate) |> 
+  mutate(variable = "college_pct",
+         estimate = college / total * 100)
+ed_data
+
+```
+
+
+### Washington County college educational attainment is lower than in other area counties
+
+```{r}
+#| label: plot_collegepct_county
+
+special <- "36115"
+data <- ed_data |> 
+  filter(variable == "college_pct", geotype == "county", geoid %in% keep_cos) |> 
+  mutate(special=geoid==special)
+
+yint <- data |> filter(special) |> pull(estimate)
+
+barline(data, "Number with bachelor's degree or higher as % of age 25+ population, selected area counties", "% of age 25+ population", seq(0, 100, 5), yint)
+
+```
+
+### Cambridge village college educational attainment is higher than in other area places
+
+```{r}
+#| label: plot_collegepct_place
+
+special <- "3611825"
+data <- ed_data |> 
+  filter(variable == "college_pct", geotype == "place", geoid %in% keep_places) |> 
+  mutate(special=geoid==special)
+
+yint <- data |> filter(special) |> pull(estimate)
+
+barline(data, "Number with bachelor's degree or higher as % of age 25+ population, selected area places", "% of age 25+ population", seq(0, 100, 5), yint)
+
+```
+
+
+
+### Cambridge town college educational attainment is higher than in other area towns
+
+```{r}
+#| label: plot_collegepct_cousub
+
+special <- "3611511836"
+data <- ed_data |> 
+  filter(variable == "college_pct", geotype == "cousub", geoid %in% keep_cousubs) |> 
+  mutate(special=geoid==special)
+
+yint <- data |> filter(special) |> pull(estimate)
+
+barline(data, "Number with bachelor's degree or higher as % of age 25+ population, selected area towns", "% of age 25+ population", seq(0, 100, 5), yint)
 
 ```
 

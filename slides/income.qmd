@@ -1,7 +1,12 @@
 
 # Economy
 
-## Income and Poverty {.unlisted}
+- [Income and poverty](#economy-income-and-poverty)
+
+- [Employment](#economy-employment)
+
+
+## Economy: Income and poverty
 
 ```{r}
 #| output: false

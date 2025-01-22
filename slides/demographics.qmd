@@ -1,5 +1,10 @@
 # Demographics
 
+- [Age](#demographics-age)
+
+- [Educational attainment](#demographics-educational-attainment)
+
+
 ```{r}
 #| output: false
 
@@ -9,7 +14,8 @@ count(acs_data, variable, concept, label)
 
 ```
 
-## Age {.unlisted}
+
+## Demographics: Age
 
 ### Washington County is older than most area counties
 

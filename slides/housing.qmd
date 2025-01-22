@@ -1,6 +1,9 @@
 
 # Housing
 
+- [Rental costs as percent of income](#housing-rental-costs-as-percent-of-income)
+
+
 ```{r}
 # B25071_001 Median Gross Rent as a Percentage of Household Income in the Past 12 Months (Dollars) 
 ```
@@ -15,7 +18,7 @@ count(acs_data, variable, concept, label)
 
 ```
 
-## Rental costs as % of income {.unlisted}
+## Housing: Rental costs as percent of income
 
 ### Washington County rent % of income is near middle of area counties
 
