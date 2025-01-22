@@ -22,6 +22,7 @@ library(usmap)
 #| output: false
 
 ddir <- here::here("data")
+tdir <- fs::path(ddir, "acs_tables")
 
 nykeep <- paste0("36", c("001", "083", "091", "093", "113", "115"))
 vtkeep <- "50003"

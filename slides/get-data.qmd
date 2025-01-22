@@ -114,6 +114,22 @@ inctabs <- get_concept("income")
 # B25071  Median Gross Rent as a Percentage of Household Income in the Past 12 Months (Dollars)
 
 keeptabs <- acsvars2 |> 
+  filter(table %in% c("B01002", "B01003", "B25008", "B19013", "B25071")) |> 
+  select(table, concept, numvars) |> 
+  distinct()
+
+# to see what tables we've already saved:
+saved <- fs::dir_ls(tdir) |> 
+  fs::path_file() |> 
+  str_remove(".rds") |>
+  as_tibble() |> 
+  separate_wider_delim(cols = value, names = c("table", "geotype"), delim="_") |> 
+  mutate(exists="exists") |> 
+  pivot_wider(names_from = geotype, values_from = exists, values_fill = "missing")
+saved
+
+# define new tables of interest and just get them in the next step
+newtabs <- acsvars2 |> 
   filter(table %in% c("B01003", "B01002", "B25008", "B19013", "B25071")) |> 
   select(table, concept, numvars) |> 
   distinct()
@@ -121,28 +137,42 @@ keeptabs <- acsvars2 |>
 ```
 
 ```{r}
-#| label: get-save-data
+#| label: get-save-acs-tables
 #| eval: false
 #| output: false
 
-f <- function(tab, geo){
-  print(tab)
-  get_acs(geography = geo, table = tab, state = c("NY", "VT"), year = 2023)
+# add new tables as needed
+
+f <- function(tab){
+    for(geo in c("state", "county", "place", "county subdivision")) {
+      geotype <- ifelse(geo == "county subdivision", "cousub", geo)
+      print(paste0(tab, " for ", geotype))
+      fname <- paste0(tab, "_", geotype, ".rds")
+      data <- get_acs(geography = geo, table = tab, state = c("NY", "VT"), year = 2023)
+      data <- data |> 
+        mutate(geotype = geotype)
+      saveRDS(data, fs::path(ddir, "acs_tables", fname))
+  }
 }
 
-states <- purrr::map(keeptabs$table, \(x) f(x, geo = "state")) |> 
-  list_rbind() |> 
-  mutate(geotype = "state")
+# provide vector of desired (new) table names to walk
+purrr::walk(keeptabs$table, f)
+ 
+```
 
-counties <- purrr::map(keeptabs$table, \(x) f(x, geo = "county")) |> 
-  list_rbind() |> 
-  mutate(geotype = "county")
 
-places <- purrr::map(keeptabs$table, \(x) f(x, geo = "place")) |> 
-  list_rbind() |> 
-  mutate(geotype = "place")
+```{r}
+#| label: combine-acs-tables
+#| eval: false
+#| output: false
 
-acs_data <- bind_rows(states, counties, places) |> 
+
+files <- fs::dir_ls(tdir)
+
+acs_base <- purrr::map(files, readRDS) |> 
+  list_rbind()
+
+acs_data <- acs_base |> 
   rename(geoid=GEOID, geoname=NAME) |> 
   mutate(year5=2023,
          stfips = str_sub(geoid, 1, 2)) |> 
@@ -153,20 +183,22 @@ acs_data <- bind_rows(states, counties, places) |>
               mutate(label = str_remove(label, "Estimate!!")) |> 
               select(variable = name, table, concept, vnum, label),
             by = join_by(variable)) |> 
-  mutate(trimname = str_remove(geoname, ", New York"),
-         trimname = str_remove(trimname, ", Vermont"),
+  mutate(trimname = str_remove(geoname, ",[^,]*$"),
          trimname = case_when(
            geotype == "county" ~ str_remove(trimname, " County"),
            # geotype == "place" ~ str_remove(trimname, " village"),
+           geotype == "cousub" ~ str_remove(trimname, ",[^,]*$"), # remove county info
            .default = trimname),
-         trimname = ifelse(geotype == "county" & stabbr == "VT",
+         trimname = ifelse(geotype != "state" & stabbr == "VT",
                            paste0(trimname, ", VT"),
                            trimname))
 
-check <- count(acs_data, geoid, geotype, geoname, trimname)
+check <- count(acs_data, geoid, geotype, stabbr, geoname, trimname)
 
 saveRDS(acs_data, fs::path(ddir, "acs_data.rds"))
 
 count(acs_data, variable, concept, label)
 
 ```
+
+
