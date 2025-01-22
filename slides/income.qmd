@@ -1,12 +1,14 @@
 
 # Economy
 
-- [Income and poverty](#economy-income-and-poverty)
+- [Income](#economy-income)
+
+- [Poverty](#economy-poverty)
 
 - [Employment](#economy-employment)
 
 
-## Economy: Income and poverty
+## Economy: Income
 
 ```{r}
 #| output: false
@@ -67,4 +69,95 @@ barline(data, "Median household income, selected area towns", "Dollars", seq(0, 
 
 ```
 
+
+## Economy: Poverty
+
+```{r}
+# B17001_001 total
+# B17001_002 below poverty level
+# 
+
+```
+
+
+
+```{r}
+#| output: false
+
+# get acs data ----
+acs_data <- readRDS(fs::path(ddir, "acs_data.rds"))
+count(acs_data, variable, concept, label)
+
+acs_data |> filter(stabbr=="NY", geotype=="state", table == "B17001")
+
+```
+
+
+```{r}
+#| output: false
+
+# data preparation ----
+
+pov_data <- acs_data |> 
+  filter(variable %in% c("B17001_001", "B17001_002")) |>
+  filter(geoid %in% c("36", "50", keep_cos, keep_places, keep_cousubs)) |> 
+  select(stabbr, stname, geoid, geotype, geoname, trimname, variable, estimate) |> 
+  pivot_wider(names_from=variable, values_from=estimate) |> 
+  mutate(variable = "povrate",
+         estimate = B17001_002 / B17001_001 * 100)
+pov_data
+
+```
+
+
+### Washington County poverty rate is lower than in other area counties
+
+```{r}
+#| label: plot_povrate_county
+
+special <- "36115"
+data <- pov_data |> 
+  filter(variable == "povrate", geotype == "county", geoid %in% keep_cos) |> 
+  mutate(special=geoid==special)
+
+yint <- data |> filter(special) |> pull(estimate)
+
+barline(data, "Poverty rate, selected area counties", "% of population", seq(0, 100, 1), yint)
+
+```
+
+### Cambridge village poverty rate is higher than in other area places
+
+```{r}
+#| label: plot_povrate_place
+
+special <- "3611825"
+
+data <- pov_data |> 
+  filter(variable == "povrate", geotype == "place", geoid %in% keep_places) |> 
+  mutate(special=geoid==special)
+
+yint <- data |> filter(special) |> pull(estimate)
+
+barline(data, "Poverty rate, selected area places", "% of population", seq(0, 100, 1), yint)
+
+```
+
+
+### Cambridge town poverty rate is similar to other area towns
+
+```{r}
+#| label: plot_povrate_cousub
+
+special <- "3611511836"
+
+data <- pov_data |> 
+  filter(variable == "povrate", geotype == "cousub", geoid %in% keep_cousubs) |> 
+  mutate(special=geoid==special)
+
+yint <- data |> filter(special) |> pull(estimate)
+
+barline(data, "Poverty rate, selected area towns", "% of population", seq(0, 100, 1), yint)
+
+```
 

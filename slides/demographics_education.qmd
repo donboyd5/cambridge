@@ -23,7 +23,7 @@ acs_data  |>
 ed_data <- acs_data |> 
   filter(table == "B15003") |> 
   filter(as.numeric(vnum) %in% c(1, 22:25)) |> 
-  filter(geoid %in% c("NY", "VT", keep_cos, keep_places, keep_cousubs)) |> 
+  filter(geoid %in% c("36", "50", keep_cos, keep_places, keep_cousubs)) |> 
   mutate(edgroup=ifelse(vnum=="001", "total", "college")) |> 
   summarise(estimate = sum(estimate), .by=c(geoid, stabbr, trimname, geotype, edgroup)) |>
   pivot_wider(names_from=edgroup, values_from=estimate) |> 

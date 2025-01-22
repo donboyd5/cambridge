@@ -107,11 +107,13 @@ get_concept <- function(aconcept){
 poptabs <- get_concept("population")
 inctabs <- get_concept("income")
 edtabs <- get_concept("education")
+povtabs <- get_concept("poverty")
 
 
 # selected tables and concepts
 # B01003  Total Population  
 # B15003  Educational Attainment for the Population 25 Years and Over
+# B17001  Poverty Status in the Past 12 Months by Sex by Age
 # B19013  Median Household Income in the Past 12 Months (in 2023 Inflation-Adjusted Dollars)
 # B25008  Total Population in Occupied Housing Units by Tenure
 # B25071  Median Gross Rent as a Percentage of Household Income in the Past 12 Months (Dollars)
@@ -134,7 +136,7 @@ saved
 
 # define new tables of interest and just get them in the next step
 newtabs <- acs_variables |> 
-  filter(table %in% c("B15003")) |> 
+  filter(table %in% c("B17001")) |> 
   select(table, concept, numvars) |> 
   distinct()
 
@@ -201,7 +203,7 @@ check <- count(acs_data, geoid, geotype, stabbr, geoname, trimname)
 
 saveRDS(acs_data, fs::path(ddir, "acs_data.rds"))
 
-count(acs_data, variable, concept, label)
+check <- count(acs_data, variable, concept, label)
 count(acs_data, geotype)
 
 geographies <- acs_data |> 
