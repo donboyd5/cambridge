@@ -1,4 +1,4 @@
-# Economy
+# Income and Poverty
 
 ```{r}
 #| label: get_econ

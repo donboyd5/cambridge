@@ -1,7 +1,25 @@
 # Introduction
 
-Cambridge was established in year by X.
+<style>
+.reveal .slide aside .aside-footnotes {
+    font-size: 20px;
+}
+</style>
 
+## Cambridge in 1886 {.nostretch}
+
+![](images/lossy-page1-1174px-Cambridge,_N.Y._1886._LOC_75694754.tif.jpg){width="80%"}[^1]
+
+[^1]: By Burleigh, L. R. (Lucien R.); Burleigh Litho; Burleigh, L. R. - https://www.loc.gov/item/75694754/, Public Domain, https://commons.wikimedia.org/w/index.php?curid=69241610
+
+
+<!-- ## Location -->
+
+<!-- ![](images/clipboard-3166848616.png) -->
+
+## History
+
+Cambridge was established in year by X.
 
 ```{r includes}
 #| label: includes
