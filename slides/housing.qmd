@@ -15,7 +15,9 @@ count(acs_data, variable, concept, label)
 
 ```
 
-## Washington County rent % of income is near middle of area counties
+## Rental costs as % of income {.unlisted}
+
+### Washington County rent % of income is near middle of area counties
 
 ```{r}
 #| label: plot_rentpct_county
@@ -32,7 +34,7 @@ barline(data, "Median gross rent as a percentage of household income, selected a
 ```
 
 
-## Cambridge village rent % of income is high relative to nearby places
+### Cambridge village rent % of income is high relative to nearby places
 
 ```{r}
 #| label: plot_rentpct_place
@@ -51,7 +53,7 @@ barline(data, "Median gross rent as a percentage of household income, selected a
 ```
 
 
-## Cambridge and White Creek town rent % of income is high relative to nearby towns
+### Cambridge and White Creek town rent % of income is high relative to nearby towns
 
 ```{r}
 #| label: plot_rentpct_cousub

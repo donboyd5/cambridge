@@ -1,6 +1,6 @@
 ---
 title: "Cambridge, NY"
-subtitle: "Demographics and economy"
+subtitle: "Demographics, economy, and housing"
 author: "Don Boyd"
 date: today
 date-format: long

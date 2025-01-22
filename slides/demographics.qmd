@@ -9,7 +9,9 @@ count(acs_data, variable, concept, label)
 
 ```
 
-## Washington County is older than most area counties
+## Age {.unlisted}
+
+### Washington County is older than most area counties
 
 
 ```{r}
@@ -26,7 +28,7 @@ barline(data, "Median age, selected area counties", "Median age", seq(0, 100, 5)
 
 ```
 
-## Cambridge village is older than nearby places
+### Cambridge village is older than nearby places
 
 ```{r}
 #| label: plot_age_place
@@ -49,7 +51,7 @@ Caveat: Perhaps this reflects a concentration of senior housing?
 :::
 
 
-## Jackson and White Creek towns are older than nearby towns
+### Jackson and White Creek towns are older than nearby towns
 
 ```{r}
 #| label: plot_age_cousub

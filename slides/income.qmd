@@ -1,4 +1,7 @@
-# Income and Poverty
+
+# Economy
+
+## Income and Poverty {.unlisted}
 
 ```{r}
 #| output: false
@@ -9,7 +12,7 @@ count(acs_data, variable, concept, label)
 
 ```
 
-## Washington County has lower household income than most area counties
+### Washington County has lower household income than most area counties
 
 ```{r}
 #| label: plot_income_county
@@ -25,7 +28,7 @@ barline(data, "Median household income, selected area counties", "Dollars", seq(
 
 ```
 
-## Cambridge village income is about middle for nearby places
+### Cambridge village household income is about middle for nearby places
 
 ```{r}
 #| label: plot_income_place
@@ -42,7 +45,7 @@ barline(data, "Median household income, selected area villages and places", "Dol
 ```
 
 
-## Cambridge town income is higher than nearby towns
+### Cambridge town household income is higher than nearby towns
 
 ```{r}
 #| label: plot_income_cousub

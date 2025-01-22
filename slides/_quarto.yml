@@ -8,6 +8,7 @@ format:
   revealjs:
     theme: simple
     slideNumber: true
+    slide-level: 3
     toc: true
     toc-title: "Contents"
     toc-depth: 1
