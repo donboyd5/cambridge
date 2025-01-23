@@ -23,7 +23,7 @@ acs_data  |>
 ed_data <- acs_data |> 
   filter(table == "B15003") |> 
   filter(as.numeric(vnum) %in% c(1, 22:25)) |> 
-  filter(geoid %in% c("36", "50", keep_cos, keep_places, keep_cousubs)) |> 
+  # filter(geoid %in% c("36", "50", keep_cos, keep_places, keep_cousubs)) |> 
   mutate(edgroup=ifelse(vnum=="001", "total", "college")) |> 
   summarise(estimate = sum(estimate), .by=c(geoid, stabbr, trimname, geotype, edgroup)) |>
   pivot_wider(names_from=edgroup, values_from=estimate) |> 
@@ -34,19 +34,28 @@ ed_data
 ```
 
 
+```{r}
+#| output: false
+
+# set graph constants ----
+barvar <- "college_pct"
+titlebase <- "Number with bachelor's degree or higher as % of age 25+ population"
+ylab <- "% of age 25+ population"
+ybreaks <- seq(0, 100, 5)
+data <- ed_data
+
+```
+
+
 ### Washington County college educational attainment is lower than in other area counties
 
 ```{r}
 #| label: plot_collegepct_county
 
-special <- "36115"
-data <- ed_data |> 
-  filter(variable == "college_pct", geotype == "county", geoid %in% keep_cos) |> 
-  mutate(special=geoid==special)
-
-yint <- data |> filter(special) |> pull(estimate)
-
-barline(data, "Number with bachelor's degree or higher as % of age 25+ population, selected area counties", "% of age 25+ population", seq(0, 100, 5), yint)
+barline2(gtype = "county", barvar,
+         data,
+         constants = constants,
+         titlebase=titlebase, ylab=ylab, ybreaks=ybreaks)
 
 ```
 
@@ -55,17 +64,11 @@ barline(data, "Number with bachelor's degree or higher as % of age 25+ populatio
 ```{r}
 #| label: plot_collegepct_place
 
-special <- "3611825"
-data <- ed_data |> 
-  filter(variable == "college_pct", geotype == "place", geoid %in% keep_places) |> 
-  mutate(special=geoid==special)
-
-yint <- data |> filter(special) |> pull(estimate)
-
-barline(data, "Number with bachelor's degree or higher as % of age 25+ population, selected area places", "% of age 25+ population", seq(0, 100, 5), yint)
+barline2(gtype = "place", barvar, data,
+         constants,
+         titlebase=titlebase, ylab=ylab, ybreaks=ybreaks)
 
 ```
-
 
 
 ### Cambridge town college educational attainment is higher than in other area towns
@@ -73,14 +76,9 @@ barline(data, "Number with bachelor's degree or higher as % of age 25+ populatio
 ```{r}
 #| label: plot_collegepct_cousub
 
-special <- "3611511836"
-data <- ed_data |> 
-  filter(variable == "college_pct", geotype == "cousub", geoid %in% keep_cousubs) |> 
-  mutate(special=geoid==special)
-
-yint <- data |> filter(special) |> pull(estimate)
-
-barline(data, "Number with bachelor's degree or higher as % of age 25+ population, selected area towns", "% of age 25+ population", seq(0, 100, 5), yint)
+barline2(gtype = "cousub", barvar, data,
+         constants = constants,
+         titlebase=titlebase, ylab=ylab, ybreaks=ybreaks)
 
 ```
 

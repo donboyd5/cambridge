@@ -7,9 +7,6 @@
 
 - [Employment](#economy-employment)
 
-
-## Economy: Income
-
 ```{r}
 #| output: false
 
@@ -19,19 +16,29 @@ count(acs_data, variable, concept, label)
 
 ```
 
+## Economy: Income
+
+```{r}
+#| output: false
+
+# set graph constants ----
+barvar <- "B19013_001"
+titlebase <- "Median household income"
+ylab <- "Dollars"
+ybreaks <- seq(0, 100e3, 5e3)
+data <- acs_data
+
+```
+
+
 ### Washington County has lower household income than most area counties
 
 ```{r}
 #| label: plot_income_county
 
-special <- "36115"
-data <- acs_data |> 
-  filter(variable == "B19013_001", geotype == "county", geoid %in% keep_cos) |> 
-  mutate(special=geoid==special)
-
-yint <- data |> filter(special) |> pull(estimate)
-
-barline(data, "Median household income, selected area counties", "Dollars", seq(0, 100e3, 5e3), yint)
+barline2(gtype = "county", barvar, data,
+         constants = constants,
+         titlebase=titlebase, ylab=ylab, ybreaks=ybreaks)
 
 ```
 
@@ -40,14 +47,9 @@ barline(data, "Median household income, selected area counties", "Dollars", seq(
 ```{r}
 #| label: plot_income_place
 
-special <- "3611825"
-data <- acs_data |> 
-  filter(variable == "B19013_001", geotype == "place", geoid %in% keep_places) |> 
-  mutate(special=geoid==special)
-
-yint <- data |> filter(special) |> pull(estimate)
-
-barline(data, "Median household income, selected area villages and places", "Dollars", seq(0, 100e3, 5e3), yint)
+barline2(gtype = "place", barvar, data,
+         constants = constants,
+         titlebase=titlebase, ylab=ylab, ybreaks=ybreaks)
 
 ```
 
@@ -57,15 +59,9 @@ barline(data, "Median household income, selected area villages and places", "Dol
 ```{r}
 #| label: plot_income_cousub
 
-special <- "3611511836"
-
-data <- acs_data |> 
-  filter(variable == "B19013_001", geotype == "cousub", geoid %in% keep_cousubs) |> 
-  mutate(special=geoid==special)
-
-yint <- data |> filter(special) |> pull(estimate)
-
-barline(data, "Median household income, selected area towns", "Dollars", seq(0, 100e3, 5e3), yint)
+barline2(gtype = "cousub", barvar, data,
+         constants = constants,
+         titlebase=titlebase, ylab=ylab, ybreaks=ybreaks)
 
 ```
 
@@ -73,34 +69,15 @@ barline(data, "Median household income, selected area towns", "Dollars", seq(0, 
 ## Economy: Poverty
 
 ```{r}
-# B17001_001 total
-# B17001_002 below poverty level
-# 
-
-```
-
-
-
-```{r}
-#| output: false
-
-# get acs data ----
-acs_data <- readRDS(fs::path(ddir, "acs_data.rds"))
-count(acs_data, variable, concept, label)
-
-acs_data |> filter(stabbr=="NY", geotype=="state", table == "B17001")
-
-```
-
-
-```{r}
 #| output: false
 
 # data preparation ----
 
+# B17001_001 total
+# B17001_002 below poverty level
+
 pov_data <- acs_data |> 
   filter(variable %in% c("B17001_001", "B17001_002")) |>
-  filter(geoid %in% c("36", "50", keep_cos, keep_places, keep_cousubs)) |> 
   select(stabbr, stname, geoid, geotype, geoname, trimname, variable, estimate) |> 
   pivot_wider(names_from=variable, values_from=estimate) |> 
   mutate(variable = "povrate",
@@ -110,19 +87,28 @@ pov_data
 ```
 
 
+```{r}
+#| output: false
+
+# set graph constants ----
+barvar <- "povrate"
+titlebase <- "Poverty rate"
+ylab <- "% of population"
+ybreaks <- seq(0, 100, 1)
+data <- pov_data
+
+```
+
+
 ### Washington County poverty rate is lower than in other area counties
 
 ```{r}
 #| label: plot_povrate_county
 
-special <- "36115"
-data <- pov_data |> 
-  filter(variable == "povrate", geotype == "county", geoid %in% keep_cos) |> 
-  mutate(special=geoid==special)
-
-yint <- data |> filter(special) |> pull(estimate)
-
-barline(data, "Poverty rate, selected area counties", "% of population", seq(0, 100, 1), yint)
+barline2(gtype = "county", barvar,
+         data,
+         constants = constants,
+         titlebase=titlebase, ylab=ylab, ybreaks=ybreaks)
 
 ```
 
@@ -131,15 +117,10 @@ barline(data, "Poverty rate, selected area counties", "% of population", seq(0, 
 ```{r}
 #| label: plot_povrate_place
 
-special <- "3611825"
-
-data <- pov_data |> 
-  filter(variable == "povrate", geotype == "place", geoid %in% keep_places) |> 
-  mutate(special=geoid==special)
-
-yint <- data |> filter(special) |> pull(estimate)
-
-barline(data, "Poverty rate, selected area places", "% of population", seq(0, 100, 1), yint)
+barline2(gtype = "place", barvar,
+         data,
+         constants = constants,
+         titlebase=titlebase, ylab=ylab, ybreaks=ybreaks)
 
 ```
 
@@ -149,15 +130,10 @@ barline(data, "Poverty rate, selected area places", "% of population", seq(0, 10
 ```{r}
 #| label: plot_povrate_cousub
 
-special <- "3611511836"
-
-data <- pov_data |> 
-  filter(variable == "povrate", geotype == "cousub", geoid %in% keep_cousubs) |> 
-  mutate(special=geoid==special)
-
-yint <- data |> filter(special) |> pull(estimate)
-
-barline(data, "Poverty rate, selected area towns", "% of population", seq(0, 100, 1), yint)
+barline2(gtype = "cousub", barvar,
+         data,
+         constants = constants,
+         titlebase=titlebase, ylab=ylab, ybreaks=ybreaks)
 
 ```
 

@@ -17,20 +17,28 @@ count(acs_data, variable, concept, label)
 
 ## Demographics: Age
 
+```{r}
+#| output: false
+
+# set graph constants ----
+barvar <- "B01002_001"
+titlebase <- "Median age"
+ylab <- "Median age"
+ybreaks <- seq(0, 100, 5)
+data <- acs_data
+
+```
+
+
 ### Washington County is older than most area counties
 
 
 ```{r}
 #| label: plot_age_county
 
-special <- "36115"
-data <- acs_data |> 
-  filter(variable == "B01002_001", geotype == "county", geoid %in% keep_cos) |> 
-  mutate(special=geoid==special)
-
-yint <- data |> filter(special) |> pull(estimate)
-
-barline(data, "Median age, selected area counties", "Median age", seq(0, 100, 5), yint)
+barline2(gtype = "county", barvar, data,
+         constants = constants,
+         titlebase=titlebase, ylab=ylab, ybreaks=ybreaks)
 
 ```
 
@@ -39,16 +47,9 @@ barline(data, "Median age, selected area counties", "Median age", seq(0, 100, 5)
 ```{r}
 #| label: plot_age_place
 
-special <- "3611825"
-
-data <- acs_data |> 
-  filter(variable == "B01002_001", geotype == "place", geoid %in% keep_places) |> 
-  mutate(special=geoid==special)
-
-
-yint <- data |> filter(special) |> pull(estimate)
-
-barline(data, "Median age, selected area villages and places", "Median age", seq(0, 100, 5), yint)
+barline2(gtype = "place", barvar, data,
+         constants = constants,
+         titlebase=titlebase, ylab=ylab, ybreaks=ybreaks)
 
 ```
 
@@ -62,15 +63,9 @@ Caveat: Perhaps this reflects a concentration of senior housing?
 ```{r}
 #| label: plot_age_cousub
 
-special <- "3611511836"
-
-data <- acs_data |> 
-  filter(variable == "B01002_001", geotype == "cousub", geoid %in% keep_cousubs) |> 
-  mutate(special=geoid==special)
-
-yint <- data |> filter(special) |> pull(estimate)
-
-barline(data, "Median age, selected area towns", "Median age", seq(0, 100, 5), yint)
+barline2(gtype = "cousub", barvar, data,
+         constants = constants,
+         titlebase=titlebase, ylab=ylab, ybreaks=ybreaks)
 
 ```
 
