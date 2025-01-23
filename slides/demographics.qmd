@@ -36,7 +36,7 @@ data <- acs_data
 ```{r}
 #| label: plot_age_county
 
-barline2(gtype = "county", barvar, data,
+barline(gtype = "county", barvar, data,
          constants = constants,
          titlebase=titlebase, ylab=ylab, ybreaks=ybreaks)
 
@@ -47,7 +47,7 @@ barline2(gtype = "county", barvar, data,
 ```{r}
 #| label: plot_age_place
 
-barline2(gtype = "place", barvar, data,
+barline(gtype = "place", barvar, data,
          constants = constants,
          titlebase=titlebase, ylab=ylab, ybreaks=ybreaks)
 
@@ -63,7 +63,7 @@ Caveat: Perhaps this reflects a concentration of senior housing?
 ```{r}
 #| label: plot_age_cousub
 
-barline2(gtype = "cousub", barvar, data,
+barline(gtype = "cousub", barvar, data,
          constants = constants,
          titlebase=titlebase, ylab=ylab, ybreaks=ybreaks)
 

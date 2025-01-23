@@ -68,22 +68,7 @@ constants$comp_cousub <- "3611511836"
 #| label: functions
 #| output: false
 
-barline <- function(data, title, ylab, ybreaks, yint){
-  data |> 
-    ggplot(aes(x = reorder(trimname, estimate), y = estimate, fill = special)) +
-    geom_col(width = 0.2) +
-    scale_fill_manual(values = c("lightblue", "blue")) +
-    geom_hline(yintercept = yint, color = "red", linetype = "solid", linewidth = .75) +
-    scale_y_continuous(name=ylab, labels = scales::label_comma(),
-                       breaks = ybreaks) +
-    labs(title = title,
-       subtitle = "2019-2023 American Community Survey",
-       x = NULL) +
-    theme_minimal() +
-    theme(legend.position = "None")
-}
-
-barline2 <- function(gtype, barvar, data,
+barline <- function(gtype, barvar, data,
                      constants,
                      ybreaks = ybreaks, 
                      titlebase = NULL, 
@@ -125,7 +110,7 @@ barline2 <- function(gtype, barvar, data,
        x = NULL) +
     theme_minimal() +
     theme(legend.position = "None") +
-    labs(caption = "Source: U.S. Census Bureau, 2019-2023 American Community Survey") +
+    labs(caption = "\nSource: U.S. Census Bureau, 2019-2023 American Community Survey") +
     caption_left
 }
 

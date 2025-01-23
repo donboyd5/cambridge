@@ -36,7 +36,7 @@ data <- acs_data
 ```{r}
 #| label: plot_income_county
 
-barline2(gtype = "county", barvar, data,
+barline(gtype = "county", barvar, data,
          constants = constants,
          titlebase=titlebase, ylab=ylab, ybreaks=ybreaks)
 
@@ -47,7 +47,7 @@ barline2(gtype = "county", barvar, data,
 ```{r}
 #| label: plot_income_place
 
-barline2(gtype = "place", barvar, data,
+barline(gtype = "place", barvar, data,
          constants = constants,
          titlebase=titlebase, ylab=ylab, ybreaks=ybreaks)
 
@@ -59,7 +59,7 @@ barline2(gtype = "place", barvar, data,
 ```{r}
 #| label: plot_income_cousub
 
-barline2(gtype = "cousub", barvar, data,
+barline(gtype = "cousub", barvar, data,
          constants = constants,
          titlebase=titlebase, ylab=ylab, ybreaks=ybreaks)
 
@@ -105,7 +105,7 @@ data <- pov_data
 ```{r}
 #| label: plot_povrate_county
 
-barline2(gtype = "county", barvar,
+barline(gtype = "county", barvar,
          data,
          constants = constants,
          titlebase=titlebase, ylab=ylab, ybreaks=ybreaks)
@@ -117,7 +117,7 @@ barline2(gtype = "county", barvar,
 ```{r}
 #| label: plot_povrate_place
 
-barline2(gtype = "place", barvar,
+barline(gtype = "place", barvar,
          data,
          constants = constants,
          titlebase=titlebase, ylab=ylab, ybreaks=ybreaks)
@@ -130,7 +130,7 @@ barline2(gtype = "place", barvar,
 ```{r}
 #| label: plot_povrate_cousub
 
-barline2(gtype = "cousub", barvar,
+barline(gtype = "cousub", barvar,
          data,
          constants = constants,
          titlebase=titlebase, ylab=ylab, ybreaks=ybreaks)
