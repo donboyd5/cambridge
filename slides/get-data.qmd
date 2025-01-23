@@ -108,10 +108,15 @@ poptabs <- get_concept("population")
 inctabs <- get_concept("income")
 edtabs <- get_concept("education")
 povtabs <- get_concept("poverty")
+movetabs <- get_concept("moved")
+mobiletabs <- get_concept("mobility")
 
+# B07004A Geographical Mobility in the Past Year for Current Residence in the United States
 
 # selected tables and concepts
+# B01002  Median Age by Sex
 # B01003  Total Population  
+# B07003  Geographical Mobility in the Past Year by Sex for Current Residence in the United States
 # B15003  Educational Attainment for the Population 25 Years and Over
 # B17001  Poverty Status in the Past 12 Months by Sex by Age
 # B19013  Median Household Income in the Past 12 Months (in 2023 Inflation-Adjusted Dollars)
@@ -136,7 +141,7 @@ saved
 
 # define new tables of interest and just get them in the next step
 newtabs <- acs_variables |> 
-  filter(table %in% c("B17001")) |> 
+  filter(table %in% c("B07003")) |> 
   select(table, concept, numvars) |> 
   distinct()
 
@@ -200,6 +205,7 @@ acs_data <- acs_base |>
                            trimname))
 
 check <- count(acs_data, geoid, geotype, stabbr, geoname, trimname)
+count(acs_data, table, concept)
 
 saveRDS(acs_data, fs::path(ddir, "acs_data.rds"))
 
