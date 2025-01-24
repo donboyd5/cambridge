@@ -13,6 +13,7 @@ format:
     toc-title: "Contents"
     toc-depth: 1
     toc-expand: 2
+    footer: "[cambridgeny.netlify.app](https://cambridgeny.netlify.app)"
     
 editor:
   console: true
