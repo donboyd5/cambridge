@@ -5,6 +5,8 @@
 
 - [Poverty](#economy-poverty)
 
+- [Migration](#economy-migration)
+
 - [Employment](#economy-employment)
 
 ```{r}

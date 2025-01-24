@@ -18,6 +18,8 @@ date-format: long
 
 {{< include employment.qmd >}}
 
+{{< include migration.qmd >}}
+
 {{< include housing.qmd >}}
 
 {{< include outlook.qmd >}}
