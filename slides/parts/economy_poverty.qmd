@@ -1,74 +1,18 @@
 
-# Economy
+## Economy: Poverty
 
-- [Income](#economy-income)
-
-- [Poverty](#economy-poverty)
-
-- [Migration](#economy-migration)
-
-- [Employment](#economy-employment)
 
 ```{r}
 #| output: false
+
+source(here::here("slides", "setup.R"))
 
 # get acs data ----
 acs_data <- readRDS(fs::path(ddir, "acs_data.rds"))
-count(acs_data, variable, concept, label)
+# count(acs_data, variable, concept, label)
 
 ```
 
-## Economy: Income
-
-```{r}
-#| output: false
-
-# set graph constants ----
-barvar <- "B19013_001"
-titlebase <- "Median household income"
-ylab <- "Dollars"
-ybreaks <- seq(0, 100e3, 5e3)
-data <- acs_data
-
-```
-
-
-### Washington County has lower household income than most area counties
-
-```{r}
-#| label: plot_income_county
-
-barline(gtype = "county", barvar, data,
-         constants = constants,
-         titlebase=titlebase, ylab=ylab, ybreaks=ybreaks)
-
-```
-
-### Cambridge village household income is about middle for nearby places
-
-```{r}
-#| label: plot_income_place
-
-barline(gtype = "place", barvar, data,
-         constants = constants,
-         titlebase=titlebase, ylab=ylab, ybreaks=ybreaks)
-
-```
-
-
-### Cambridge town household income is higher than nearby towns
-
-```{r}
-#| label: plot_income_cousub
-
-barline(gtype = "cousub", barvar, data,
-         constants = constants,
-         titlebase=titlebase, ylab=ylab, ybreaks=ybreaks)
-
-```
-
-
-## Economy: Poverty
 
 ```{r}
 #| output: false
@@ -84,7 +28,7 @@ pov_data <- acs_data |>
   pivot_wider(names_from=variable, values_from=estimate) |> 
   mutate(variable = "povrate",
          estimate = B17001_002 / B17001_001 * 100)
-pov_data
+# pov_data
 
 ```
 

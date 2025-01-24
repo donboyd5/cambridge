@@ -6,26 +6,24 @@ date: today
 date-format: long
 ---
 
-
-{{< include setup.qmd >}}
-
-{{< include get-data.qmd >}}
-
 {{< include demographics.qmd >}}
 
-{{< include demographics_education.qmd >}}
+{{< include economy.qmd >}}
 
-{{< include income.qmd >}}
+<!-- {{< include setup.qmd >}} -->
 
-{{< include employment.qmd >}}
+<!-- {{< include income.qmd >}} -->
 
-{{< include migration.qmd >}}
+<!-- {{< include employment.qmd >}} -->
 
-{{< include housing.qmd >}}
+<!-- {{< include migration.qmd >}} -->
 
-{{< include changes.qmd >}}
+<!-- {{< include housing.qmd >}} -->
 
-{{< include outlook.qmd >}}
+<!-- {{< include changes.qmd >}} -->
 
-{{< include appendix.qmd >}}
+<!-- {{< include outlook.qmd >}} -->
 
+<!-- {{< include appendix.qmd >}} -->
+
+<!-- {{< include get-data.qmd >}} -->

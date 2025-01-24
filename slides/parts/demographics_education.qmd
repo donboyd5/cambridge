@@ -5,12 +5,15 @@
 ```{r}
 #| output: false
 
+source(here::here("slides", "setup.R"))
+
 # get acs data ----
 acs_data <- readRDS(fs::path(ddir, "acs_data.rds"))
-count(acs_data, variable, concept, label)
 
-acs_data  |> 
-  filter(stabbr=="NY", geotype=="state", table == "B15003")
+# count(acs_data, variable, concept, label)
+
+# acs_data  |> 
+#   filter(stabbr=="NY", geotype=="state", table == "B15003")
 
 ```
 

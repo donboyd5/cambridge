@@ -1,0 +1,15 @@
+# Economy
+
+- [Income](#economy-income)
+
+- [Poverty](#economy-poverty)
+
+<!-- - [Migration](#economy-migration) -->
+
+<!-- - [Employment](#economy-employment) -->
+
+
+{{< include parts/economy_income.qmd >}}
+
+{{< include parts/economy_poverty.qmd >}}
+
