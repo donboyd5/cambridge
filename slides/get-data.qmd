@@ -20,6 +20,8 @@ editor_options:
 #| eval: false
 #| output: false
 
+# ACS data ----
+
 # B01003_001E population
 # B01002_001E median age
 # B19013_001E median income
@@ -220,4 +222,18 @@ saveRDS(geographies, fs::path(ddir, "acs_geographies.rds"))
 
 ```
 
+
+```{r}
+#| label: county-population-estimates
+#| eval: false
+#| output: false
+
+# county population estimates from NYS DOL based on Census PEP ----
+# https://labor.ny.gov/stats/lsproj.shtm
+# blob:https://data.ny.gov/61a4cddf-5446-400d-b12b-4bf7fef74721
+
+
+
+
+```
 

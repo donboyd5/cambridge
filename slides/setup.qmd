@@ -60,6 +60,7 @@ constants$comp_county <- "36115"
 constants$comp_place <- "3611825"
 constants$comp_cousub <- "3611511836"
 
+rm(keep_cos, keep_places, keep_cousubs, nycos, vtcos)
 
 ```
 
@@ -88,7 +89,7 @@ barline <- function(gtype, barvar, data,
     compgeo <- constants$comp_cousub
     title <- paste0(titlebase, ", selected area towns")
   } else {
-    stop("geotype must be county, place, or cousub")
+    stop("gtype must be county, place, or cousub")
   }
   
   data <- data |> 
@@ -96,6 +97,11 @@ barline <- function(gtype, barvar, data,
     mutate(compgeo=geoid==compgeo)
   
   yint <- data |> filter(compgeo) |> pull(estimate)
+  
+  capt1 <- "Source: U.S. Census Bureau, 2019-2023 American Community Survey"
+  capt2 <- NULL
+  if(gtype %in% c("place", "cousub")) capt2 <- "Caution: Village and town data may be subject to considerable sampling error."
+  capt <- paste0("\n", capt1, "\n", capt2)
   
   data |> 
     ggplot(aes(x = reorder(trimname, estimate), y = estimate, fill = compgeo)) +
@@ -110,7 +116,7 @@ barline <- function(gtype, barvar, data,
        x = NULL) +
     theme_minimal() +
     theme(legend.position = "None") +
-    labs(caption = "\nSource: U.S. Census Bureau, 2019-2023 American Community Survey") +
+    labs(caption = capt) +
     caption_left
 }
 

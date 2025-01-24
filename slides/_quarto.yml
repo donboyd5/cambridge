@@ -25,3 +25,14 @@ editor:
     
 # quarto publish netlify --no-browser --no-prompt
 # quarto publish netlify --no-browser --no-render --no-prompt
+
+# county population 1970-2023
+# https://data.ny.gov/Government-Finance/Annual-Population-Estimates-for-New-York-State-and/krt9-ym2k/about_data
+# blob:https://data.ny.gov/61a4cddf-5446-400d-b12b-4bf7fef74721
+# https://data.ny.gov/api/views/krt9-ym2k/files/nAM5S50Lx-5v4cfDoxZNBctkNhRCNly2WRUgaYWPsAE?download=true&filename=DOL%20AnnualPopulationEstimates_Overview.pdf
+# https://data.ny.gov/api/views/krt9-ym2k/files/Iu3_lXQ320MkzrA0J-EqxQ63ZL0_3Cz3TtQd2HZHuC4?download=true&filename=DOL_AnnualPopulationEstimates_DataDictionary.pdf
+# 
+# blob:https://pad.human.cornell.edu/c8a96f15-3bf5-4363-bef6-a6f6b19424f6
+# https://data.ny.gov/browse?q=population&sortBy=relevance
+# https://data.ny.gov/Economic-Development/Census-2010-and-2020-Population-Region-Counties-Ci/sxhg-qquj
+# https://health.data.ny.gov/Health/Vital-Statistics-Deaths-by-Resident-County-Region-/xit9-mprv
