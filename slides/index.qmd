@@ -22,6 +22,8 @@ date-format: long
 
 {{< include housing.qmd >}}
 
+{{< include changes.qmd >}}
+
 {{< include outlook.qmd >}}
 
 {{< include appendix.qmd >}}
