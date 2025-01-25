@@ -4,12 +4,18 @@
 
 - [Poverty](#economy-poverty)
 
-<!-- - [Migration](#economy-migration) -->
-
-<!-- - [Employment](#economy-employment) -->
-
+- [Migration](#economy-migration)
 
 {{< include parts/economy_income.qmd >}}
 
 {{< include parts/economy_poverty.qmd >}}
+
+{{< include parts/economy_migration.qmd >}}
+
+<!-- - [Employment](#economy-employment) -->
+
+
+
+
+
 
