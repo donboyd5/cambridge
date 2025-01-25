@@ -10,15 +10,13 @@ date-format: long
 
 {{< include economy.qmd >}}
 
-<!-- {{< include setup.qmd >}} -->
+{{< include housing.qmd >}}
 
 <!-- {{< include income.qmd >}} -->
 
 <!-- {{< include employment.qmd >}} -->
 
 <!-- {{< include migration.qmd >}} -->
-
-<!-- {{< include housing.qmd >}} -->
 
 <!-- {{< include changes.qmd >}} -->
 

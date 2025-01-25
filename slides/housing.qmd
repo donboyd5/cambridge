@@ -12,9 +12,12 @@
 ```{r}
 #| output: false
 
+source(here::here("slides", "setup.R"))
+
 # get acs data ----
 acs_data <- readRDS(fs::path(ddir, "acs_data.rds"))
-count(acs_data, variable, concept, label)
+
+# count(acs_data, variable, concept, label)
 
 ```
 
