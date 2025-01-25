@@ -3,6 +3,9 @@
 .RData
 .Ruserdata
 
+.quarto/
+/.quarto/
+
 _freeze/
 cambridge_files/
 index_files/
@@ -10,11 +13,17 @@ web/_web/
 web/_web/site_libs/
 web/_web/site_libs/bootstrap/
 
+_slides/
+site_libs/
+
+
+
 *.csv
 *.dat
 *.html
 *.js
 *.mhtml
+*.pdf
 *.rds
 *.txt
 *.zip
