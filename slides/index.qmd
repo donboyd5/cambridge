@@ -12,12 +12,12 @@ date-format: long
 
 {{< include housing.qmd >}}
 
+{{< include outlook.qmd >}}
+
+{{< include appendix.qmd >}}
+
 <!-- {{< include employment.qmd >}} -->
 
 <!-- {{< include changes.qmd >}} -->
-
-<!-- {{< include outlook.qmd >}} -->
-
-<!-- {{< include appendix.qmd >}} -->
 
 <!-- {{< include get-data.qmd >}} -->

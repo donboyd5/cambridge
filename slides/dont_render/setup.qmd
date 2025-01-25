@@ -10,6 +10,7 @@ editor_options:
 
 library(tidyverse)
 library(tidycensus)
+library(vroom)
 library(usmap)
 
 tprint <- 75

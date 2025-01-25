@@ -8,13 +8,14 @@ source(here::here("slides", "setup.R"))
 # get data ----
 # acs_data <- readRDS(fs::path(ddir, "acs_data.rds"))
 pop <- readRDS(fs::path(ddir, "population", "county_population.rds"))
+placepop <- readRDS(fs::path(popdir, "popests_raw.rds"))
 
 ```
 
 
 ## Demographics: Population trends
 
-### A half-century of population data
+### County fortunes have differend widely over last half-century
 
 ```{r}
 #| label: population-levels
@@ -74,4 +75,101 @@ pop |>
   caption_left
 
 ```
+
+
+### Population declines in most area villages have been sharp
+
+```{r}
+#| output: false
+#| eval: true
+
+# add Salem CDP 
+baseyear <- 2010
+
+suppressWarnings( # Salem has fewer observations than others, generating warning
+  pdata <- placepop |> 
+  rename(trimname=name, pop=value) |> 
+  filter(state=="36", sumlev=="157") |>  
+  mutate(geoid = paste0(state, place)) |> 
+  filter(geoid %in% constants$keep_places) |>
+  mutate(trimname=ifelse(place=="64771", paste0(trimname, "/CDP"), trimname)) |> 
+  add_row(geoid="3664771", state="36", stname="New York", county="115",
+          place="64771", trimname="Salem village/CDP", year=2020, src="2020 census", pop=811) |>
+  mutate(ipop=pop / pop[year==baseyear],
+         cpcpop = ipop * 100 - 100,
+         .by=geoid) |>
+  arrange(geoid, year)
+)
+  
+
+```
+
+```{r}
+#| label: village-population
+#| output: true
+
+capt1 <-  "Source: U.S. Census Bureau. Annual population estimates may not be reliable for small areas such as villages."
+capt2 <- "Note: Annual estimates for Salem not easily available after 2010 due to dissolution; 2020 value is decennial census."
+capt <- paste0("\n", capt1, "\n", capt2)
+
+pdata |> 
+  ggplot(aes(x=year, y=pop)) +
+  geom_line(data = pdata  |>  
+              filter(!(geoid=="3664771" & year > 2010)),
+            colour="blue",
+            linewidth = 1,
+            linetype="solid") +
+  geom_line(data = pdata |> 
+              filter(geoid=="3664771", year >= 2010), 
+            colour="blue",
+            linewidth = 1,
+            linetype = "dashed") + # dashed line for Salem
+  scale_x_continuous(name = NULL, breaks = seq(1900, 2025, 5)) +
+  scale_y_continuous(name = "Number of people") +
+  ggtitle(label="Population in area villages") +
+  labs(caption = capt) +
+  theme_minimal() +
+  legend_notitle +
+  caption_left +
+  facet_wrap(~trimname, scales="free_y", ncol=3)
+
+```
+
+
+### Cambridge village's population loss has not been as severe as most other area villages
+
+```{r}
+#| label: village-population-changes
+
+capt1 <-  "Source: U.S. Census Bureau. Annual population estimates may not be reliable for small areas such as villages."
+capt2 <- "Note: Annual estimates for Salem not easily available after 2010 due to dissolution; 2020 value is decennial census."
+capt <- paste0("\n", capt1, "\n", capt2)
+
+pdata2 <- pdata |> 
+  filter(year >= baseyear)
+
+pdata2 |>
+  ggplot(aes(x=year, y=cpcpop, colour=trimname)) +
+  geom_line(data = pdata2  |>  
+              filter(!(geoid=="3664771")),
+            linewidth = 1,
+            linetype="solid") +
+  geom_line(data = pdata2 |> 
+              filter(geoid=="3664771"), 
+            linewidth = 1,
+            linetype = "dashed") + # dashed line for Salem  
+  geom_hline(yintercept = 0, linetype="solid", linewidth = .5) +
+  scale_x_continuous(name = NULL, breaks = seq(baseyear, 2025, 1)) +
+  scale_y_continuous(name = "Cumulative percentage change",
+                     breaks =  seq(-20, 20, 1),
+                     labels=scales::comma_format()) +
+  ggtitle(label=paste0("Cumulative percentage change in population since ", baseyear)) +
+  labs(caption = capt) +
+  theme_minimal() +
+  legend_notitle +
+  caption_left
+
+```
+
+
 
