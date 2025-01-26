@@ -1,7 +1,7 @@
 
 # Housing
 
-- [Homeownership as percent of occupied units](#housing-homeownership-as-percent-of-occupied units)
+- [Homeownership as percent of occupied units](#housing-homeownership-as-percent-of-occupied-units)
 
 - [Rental costs as percent of income](#housing-rental-costs-as-percent-of-income)
 
