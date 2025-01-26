@@ -179,6 +179,9 @@ pdata2 |>
 ### Child poverty
 
 ```{r}
+#| output: false
+#| eval: false
+
 # E:\R_projects\projects\cambridge\data\saipe
 # ussd23.txt
 #           1- 2       FIPS State code (00 for US record)

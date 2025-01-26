@@ -52,6 +52,7 @@ editor_options:
 # 
 # Broadband Availability By Municipality -- old
 # Community Development Block Grant (CDBG) Contracts -- plus other grants other files
+# 
 # Bridge Conditions, NYS Department of Transportation
 # https://www.dot.ny.gov/main/bridgedata
 # https://www.dot.ny.gov/main/bridgedata/repository/WashingtonBridgeData.pdf BIN 3306450
@@ -63,5 +64,8 @@ editor_options:
 # https://www.fhwa.dot.gov/bridge/nbi/format.cfm
 # https://www.fhwa.dot.gov/bridge/nbi/disclaim.cfm?nbiYear=2024allstatesallrecsdel&nbiZip=zip all data 2024 delimited
 # Highway Performance Monitoring System (HPMS)
-# 
-# 
+
+# health
+# https://data.cdc.gov/500-Cities-Places/PLACES-Local-Data-for-Better-Health-Place-Data-202/eav7-hnsx/about_data
+# https://www.cdc.gov/places/tools/data-portal.html
+# https://data.cdc.gov/browse?category=500+Cities+%26+Places&q=&sortBy=relevance&page=2

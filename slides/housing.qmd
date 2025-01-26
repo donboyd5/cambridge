@@ -1,12 +1,15 @@
 
 # Housing
 
+- [Homeownership as percent of occupied units](#housing-homeownership-as-percent-of-occupied units)
+
 - [Rental costs as percent of income](#housing-rental-costs-as-percent-of-income)
 
 
 ```{r}
 # B25071_001 Median Gross Rent as a Percentage of Household Income in the Past 12 Months (Dollars) 
 ```
+
 
 
 ```{r}
@@ -16,10 +19,83 @@ source(here::here("slides", "setup.R"))
 
 # get acs data ----
 acs_data <- readRDS(fs::path(ddir, "acs_data.rds"))
+acs_tables <- readRDS(fs::path(ddir, "acs_tables.rds"))
+acs_variables <- readRDS(fs::path(ddir, "acs_variables.rds"))
 
 # count(acs_data, variable, concept, label)
 
 ```
+
+
+## Housing: Homeownership as percent of occupied units
+
+
+```{r}
+#| output: false
+
+# B25003 tenure
+# B25003_001 Estimate!!Total:
+# B25003_002 Estimate!!Total:!!Owner occupied
+# B25003_003 Estimate!!Total:!!Renter occupied
+
+pdata <- acs_data |> 
+  filter(variable %in% c("B25003_001", "B25003_002", "B25003_003")) |> 
+  filter(geoid %in% c(constants$keep_counties, constants$keep_places, constants$keep_cousubs)) |>
+  select(geoid, geotype, geoname, trimname, variable, estimate) |>
+  pivot_wider(names_from = variable, values_from = estimate) |>
+  mutate(variable = "oo_pct",
+         estimate = B25003_002 / B25003_001 * 100)
+
+# set graph constants ----
+barvar <- "oo_pct"
+titlebase <- "Owner-occupied housing as % of total occupied units"
+ylab <- "% of occupied units"
+ybreaks <- seq(0, 100, 5)
+data <- pdata
+
+```
+
+
+### Washington County has a high rate of homeownership relative to nearby counties
+
+```{r}
+#| label: plot_ownocc_county
+
+barline(gtype = "county", barvar,
+         data,
+         constants = constants,
+         titlebase=titlebase, ylab=ylab, ybreaks=ybreaks)
+
+```
+
+
+### Cambridge village's home-ownership rate is high compared to other area places
+
+```{r}
+#| label: plot_ownocc_place
+
+barline(gtype = "place", barvar,
+         data,
+         constants = constants,
+         titlebase=titlebase, ylab=ylab, ybreaks=ybreaks)
+
+```
+
+
+### Cambridge town's home-ownership rate is in the middle of nearby towns
+
+```{r}
+#| label: plot_ownocc_cousub
+
+barline(gtype = "cousub", barvar,
+         data,
+         constants = constants,
+         titlebase=titlebase, ylab=ylab, ybreaks=ybreaks)
+
+```
+
+
+
 
 ## Housing: Rental costs as percent of income
 
@@ -74,5 +150,6 @@ barline(gtype = "cousub", barvar,
          titlebase=titlebase, ylab=ylab, ybreaks=ybreaks)
 
 ```
+
 
 

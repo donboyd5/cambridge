@@ -143,7 +143,7 @@ saved
 
 # define new tables of interest and just get them in the next step
 newtabs <- acs_variables |> 
-  filter(table %in% c("B07003")) |> 
+  filter(table %in% c("B25003")) |> 
   select(table, concept, numvars) |> 
   distinct()
 
@@ -178,7 +178,6 @@ purrr::walk(newtabs$table, f)
 #| label: combine-acs-tables
 #| eval: false
 #| output: false
-
 
 files <- fs::dir_ls(tdir)
 
