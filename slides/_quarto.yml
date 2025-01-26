@@ -13,7 +13,11 @@ format:
     toc-title: "Contents"
     toc-depth: 1
     toc-expand: 2
-    footer: "[cambridgeny.netlify.app](https://cambridgeny.netlify.app)"
+    footer: "[Go to Table of Contents](#TOC)"
+    include-after-body: title_url.html
+    
+execute:
+  freeze: false
     
 editor:
   console: true
@@ -37,3 +41,27 @@ editor_options:
 # https://data.ny.gov/browse?q=population&sortBy=relevance
 # https://data.ny.gov/Economic-Development/Census-2010-and-2020-Population-Region-Counties-Ci/sxhg-qquj
 # https://health.data.ny.gov/Health/Vital-Statistics-Deaths-by-Resident-County-Region-/xit9-mprv
+# 
+# saipe
+# https://www.census.gov/data/datasets/2023/demo/saipe/2023-school-districts.html
+
+# taxes
+# https://data.ny.gov/Government-Finance/Real-Property-Tax-Rates-Levy-Data-By-Municipality-/iq85-sdzs/about_data
+# https://www.tax.ny.gov/pubs_and_bulls/orpts/publications/reports_annual.htm
+# Residential Assessment Ratios: Beginning Rate Year 1982
+# 
+# Broadband Availability By Municipality -- old
+# Community Development Block Grant (CDBG) Contracts -- plus other grants other files
+# Bridge Conditions, NYS Department of Transportation
+# https://www.dot.ny.gov/main/bridgedata
+# https://www.dot.ny.gov/main/bridgedata/repository/WashingtonBridgeData.pdf BIN 3306450
+# 01 Salem (Town) 6 MI SOUTH OF SALEM COUNTY ROAD 61 BATTEN KILL 3306450 30 - County 1963 02/20/2023 N
+# https://www.fhwa.dot.gov/bridge/nbi.cfm
+# https://catalog.data.gov/dataset/national-bridge-inventory-citizen-connect
+# https://data.transportation.gov/Roadways-and-Bridges/National-Bridge-Inventory-System-NBI-/uack-gist/about_data
+# https://www.fhwa.dot.gov/bridge/nbi/ascii.cfm
+# https://www.fhwa.dot.gov/bridge/nbi/format.cfm
+# https://www.fhwa.dot.gov/bridge/nbi/disclaim.cfm?nbiYear=2024allstatesallrecsdel&nbiZip=zip all data 2024 delimited
+# Highway Performance Monitoring System (HPMS)
+# 
+# 

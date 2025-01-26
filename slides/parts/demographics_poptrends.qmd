@@ -15,7 +15,7 @@ placepop <- readRDS(fs::path(popdir, "popests_raw.rds"))
 
 ## Demographics: Population trends
 
-### County fortunes have differend widely over last half-century
+### County fortunes have differed widely over last half-century
 
 ```{r}
 #| label: population-levels
@@ -136,6 +136,10 @@ pdata |>
 ```
 
 
+:::{.notes}
+Unfortunately the Census Bureau has removed annual population data after 2010 from their website as a result of the village dissolution, which occurred in 2016.
+:::
+
 ### Cambridge village's population loss has not been as severe as most other area villages
 
 ```{r}
@@ -172,4 +176,53 @@ pdata2 |>
 ```
 
 
+### Child poverty
+
+```{r}
+# E:\R_projects\projects\cambridge\data\saipe
+# ussd23.txt
+#           1- 2       FIPS State code (00 for US record)
+        #   4- 8       District ID
+        #  10-81       District Name
+        #  83-90       Total Population 
+        #  92-99       Population of Relevant Children 5 to 17 years of Age
+        # 101-108      Estimated Number of Relevant Children 5 to 17 years old
+        #              in Poverty Related to the Householder 
+        # 110-130      A tag indicating the file name and date of creation
+
+starts <- c(1, 4, 10, 83, 92, 101, 110)
+ends <- c(2, 8, 81, 90, 99, 108, 130)
+cnames <- c("stfips", "distid", "distname", "totpop", "childpop", "childpoverty", "tag")
+fpath <- fs::path(ddir, "saipe", "ussd23.txt")
+
+df <- vroom_fwf(fpath, 
+                col_positions = fwf_positions(start=starts, end=ends, 
+                col_names=cnames)) |> 
+  select(-c(tag)) |> 
+  mutate(povrate = childpoverty / childpop * 100)
+
+check <- df |> 
+  filter(stfips == "36")
+
+# argyle 03210
+# cambridge 06210
+# greenwich 12900
+# salem 25470
+# schuylerville 26160
+# hoosick falls 14760
+ 
+keep_sds <- c("03210", "06210", "12900", "25470", "26160", "14760")
+
+pdata <- df |> 
+  filter(stfips == "36", distid %in% keep_sds) |> 
+  mutate(trimname=case_when(distid=="06210" ~ "Cambridge",
+                            distid=="03210" ~ "Argyle",
+                            distid=="12900" ~ "Greenwich",
+                            distid=="25470" ~ "Salem",
+                            distid=="26160" ~ "Schuylerville",
+                            distid=="14760" ~ "Hoosick Falls")) |> 
+  arrange(distid)
+
+
+```
 

@@ -8,6 +8,7 @@
 
 _freeze/
 cambridge_files/
+*_files/
 index_files/
 web/_web/
 web/_web/site_libs/

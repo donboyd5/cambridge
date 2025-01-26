@@ -18,8 +18,5 @@ date-format: long
 
 {{< include appendix.qmd >}}
 
-<!-- {{< include employment.qmd >}} -->
-
-<!-- {{< include changes.qmd >}} -->
 
 <!-- {{< include get-data.qmd >}} -->

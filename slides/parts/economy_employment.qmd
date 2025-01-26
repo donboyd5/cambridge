@@ -1,2 +1,27 @@
-
 ## Economy: Employment
+
+
+```{r}
+#| output: false
+
+source(here::here("slides", "setup.R"))
+
+# get acs data ----
+acs_data <- readRDS(fs::path(ddir, "acs_data.rds"))
+# count(acs_data, variable, concept, label)
+
+```
+
+
+```{r}
+#| output: false
+
+# set graph constants ----
+barvar <- "B19013_001"
+titlebase <- "Median household income"
+ylab <- "Dollars"
+ybreaks <- seq(0, 100e3, 5e3)
+data <- acs_data
+
+```
+
