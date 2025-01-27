@@ -2,10 +2,12 @@
 
 # libraries ---------------------------------------------------------------
 
+library(fs)
 library(tidyverse)
 library(tidycensus)
 library(usmap)
 library(vroom)
+library(purrr)
 
 tprint <- 75
 options(tibble.print_max = tprint, tibble.print_min = tprint) 

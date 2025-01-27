@@ -31,6 +31,8 @@ editor_options:
 # quarto publish netlify --no-browser --no-prompt
 # quarto publish netlify --no-browser --no-render --no-prompt
 
+# Census ftp: # https://www2.census.gov/programs-surveys/
+
 # county population 1970-2023
 # https://data.ny.gov/Government-Finance/Annual-Population-Estimates-for-New-York-State-and/krt9-ym2k/about_data
 # blob:https://data.ny.gov/61a4cddf-5446-400d-b12b-4bf7fef74721
@@ -44,6 +46,15 @@ editor_options:
 # 
 # saipe
 # https://www.census.gov/data/datasets/2023/demo/saipe/2023-school-districts.html
+# https://www2.census.gov/programs-surveys/saipe/datasets/2010/2010-school-districts/
+# https://www2.census.gov/programs-surveys/saipe/datasets/1999/1999-school-districts/ussd99.dat
+# https://www2.census.gov/programs-surveys/saipe/datasets/2000/2000-school-districts/ussd00.dat
+# https://www2.census.gov/programs-surveys/saipe/datasets/2001/2001-school-districts/ussd01.dat
+# https://www2.census.gov/programs-surveys/saipe/datasets/2002/2002-school-districts/ussd02.dat
+# https://www2.census.gov/programs-surveys/saipe/datasets/2003/2003-school-districts/ussd03.txt
+# https://www2.census.gov/programs-surveys/saipe/datasets/2004/2004-school-districts/ussd04.txt
+# https://www2.census.gov/programs-surveys/saipe/datasets/2005/2005-school-districts/ussd05.txt
+# https://www2.census.gov/programs-surveys/saipe/datasets/2023/2023-school-districts/ussd23.txt
 
 # taxes
 # https://data.ny.gov/Government-Finance/Real-Property-Tax-Rates-Levy-Data-By-Municipality-/iq85-sdzs/about_data

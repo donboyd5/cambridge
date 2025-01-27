@@ -27,6 +27,7 @@ site_libs/
 *.pdf
 *.rds
 *.txt
+*.xls*
 *.zip
 
 

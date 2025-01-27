@@ -182,6 +182,258 @@ pdata2 |>
 #| output: false
 #| eval: false
 
+# https://www2.census.gov/programs-surveys/saipe/datasets/1999/1999-school-districts/ussd99.dat
+# https://www2.census.gov/programs-surveys/saipe/datasets/2000/2000-school-districts/ussd00.dat
+# https://www2.census.gov/programs-surveys/saipe/datasets/2001/2001-school-districts/ussd01.dat
+# https://www2.census.gov/programs-surveys/saipe/datasets/2002/2002-school-districts/ussd02.dat
+# https://www2.census.gov/programs-surveys/saipe/datasets/2003/2003-school-districts/ussd03.txt
+# https://www2.census.gov/programs-surveys/saipe/datasets/2004/2004-school-districts/ussd04.txt
+# https://www2.census.gov/programs-surveys/saipe/datasets/2005/2005-school-districts/ussd05.txt
+# https://www2.census.gov/programs-surveys/saipe/datasets/2023/2023-school-districts/ussd23.txt
+ 
+urlbase <- "https://www2.census.gov/programs-surveys/saipe/datasets/"
+f <- function(year){
+  ext <- ifelse(year < 2003, ".dat", ".txt")
+  y2 <- str_sub(year, 3, 4)
+  url <- paste0(urlbase, year, "/", year, "-school-districts/ussd", y2, ext)
+  fname <- fs::path_file(url)
+  print(fname)
+  download.file(url, fs::path(ddir, "saipe", fname), mode="wb")
+}
+purrr::walk(1999:2023, f) 
+
+sdir <- fs::path(ddir, "saipe")
+files <- fs::dir_ls(sdir) |> str_subset("ussd.*\\.(dat|txt)$") |> sort()
+
+# starts <- c(1, 4, 10, 83, 92, 101, 110)
+# ends <- c(2, 8, 81, 90, 99, 108, 130)
+# cnames <- c("stfips", "distid", "distname", "totpop", "childpop", "childpoverty", "tag")
+
+starts <- c(1, 4, 10)
+ends <- c(2, 8, 130)
+cnames <- c("stfips", "distid", "restofrec")
+df <- vroom_fwf(files,
+                id = "id",
+                col_positions = fwf_positions(start=starts, end=ends,
+                col_names=cnames))
+count(df, id)
+
+df2 <- df |> 
+  mutate(y2=str_sub(id, -6, -5),
+         year = case_when(y2 > 25 ~ paste0("19", y2),
+                          .default = paste0("20", y2)),
+         year = as.integer(year)) |> 
+  select(-y2, -id) |> 
+  relocate(year) |> 
+  arrange(stfips, distid, year)
+
+vec <- df2$restofrec[1:99999]
+vec <- df2$restofrec[1:200e3]
+
+vec <- as.vector(df2$restofrec[1:100000])
+
+vec <- df2$restofrec[1:nrow(df2)] # 340214
+
+vec <- df2 |> 
+  mutate(restofrec = str_trim(restofrec)) |> 
+  pull(restofrec)
+
+df3 <- df2 |> 
+  mutate(rr2 = str_remove(restofrec, "(?i)ussd.*$") |> str_trim()) |> 
+  separate(rr2, into = c("sdname", "numeric_fields"), sep = "\\s+", fill = "right", remove=FALSE)
+
+test <- df3 |> 
+  filter(year==2020, stfips=="55", distid=="15090") |>  
+  separate(
+    rr2,
+    into = c("name", "numbers_part"),
+    sep = "\\s+(?=\\d)",  # Split at whitespace followed by a digit
+    extra = "merge",       # Merge any remaining splits into 'numbers_part'
+    remove=FALSE
+  )  |> 
+  select(rr2, name, numbers_part) 
+
+# Assuming your data frame is named df and the column is 'text'
+df_result <- df3  |> 
+  slice_sample(n=50) |> 
+  # select(-restofrec) |> 
+  separate(
+    rr2,
+    into = c("name", "numbers_part"),
+    sep = "\\s+(?=\\d)",  # Split at whitespace followed by a digit
+    extra = "merge"       # Merge any remaining splits into 'numbers_part'
+  )  |> 
+  mutate(name = str_trim(name)) %>%  # Trim whitespace from the name
+  separate(
+    numbers_part,
+    into = sprintf("num%d", 1:5),    # Create columns num1 to num5
+    sep = "\\s+",                    # Split numbers by whitespace
+    fill = "right",                  # Fill missing with NA on the right
+    convert = TRUE                   # Convert to numeric
+  )
+
+# View the result
+# good i think
+set.seed(1234)
+df_result <- df3  |> 
+  # filter(year==2020, stfips=="55", distid=="15090") |>  
+  # slice_sample(n=100000) |> 
+  mutate(
+    # Extract the trailing numeric block (last occurrence of digits)
+    numbers_part = str_extract(rr2, "\\d[\\d\\s]*$"),
+    # Remove the numeric block from the original text to isolate the name
+    name = str_remove(rr2, "\\s*\\d[\\d\\s]*$") %>% str_trim()
+  ) %>%
+  separate(
+    numbers_part,
+    into = sprintf("num%d", 1:5),
+    sep = "\\s+",
+    fill = "right",
+    convert = TRUE,
+    remove = FALSE
+  )
+
+summary(df_result)
+saveRDS(df_result, fs::path(ddir, "sd_saipe.rds"))
+
+
+
+
+
+
+
+set.seed(1234)
+ints <- sample(340214, 10)
+vec <- df3$rr2[ints]
+
+
+
+
+
+
+
+
+vec <- c("Springfield School District 123 456 789",
+         "Oak Grove Elementary 42",
+         "abc School District 123 456 789 555",
+         "Westfield High 7 14",
+         "Maple3wood Academy",
+         "Central City Schools")
+
+
+
+
+
+vec2 <- str_remove(vec[1:1000], "(?i)ussd.*$")
+
+vec <- c("Springfield School District 123 456 789",
+         "Oak Grove Elementary 42",
+         "abc School District 123 456 789 555",
+         "Westfield High 7 14",
+         "Maple3wood Academy",
+         "Central City Schools")
+
+pattern <- "^(.*?)(\\d+(?:\\s+\\d+)*?)\\s+(\\S+)\\s+(\\S+)$"
+
+preprocessed_data <- str_trim(str_remove(vec, "(?i)ussd.*$"))
+
+# Split into sdname and numeric pieces
+split_data <- str_match(preprocessed_data, "^(.*?)(\\d+(?:\\s+\\d+)*)$")
+
+result_df <- data.frame(
+  sdname = str_trim(split_data[,2]),
+  numeric_values = split_data[,3]
+)
+result_df
+
+# Split numeric values into separate columns
+result_df <- cbind(result_df, 
+                   setNames(data.frame(str_split_fixed(result_df$numeric_values, "\\s+", 3)), 
+                            c("num1", "num2", "num3")))
+
+
+
+
+
+# Extract components using str_match
+vec2 <- str_remove(vec, "(?i)ussd.*$")
+result <- str_match(vec2, pattern)
+result
+
+# Process the numeric fields dynamically
+df <- tibble(
+    rec = result[,1],
+    sdname = str_trim(result[,2]),
+    numeric_fields = result[,3],
+    file = result[,4],
+    date = result[,5])  |> 
+  separate_wider_delim(numeric_fields, names = str_c("num", 1:6), delim = " ", too_few = "align_start", too_many = "debug") |>
+    mutate(numeric_fields = str_split(numeric_fields, "\\s+")) %>%
+    unnest_wider(numeric_fields, names_sep = "_")
+
+# delim = "\\s+"
+# "\\s+"
+tmp <- df2 |> 
+  mutate(dist = str_detect(restofrec, coll("distric", ignore_case=TRUE)),
+         school = str_detect(restofrec, coll("school", ignore_case=TRUE))) |> 
+  filter(!(dist | school))
+
+vec <- df2$restofrec[1:10]
+
+vec <- c("Springfield School District 123 456 789",
+         "Oak Grove Elementary 42",
+         "abc School District 123 456 789 555",
+         "Westfield High 7 14",
+         "Maple3wood Academy",
+         "Central City Schools")
+
+# Define the pattern to match
+pattern <- "^(.*?)(?: (\\d+))?(?: (\\d+))?(?: (\\d+))?$"
+# pattern <- "^(.*?)(?: (\\d+))?(?: (\\d+))?(?: (\\d+))?(?: (\\d+))?$"
+
+# Extract components using str_match
+result <- str_match(vec, pattern)
+result
+
+df <- tibble(
+  sdname = result[,2],
+  num1 = result[,3],
+  num2 = result[,4],
+  num3 = result[,5],
+  num4 = result[,6]
+  )
+df
+
+df <- tibble(
+  sdname = result[,2],
+  num1 = result[,3],
+  num2 = result[,4],
+  num3 = result[,5],
+  num4 = result[,6]
+  )
+df
+
+# Create a data frame with the extracted components
+df <- data.frame(
+  sdname = result[,2],
+  num1 = result[,3],
+  num2 = result[,4],
+  num3 = result[,5]
+)
+
+
+df2 <- df |> 
+  select(-c(tag)) |> 
+  mutate(y2=str_sub(id, -6, -5),
+         year = case_when(y2 > 25 ~ paste0("19", y2),
+                          .default = paste0("20", y2)),
+         year = as.integer(year))
+count(df2, year)
+# povrate = childpoverty / childpop * 100
+# 
+check <- df2 |> 
+  filter(stfips == "36", distid=="06210")
+
 # E:\R_projects\projects\cambridge\data\saipe
 # ussd23.txt
 #           1- 2       FIPS State code (00 for US record)
