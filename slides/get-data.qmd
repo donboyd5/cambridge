@@ -10,7 +10,6 @@ editor_options:
 #| output: false
 
 # https://walkerke.github.io/tidycensus/articles/basic-usage.html#geography-in-tidycensus
-# 
  
 ```
 

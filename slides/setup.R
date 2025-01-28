@@ -18,6 +18,7 @@ options(tibble.print_max = tprint, tibble.print_min = tprint)
 ddir <- here::here("data")
 tdir <- fs::path(ddir, "acs_tables")
 popdir <- fs::path(ddir, "population")
+saipedir <- fs::path(ddir, "saipe")
 
 
 # plot items: freestanding ----------------------------------------------------
