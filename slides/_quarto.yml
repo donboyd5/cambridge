@@ -1,6 +1,10 @@
 project:
     type: website
     output-dir: _slides
+    # pre-render: # make sure the pre-renders work if this is used
+    #   get_school_districts_saipe_data.R,
+    #   get_census_population_estimates.R 
+    #   get_ny_county_population_estimates.R
     render:
       - index.qmd
 
