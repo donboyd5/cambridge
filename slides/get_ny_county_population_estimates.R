@@ -5,7 +5,10 @@ source(here::here("slides", "setup.R"))
 # https://labor.ny.gov/stats/lsproj.shtm not this
 # blob:https://data.ny.gov/61a4cddf-5446-400d-b12b-4bf7fef74721
 
-fname <- "Annual_Population_Estimates_for_New_York_State_and_Counties__Beginning_1970_20250123.csv"
+fname_windows <- "Annual_Population_Estimates_for_New_York_State_and_Counties__Beginning_1970_20250123.csv"
+fname_linux <- "Annual_Population_Estimates_for_New_York_State_and_Counties__Beginning_1970_20250219.csv"
+
+fname <- fname_linux
 fpath <- fs::path(ddir, "population", fname)
 
 # url <- "https://data.ny.gov/61a4cddf-5446-400d-b12b-4bf7fef74721"
