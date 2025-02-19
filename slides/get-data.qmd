@@ -124,7 +124,7 @@ mobiletabs <- get_concept("mobility")
 # B25008  Total Population in Occupied Housing Units by Tenure
 # B25071  Median Gross Rent as a Percentage of Household Income in the Past 12 Months (Dollars)
 
-full_tabs <- c("B01002", "B01003", "B15003", "B19013", "B25003", "B25008", "B25071")
+full_tabs <- c("B01002", "B01003", "B07003", "B15003", "B17001", "B19013", "B25003", "B25008", "B25071")
 
 keeptabs <- acs_variables |> 
   filter(table %in% c("B01002", "B01003", "B25008", "B19013", "B25071")) |> 
@@ -143,7 +143,7 @@ saved
 
 # define new tables of interest and just get them in the next step
 newtabs <- acs_variables |> 
-  filter(table %in% c("B15003")) |> 
+  filter(table %in% c("B07003")) |> 
   # filter(table %in% full_tabs) |> 
   select(table, concept, numvars) |> 
   distinct()
