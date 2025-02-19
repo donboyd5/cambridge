@@ -17,8 +17,6 @@ web/_web/site_libs/bootstrap/
 _slides/
 site_libs/
 
-
-
 *.csv
 *.dat
 *.html
@@ -31,7 +29,4 @@ site_libs/
 *.zip
 
 
-
-
-
-slides/.quarto/xref/
+slides/.quarto/

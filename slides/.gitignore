@@ -1,1 +1,5 @@
 /.quarto/
+
+# these files otherwise would be gitignored by *.html
+!title_footer.html
+!title_url.html
