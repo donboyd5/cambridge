@@ -14,8 +14,10 @@
 source(here::here("slides", "setup.R"))
 library(vroom)
 library(btools)
+# devtools::install_github("hrecht/censusapi")
 library(censusapi)
 get_api_key()
+# Sys.setenv(CENSUS_KEY="b27cb41e46ffe3488af186dd80c64dce66bd5e87")
 
 
 # download data ----------------------------------------------------------------
@@ -157,11 +159,11 @@ ts <- cenapis |>
   filter(str_starts(name, "pep"))
 
 
-pop |> filter(str_detect(description, "place"))
-pop |> filter(str_detect(title, coll("place", ignore_case = TRUE)))
+pep |> filter(str_detect(description, "place"))
+pep |> filter(str_detect(title, coll("place", ignore_case = TRUE)))
 
-pop |> filter(name == "pep/subcty")
-count(pop, name)
+pep |> filter(name == "pep/subcty")
+count(pep, name)
 
 poverty_rate <- getCensus(
   name = "timeseries/poverty/saipe",
@@ -170,5 +172,5 @@ poverty_rate <- getCensus(
   regionin = "state:06",
   time = "from 2010")
 
-listCensusMetadata(name = "timeseries", type = "variables")
+# listCensusMetadata(name = "timeseries", type = "variables") # not found
 listCensusMetadata(name = "timeseries/healthins/sahie", type = "variables")
