@@ -64,18 +64,19 @@ barline <- function(gtype, barvar, data,
                      ylab = NULL){
   # data must have variable, geotype, geoid, trimname, estimate
   
+  title <- titlebase
   if(gtype == "county"){
     keepgeos <- constants$keep_counties
     compgeo <- constants$comp_county
-    title <- paste0(titlebase, ", selected area counties")
+    subtitle <- paste0("Selected area counties")
   } else if(gtype == "place"){
     keepgeos <- constants$keep_places
     compgeo <- constants$comp_place
-    title <- paste0(titlebase, ", selected area places")
+    subtitle <- paste0("Selected area places")
   } else if(gtype == "cousub"){
     keepgeos <- constants$keep_cousubs
     compgeo <- constants$comp_cousub
-    title <- paste0(titlebase, ", selected area towns")
+    subtitle <- paste0("Selected area townss")
   } else {
     stop("gtype must be county, place, or cousub")
   }
@@ -99,8 +100,9 @@ barline <- function(gtype, barvar, data,
     scale_y_continuous(name=ylab, 
                        labels = scales::label_comma(),
                        breaks = ybreaks) +
-    labs(title = title,
-       subtitle = NULL,
+    labs(
+      title = title,
+      subtitle = subtitle,
        x = NULL) +
     theme_minimal() +
     theme(legend.position = "None") +

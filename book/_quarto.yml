@@ -32,6 +32,10 @@ book:
       - economy_income.qmd
       - economy_poverty.qmd
       - economy_migration.qmd
+    - part: "Housing"
+      chapters: 
+      - housing_ownership.qmd
+      - housing_rental_costs.qmd
   
 execute:
   eval: true

@@ -1,0 +1,17 @@
+# Appendix (ToDo's)
+
+- Employment
+
+- Commuting and work-at-home
+
+- Housing vacancies
+
+- Health
+
+- Change over time
+
+- Outlook (Cornell projections)
+
+- Add data tables
+
+- Maybe use same y-axes for all areas for a given graph type

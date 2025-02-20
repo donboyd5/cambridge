@@ -41,7 +41,7 @@ ed_data
 
 # set graph constants ----
 barvar <- "college_pct"
-titlebase <- "Number with bachelor's degree or higher\nAs % of age 25+ population"
+titlebase <- "Number with bachelor's degree or higher as % of age 25+ population"
 ylab <- "% of age 25+ population"
 ybreaks <- seq(0, 100, 5)
 data <- ed_data

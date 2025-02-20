@@ -228,5 +228,71 @@
       "Economy",
       "<span class='chapter-number'>6</span>  <span class='chapter-title'>Migration</span>"
     ]
+  },
+  {
+    "objectID": "housing_ownership.html",
+    "href": "housing_ownership.html",
+    "title": "7  Homeownership as percent of occupied units",
+    "section": "",
+    "text": "7.1 Washington County has a high rate of homeownership relative to nearby counties",
+    "crumbs": [
+      "Housing",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Homeownership as percent of occupied units</span>"
+    ]
+  },
+  {
+    "objectID": "housing_ownership.html#cambridge-villages-home-ownership-rate-is-high-compared-to-other-area-places",
+    "href": "housing_ownership.html#cambridge-villages-home-ownership-rate-is-high-compared-to-other-area-places",
+    "title": "7  Homeownership as percent of occupied units",
+    "section": "7.2 Cambridge village’s home-ownership rate is high compared to other area places",
+    "text": "7.2 Cambridge village’s home-ownership rate is high compared to other area places",
+    "crumbs": [
+      "Housing",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Homeownership as percent of occupied units</span>"
+    ]
+  },
+  {
+    "objectID": "housing_ownership.html#cambridge-towns-home-ownership-rate-is-in-the-middle-of-nearby-towns",
+    "href": "housing_ownership.html#cambridge-towns-home-ownership-rate-is-in-the-middle-of-nearby-towns",
+    "title": "7  Homeownership as percent of occupied units",
+    "section": "7.3 Cambridge town’s home-ownership rate is in the middle of nearby towns",
+    "text": "7.3 Cambridge town’s home-ownership rate is in the middle of nearby towns",
+    "crumbs": [
+      "Housing",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Homeownership as percent of occupied units</span>"
+    ]
+  },
+  {
+    "objectID": "housing_rental_costs.html",
+    "href": "housing_rental_costs.html",
+    "title": "8  Rental costs as percent of income",
+    "section": "",
+    "text": "8.1 Washington County rent % of income is near middle of area counties",
+    "crumbs": [
+      "Housing",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Rental costs as percent of income</span>"
+    ]
+  },
+  {
+    "objectID": "housing_rental_costs.html#cambridge-village-rent-of-income-is-high-relative-to-nearby-places",
+    "href": "housing_rental_costs.html#cambridge-village-rent-of-income-is-high-relative-to-nearby-places",
+    "title": "8  Rental costs as percent of income",
+    "section": "8.2 Cambridge village rent % of income is high relative to nearby places",
+    "text": "8.2 Cambridge village rent % of income is high relative to nearby places",
+    "crumbs": [
+      "Housing",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Rental costs as percent of income</span>"
+    ]
+  },
+  {
+    "objectID": "housing_rental_costs.html#cambridge-and-white-creek-town-rent-of-income-is-high-relative-to-nearby-towns",
+    "href": "housing_rental_costs.html#cambridge-and-white-creek-town-rent-of-income-is-high-relative-to-nearby-towns",
+    "title": "8  Rental costs as percent of income",
+    "section": "8.3 Cambridge and White Creek town rent % of income is high relative to nearby towns",
+    "text": "8.3 Cambridge and White Creek town rent % of income is high relative to nearby towns",
+    "crumbs": [
+      "Housing",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Rental costs as percent of income</span>"
+    ]
   }
 ]
