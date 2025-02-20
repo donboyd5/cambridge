@@ -1,14 +1,13 @@
-# Age
+# Income
 
 ```{r}
 #| output: false
-#| eval: true
 
 source(here::here("book", "setup.R"))
 
 # get acs data ----
 acs_data <- readRDS(fs::path(ddir, "acs_data.rds"))
-count(acs_data, variable, concept, label)
+# count(acs_data, variable, concept, label)
 
 ```
 
@@ -17,20 +16,19 @@ count(acs_data, variable, concept, label)
 #| output: false
 
 # set graph constants ----
-barvar <- "B01002_001"
-titlebase <- "Median age"
-ylab <- "Median age"
-ybreaks <- seq(0, 100, 5)
+barvar <- "B19013_001"
+titlebase <- "Median household income"
+ylab <- "Dollars"
+ybreaks <- seq(0, 100e3, 5e3)
 data <- acs_data
 
 ```
 
 
-## Washington County is older than most area counties
-
+## Washington County has lower household income than most area counties
 
 ```{r}
-#| label: plot_age_county
+#| label: plot_income_county
 #| output: true
 
 barline(gtype = "county", barvar, data,
@@ -39,10 +37,10 @@ barline(gtype = "county", barvar, data,
 
 ```
 
-## Cambridge village is older than nearby places
+## Cambridge village household income is about middle for nearby places
 
 ```{r}
-#| label: plot_age_place
+#| label: plot_income_place
 #| output: true
 
 barline(gtype = "place", barvar, data,
@@ -51,12 +49,11 @@ barline(gtype = "place", barvar, data,
 
 ```
 
-Caveat: Perhaps this reflects a concentration of senior housing?
 
-## Jackson and White Creek towns are older than nearby towns
+## Cambridge town household income is higher than nearby towns
 
 ```{r}
-#| label: plot_age_cousub
+#| label: plot_income_cousub
 #| output: true
 
 barline(gtype = "cousub", barvar, data,

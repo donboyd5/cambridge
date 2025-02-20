@@ -129,5 +129,104 @@
       "Demographics",
       "<span class='chapter-number'>4</span>  <span class='chapter-title'>Demographics: Educational attainment</span>"
     ]
+  },
+  {
+    "objectID": "economy_income.html",
+    "href": "economy_income.html",
+    "title": "5  Income",
+    "section": "",
+    "text": "5.1 Washington County has lower household income than most area counties",
+    "crumbs": [
+      "Economy",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Income</span>"
+    ]
+  },
+  {
+    "objectID": "economy_income.html#cambridge-village-household-income-is-about-middle-for-nearby-places",
+    "href": "economy_income.html#cambridge-village-household-income-is-about-middle-for-nearby-places",
+    "title": "5  Income",
+    "section": "5.2 Cambridge village household income is about middle for nearby places",
+    "text": "5.2 Cambridge village household income is about middle for nearby places",
+    "crumbs": [
+      "Economy",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Income</span>"
+    ]
+  },
+  {
+    "objectID": "economy_income.html#cambridge-town-household-income-is-higher-than-nearby-towns",
+    "href": "economy_income.html#cambridge-town-household-income-is-higher-than-nearby-towns",
+    "title": "5  Income",
+    "section": "5.3 Cambridge town household income is higher than nearby towns",
+    "text": "5.3 Cambridge town household income is higher than nearby towns",
+    "crumbs": [
+      "Economy",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Income</span>"
+    ]
+  },
+  {
+    "objectID": "economy_poverty.html",
+    "href": "economy_poverty.html",
+    "title": "6  Poverty",
+    "section": "",
+    "text": "6.1 Washington County poverty rate is lower than in other area counties",
+    "crumbs": [
+      "Economy",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Poverty</span>"
+    ]
+  },
+  {
+    "objectID": "economy_poverty.html#cambridge-village-poverty-rate-is-higher-than-in-other-area-places",
+    "href": "economy_poverty.html#cambridge-village-poverty-rate-is-higher-than-in-other-area-places",
+    "title": "6  Poverty",
+    "section": "6.2 Cambridge village poverty rate is higher than in other area places",
+    "text": "6.2 Cambridge village poverty rate is higher than in other area places",
+    "crumbs": [
+      "Economy",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Poverty</span>"
+    ]
+  },
+  {
+    "objectID": "economy_poverty.html#cambridge-town-poverty-rate-is-similar-to-other-area-towns",
+    "href": "economy_poverty.html#cambridge-town-poverty-rate-is-similar-to-other-area-towns",
+    "title": "6  Poverty",
+    "section": "6.3 Cambridge town poverty rate is similar to other area towns",
+    "text": "6.3 Cambridge town poverty rate is similar to other area towns",
+    "crumbs": [
+      "Economy",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Poverty</span>"
+    ]
+  },
+  {
+    "objectID": "economy_migration.html",
+    "href": "economy_migration.html",
+    "title": "7  Migration",
+    "section": "",
+    "text": "7.1 Washington County in-migration is lower than in other area counties",
+    "crumbs": [
+      "Economy",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Migration</span>"
+    ]
+  },
+  {
+    "objectID": "economy_migration.html#cambridge-village-in-migration-is-relatively-low",
+    "href": "economy_migration.html#cambridge-village-in-migration-is-relatively-low",
+    "title": "7  Migration",
+    "section": "7.2 Cambridge village in-migration is relatively low",
+    "text": "7.2 Cambridge village in-migration is relatively low",
+    "crumbs": [
+      "Economy",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Migration</span>"
+    ]
+  },
+  {
+    "objectID": "economy_migration.html#cambridge-town-in-migration-is-in-the-middle-of-other-area-towns",
+    "href": "economy_migration.html#cambridge-town-in-migration-is-in-the-middle-of-other-area-towns",
+    "title": "7  Migration",
+    "section": "7.3 Cambridge town in-migration is in the middle of other area towns",
+    "text": "7.3 Cambridge town in-migration is in the middle of other area towns",
+    "crumbs": [
+      "Economy",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Migration</span>"
+    ]
   }
 ]

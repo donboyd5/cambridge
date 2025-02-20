@@ -27,6 +27,11 @@ book:
       - demographics_poptrends.qmd
       - demographics_age.qmd
       - demographics_education.qmd
+    - part: "Economy"
+      chapters: 
+      - economy_income.qmd
+      - economy_poverty.qmd
+      - economy_migration.qmd
   
 execute:
   eval: true
