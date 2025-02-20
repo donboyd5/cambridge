@@ -1,0 +1,85 @@
+
+## Economy: Poverty
+
+
+```{r}
+#| output: false
+
+source(here::here("slides", "setup.R"))
+
+# get acs data ----
+acs_data <- readRDS(fs::path(ddir, "acs_data.rds"))
+# count(acs_data, variable, concept, label)
+
+```
+
+
+```{r}
+#| output: false
+
+# data preparation ----
+
+# B17001_001 total
+# B17001_002 below poverty level
+
+pov_data <- acs_data |> 
+  filter(variable %in% c("B17001_001", "B17001_002")) |>
+  select(stabbr, stname, geoid, geotype, geoname, trimname, variable, estimate) |> 
+  pivot_wider(names_from=variable, values_from=estimate) |> 
+  mutate(variable = "povrate",
+         estimate = B17001_002 / B17001_001 * 100)
+# pov_data
+
+```
+
+
+```{r}
+#| output: false
+
+# set graph constants ----
+barvar <- "povrate"
+titlebase <- "Poverty rate"
+ylab <- "% of population"
+ybreaks <- seq(0, 100, 1)
+data <- pov_data
+
+```
+
+
+### Washington County poverty rate is lower than in other area counties
+
+```{r}
+#| label: plot_povrate_county
+
+barline(gtype = "county", barvar,
+         data,
+         constants = constants,
+         titlebase=titlebase, ylab=ylab, ybreaks=ybreaks)
+
+```
+
+### Cambridge village poverty rate is higher than in other area places
+
+```{r}
+#| label: plot_povrate_place
+
+barline(gtype = "place", barvar,
+         data,
+         constants = constants,
+         titlebase=titlebase, ylab=ylab, ybreaks=ybreaks)
+
+```
+
+
+### Cambridge town poverty rate is similar to other area towns
+
+```{r}
+#| label: plot_povrate_cousub
+
+barline(gtype = "cousub", barvar,
+         data,
+         constants = constants,
+         titlebase=titlebase, ylab=ylab, ybreaks=ybreaks)
+
+```
+

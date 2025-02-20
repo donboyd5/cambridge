@@ -1,0 +1,226 @@
+
+
+```{r}
+#| output: false
+#| eval: true
+
+source(here::here("slides", "setup.R"))
+
+# get data ----
+# acs_data <- readRDS(fs::path(ddir, "acs_data.rds"))
+pop <- readRDS(fs::path(ddir, "population", "county_population.rds"))
+placepop <- readRDS(fs::path(popdir, "popests_raw.rds"))
+
+```
+
+
+## Demographics: Population trends
+
+### County fortunes have differed widely over last half-century
+
+```{r}
+#| label: population-levels
+
+counties <- c("36083", "36091", "36113", "36115")
+
+capt <-  "\nSource: U.S. Census Bureau and NYS Department of Labor"
+
+pop |> 
+  filter(geoid %in% counties) |>
+  mutate(ipop=pop / pop[year==2015],
+         cpcpop = ipop * 100 - 100,
+         .by=geoid) |>
+  ggplot(aes(x=year, y=pop / 1000)) +
+  geom_line(colour = "blue", linewidth = 1) +
+  scale_x_continuous(name = NULL, breaks = seq(1900, 2025, 5)) +
+  scale_y_continuous(name = "Thousands of people") +
+  ggtitle(label="Population in area counties") +
+  labs(caption = capt) +
+  theme_minimal() +
+  legend_notitle +
+  caption_left +
+  facet_wrap(~trimname, scales="free_y")
+
+```
+
+
+### Population declines in Washington County have been persistent and severe
+
+```{r}
+#| label: population-changes
+
+counties <- c("36083", "36091", "36113", "36115")
+
+capt1 <-  "Source: U.S. Census Bureau and NYS Department of Labor"
+capt2 <- "Note: Bump in 2020 reflects 2020 decennal census break from prior estimates"
+capt <- paste0("\n", capt1, "\n", capt2)
+
+baseyear <- 2010
+pop |> 
+  filter(geoid %in% counties) |>
+  mutate(ipop=pop / pop[year==baseyear],
+         cpcpop = ipop * 100 - 100,
+         .by=geoid) |>
+  filter(year >= baseyear) |>
+  ggplot(aes(x=year, y=cpcpop, colour=trimname)) +
+  geom_line(linewidth = 1) +
+  geom_hline(yintercept = 0, linetype="solid", linewidth = .5) +
+  scale_x_continuous(name = NULL, breaks = seq(baseyear, 2025, 1)) +
+  scale_y_continuous(name = "Cumulative percentage change",
+                     breaks =  seq(-20, 20, 1),
+                     labels=scales::comma_format()) +
+  ggtitle(label=paste0("Cumulative percentage change in population since ", baseyear)) +
+  labs(caption = capt) +
+  theme_minimal() +
+  legend_notitle +
+  caption_left
+
+```
+
+
+### Population declines in most area villages have been sharp
+
+```{r}
+#| output: false
+#| eval: true
+
+# add Salem CDP 
+baseyear <- 2010
+
+suppressWarnings( # Salem has fewer observations than others, generating warning
+  pdata <- placepop |> 
+  rename(trimname=name, pop=value) |> 
+  filter(state=="36", sumlev=="157") |>  
+  mutate(geoid = paste0(state, place)) |> 
+  filter(geoid %in% constants$keep_places) |>
+  mutate(trimname=ifelse(place=="64771", paste0(trimname, "/CDP"), trimname)) |> 
+  add_row(geoid="3664771", state="36", stname="New York", county="115",
+          place="64771", trimname="Salem village/CDP", year=2020, src="2020 census", pop=811) |>
+  mutate(ipop=pop / pop[year==baseyear],
+         cpcpop = ipop * 100 - 100,
+         .by=geoid) |>
+  arrange(geoid, year)
+)
+  
+
+```
+
+```{r}
+#| label: village-population
+#| output: true
+
+capt1 <-  "Source: U.S. Census Bureau. Annual population estimates may not be reliable for small areas such as villages."
+capt2 <- "Note: Annual estimates for Salem not easily available after 2010 due to dissolution; 2020 value is decennial census."
+capt <- paste0("\n", capt1, "\n", capt2)
+
+pdata |> 
+  ggplot(aes(x=year, y=pop)) +
+  geom_line(data = pdata  |>  
+              filter(!(geoid=="3664771" & year > 2010)),
+            colour="blue",
+            linewidth = 1,
+            linetype="solid") +
+  geom_line(data = pdata |> 
+              filter(geoid=="3664771", year >= 2010), 
+            colour="blue",
+            linewidth = 1,
+            linetype = "dashed") + # dashed line for Salem
+  scale_x_continuous(name = NULL, breaks = seq(1900, 2025, 5)) +
+  scale_y_continuous(name = "Number of people") +
+  ggtitle(label="Population in area villages") +
+  labs(caption = capt) +
+  theme_minimal() +
+  legend_notitle +
+  caption_left +
+  facet_wrap(~trimname, scales="free_y", ncol=3)
+
+```
+
+
+:::{.notes}
+Unfortunately the Census Bureau has removed annual population data after 2010 from their website as a result of the village dissolution, which occurred in 2016.
+:::
+
+### Cambridge village's population loss has not been as severe as most other area villages
+
+```{r}
+#| label: village-population-changes
+
+capt1 <-  "Source: U.S. Census Bureau. Annual population estimates may not be reliable for small areas such as villages."
+capt2 <- "Note: Annual estimates for Salem not easily available after 2010 due to dissolution; 2020 value is decennial census."
+capt <- paste0("\n", capt1, "\n", capt2)
+
+pdata2 <- pdata |> 
+  filter(year >= baseyear)
+
+pdata2 |>
+  ggplot(aes(x=year, y=cpcpop, colour=trimname)) +
+  geom_line(data = pdata2  |>  
+              filter(!(geoid=="3664771")),
+            linewidth = 1,
+            linetype="solid") +
+  geom_line(data = pdata2 |> 
+              filter(geoid=="3664771"), 
+            linewidth = 1,
+            linetype = "dashed") + # dashed line for Salem  
+  geom_hline(yintercept = 0, linetype="solid", linewidth = .5) +
+  scale_x_continuous(name = NULL, breaks = seq(baseyear, 2025, 1)) +
+  scale_y_continuous(name = "Cumulative percentage change",
+                     breaks =  seq(-20, 20, 1),
+                     labels=scales::comma_format()) +
+  ggtitle(label=paste0("Cumulative percentage change in population since ", baseyear)) +
+  labs(caption = capt) +
+  theme_minimal() +
+  legend_notitle +
+  caption_left
+
+```
+
+
+### School district child poverty rates generally have declined over the past 5 or more years
+
+```{r}
+#| output: true
+#| eval: true
+
+df <- readRDS(fs::path(ddir, "sd_saipe.rds"))
+
+# argyle 03210
+# cambridge 06210
+# greenwich 12900
+# salem 25470
+# schuylerville 26160
+# hoosick falls 14760
+ 
+keep_sds <- c("03210", "06210", "12900", "25470", "26160", "14760")
+
+pdata <- df |> 
+  filter(stfips == "36", distid %in% keep_sds) |> 
+  mutate(trimname=case_when(distid=="06210" ~ "Cambridge",
+                            distid=="03210" ~ "Argyle",
+                            distid=="12900" ~ "Greenwich",
+                            distid=="25470" ~ "Salem",
+                            distid=="26160" ~ "Schuylerville",
+                            distid=="14760" ~ "Hoosick Falls")) |> 
+  arrange(distid)
+
+capt <- "Source: U.S. Census Bureau, Small Area Income and Poverty Estimates (SAIPE)"
+
+ pdata |> 
+  ggplot(aes(year, cpovrate)) +
+  geom_line(colour="blue",
+            linewidth = 1,
+            linetype="solid") +
+  # geom_point() +
+  scale_x_continuous(name = NULL, breaks = seq(2000, 2025, 5)) +
+  scale_y_continuous(name = "Child poverty rate", breaks = seq(0, 30, 2)) +
+  ggtitle(label="Child poverty rate in area school districts") +
+  labs(caption = capt) +
+  facet_wrap(~trimname, scales="fixed", ncol=3) +
+  theme_minimal() +
+  legend_notitle +
+  caption_left
+
+
+```
+

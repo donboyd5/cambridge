@@ -1,0 +1,88 @@
+
+## Economy: Migration
+
+```{r}
+#| output: false
+
+# get acs data ----
+acs_data <- readRDS(fs::path(ddir, "acs_data.rds"))
+# count(acs_data, variable, concept, label)
+
+check <- acs_data  |> 
+  filter(stabbr=="NY", geotype=="state", table == "B07003")
+
+```
+
+
+```{r}
+#| output: false
+
+# data preparation ----
+# 001 004
+# acs_variables |> filter(table == "B07003") |> select(name, label)
+#  1 B07003_001 Estimate!!Total:                                                        
+#  4 B07003_004 Estimate!!Total:!!Same house 1 year ago:
+#  7 B07003_007 Estimate!!Total:!!Moved within same county:
+
+mig_data <- acs_data |> 
+  filter(table == "B07003") |> 
+  filter(as.numeric(vnum) %in% c(1, 4, 7)) |> 
+  select(geoid, geotype, geoname, trimname, stabbr, variable, estimate) |> 
+  pivot_wider(names_from=variable, values_from=estimate) |> 
+  mutate(moved_ooc = B07003_001 - B07003_004 - B07003_007, # number moved from out of county
+         estimate = moved_ooc / B07003_001 * 100, # % moved in from ooc
+         variable = "moved_oocpct")
+
+# mig_data |> filter(geoid=="3611825")
+
+```
+
+
+```{r}
+#| output: false
+
+# set graph constants ----
+barvar <- "moved_oocpct"
+titlebase <- "Percent who moved to current house in last year from out of county"
+ylab <- "% of current residents"
+ybreaks <- seq(0, 100, 1)
+data <- mig_data
+
+```
+
+
+### Washington County in-migration is lower than in other area counties
+
+```{r}
+#| label: plot_moveoocpct_county
+
+barline(gtype = "county", barvar,
+         data,
+         constants = constants,
+         titlebase=titlebase, ylab=ylab, ybreaks=ybreaks)
+
+```
+
+### Cambridge village in-migration is relatively low
+
+```{r}
+#| label: plot_moveoocpct_place
+
+barline(gtype = "place", barvar, data,
+         constants,
+         titlebase=titlebase, ylab=ylab, ybreaks=ybreaks)
+
+```
+
+
+### Cambridge town in-migration is in the middle of other area towns
+
+```{r}
+#| label: plot_moveoocpct_cousub
+
+barline(gtype = "cousub", barvar, data,
+         constants = constants,
+         titlebase=titlebase, ylab=ylab, ybreaks=ybreaks)
+
+```
+

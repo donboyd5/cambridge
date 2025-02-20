@@ -40,18 +40,11 @@ editor_options:
 
 -   What does this mean for economic development?
 
-
-::: {.content-visible when-format="html"}
+:::: {.content-visible when-format="html"}
 ::: notes
-Who lives here? demographics (age, ), education, employment, income, commuting
-What's our economy like?
-How have we been changing?
-What does it cost to live here?
-What's the outlook?
-
+Who lives here? demographics (age, ), education, employment, income, commuting What's our economy like? How have we been changing? What does it cost to live here? What's the outlook?
 :::
-:::
-
+::::
 
 ```{r includes}
 #| label: includes
@@ -63,8 +56,6 @@ source(here::here("r", "functions.r"))
 
 
 ```
-
-
 
 ```{r constants}
 #| label: constants
@@ -108,7 +99,6 @@ aoi <- c(state_aoi, cnty_aoi, vlg_aoi, twn_aoi)
 # xwalkny |> filter(affgeoid %in% aoi) |> select(1:4)
 
 ```
-
 
 ```{r get-table-summary}
 #| label: get-table-summary
@@ -157,8 +147,6 @@ df4 |>
 
 ```
 
-
-
 ```{r}
 #| label: functions-utility
 #| eval: true
@@ -194,8 +182,6 @@ odds <- function(nrows){
 
 ```
 
-
-
 ```{r}
 #| label: load-basic-data
 #| eval: true
@@ -207,8 +193,6 @@ data(geometry)
 
 ```
 
-
-
 ```{r}
 #| label: load-table-data
 #| eval: true
@@ -216,7 +200,6 @@ data(geometry)
 
 
 ```
-
 
 # Who lives here?
 
@@ -240,7 +223,6 @@ tmp <- readRDS(fpath)
 
 
 ```
-
 
 ```{r}
 #| label: age-median
@@ -284,6 +266,7 @@ tab
 ```
 
 ## Race and ethnicity
+
 ```{r}
 #| label: race-explore
 #| eval: false
@@ -301,7 +284,6 @@ check <- acsvars |> filter(year==2011, table=="B02001")
 
 
 ```
-
 
 ```{r}
 #| label: race-data
@@ -339,7 +321,6 @@ tabdata
 
 ```
 
-
 ```{r}
 #| label: race-tab
 #| eval: true
@@ -370,7 +351,6 @@ tab
 
 ```
 
-
 ## Education
 
 ```{r}
@@ -390,7 +370,6 @@ check
 
 
 ```
-
 
 ```{r}
 #| label: ed-data
@@ -507,8 +486,6 @@ tab
 
 something here
 
-
-
 ```{=html}
 <!--
 
@@ -541,8 +518,6 @@ https://www.youtube.com/watch?v=yAlhq8yhLsw
 -->
 ```
 
-
-
 ```{r}
 #| label: CAUTION-ONETIME-acs-tables
 #| eval: false
@@ -568,5 +543,3 @@ purrr::map(tabnames, f, 2019)
 purrr::map(tabnames, f, 2021)
 
 ```
-
-

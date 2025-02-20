@@ -1,0 +1,76 @@
+project:
+    type: website
+    output-dir: _slides
+    # pre-render: # make sure the pre-renders work if this is used
+    #   get_school_districts_saipe_data.R,
+    #   get_census_population_estimates.R 
+    #   get_ny_county_population_estimates.R
+    render:
+      - index.qmd
+
+format:
+  revealjs:
+    theme: simple
+    slideNumber: true
+    slide-level: 3
+    toc: true
+    toc-title: "Contents"
+    toc-depth: 1
+    toc-expand: 2
+    footer: "[Go to Table of Contents](#TOC)"
+    include-after-body: title_url.html
+    
+execute:
+  freeze: false
+    
+editor:
+  console: true
+  markdown:
+    wrap: 72
+    canonical: true
+    
+editor_options:
+  chunk_output_type: console
+    
+# quarto publish netlify --no-browser --no-prompt
+# quarto publish netlify --no-browser --no-render --no-prompt
+
+# Census ftp: # https://www2.census.gov/programs-surveys/
+
+# county population 1970-2023
+# https://data.ny.gov/Government-Finance/Annual-Population-Estimates-for-New-York-State-and/krt9-ym2k/about_data
+# blob:https://data.ny.gov/61a4cddf-5446-400d-b12b-4bf7fef74721
+# https://data.ny.gov/api/views/krt9-ym2k/files/nAM5S50Lx-5v4cfDoxZNBctkNhRCNly2WRUgaYWPsAE?download=true&filename=DOL%20AnnualPopulationEstimates_Overview.pdf
+# https://data.ny.gov/api/views/krt9-ym2k/files/Iu3_lXQ320MkzrA0J-EqxQ63ZL0_3Cz3TtQd2HZHuC4?download=true&filename=DOL_AnnualPopulationEstimates_DataDictionary.pdf
+# 
+# blob:https://pad.human.cornell.edu/c8a96f15-3bf5-4363-bef6-a6f6b19424f6
+# https://data.ny.gov/browse?q=population&sortBy=relevance
+# https://data.ny.gov/Economic-Development/Census-2010-and-2020-Population-Region-Counties-Ci/sxhg-qquj
+# https://health.data.ny.gov/Health/Vital-Statistics-Deaths-by-Resident-County-Region-/xit9-mprv
+# 
+
+
+# taxes
+# https://data.ny.gov/Government-Finance/Real-Property-Tax-Rates-Levy-Data-By-Municipality-/iq85-sdzs/about_data
+# https://www.tax.ny.gov/pubs_and_bulls/orpts/publications/reports_annual.htm
+# Residential Assessment Ratios: Beginning Rate Year 1982
+# 
+# Broadband Availability By Municipality -- old
+# Community Development Block Grant (CDBG) Contracts -- plus other grants other files
+# 
+# Bridge Conditions, NYS Department of Transportation
+# https://www.dot.ny.gov/main/bridgedata
+# https://www.dot.ny.gov/main/bridgedata/repository/WashingtonBridgeData.pdf BIN 3306450
+# 01 Salem (Town) 6 MI SOUTH OF SALEM COUNTY ROAD 61 BATTEN KILL 3306450 30 - County 1963 02/20/2023 N
+# https://www.fhwa.dot.gov/bridge/nbi.cfm
+# https://catalog.data.gov/dataset/national-bridge-inventory-citizen-connect
+# https://data.transportation.gov/Roadways-and-Bridges/National-Bridge-Inventory-System-NBI-/uack-gist/about_data
+# https://www.fhwa.dot.gov/bridge/nbi/ascii.cfm
+# https://www.fhwa.dot.gov/bridge/nbi/format.cfm
+# https://www.fhwa.dot.gov/bridge/nbi/disclaim.cfm?nbiYear=2024allstatesallrecsdel&nbiZip=zip all data 2024 delimited
+# Highway Performance Monitoring System (HPMS)
+
+# health
+# https://data.cdc.gov/500-Cities-Places/PLACES-Local-Data-for-Better-Health-Place-Data-202/eav7-hnsx/about_data
+# https://www.cdc.gov/places/tools/data-portal.html
+# https://data.cdc.gov/browse?category=500+Cities+%26+Places&q=&sortBy=relevance&page=2

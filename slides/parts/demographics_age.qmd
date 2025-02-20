@@ -1,0 +1,69 @@
+
+
+```{r}
+#| output: false
+#| eval: true
+
+source(here::here("slides", "setup.R"))
+
+# get acs data ----
+acs_data <- readRDS(fs::path(ddir, "acs_data.rds"))
+count(acs_data, variable, concept, label)
+
+```
+
+
+## Demographics: Age
+
+```{r}
+#| output: false
+
+# set graph constants ----
+barvar <- "B01002_001"
+titlebase <- "Median age"
+ylab <- "Median age"
+ybreaks <- seq(0, 100, 5)
+data <- acs_data
+
+```
+
+
+### Washington County is older than most area counties
+
+
+```{r}
+#| label: plot_age_county
+
+barline(gtype = "county", barvar, data,
+         constants = constants,
+         titlebase=titlebase, ylab=ylab, ybreaks=ybreaks)
+
+```
+
+### Cambridge village is older than nearby places
+
+```{r}
+#| label: plot_age_place
+
+barline(gtype = "place", barvar, data,
+         constants = constants,
+         titlebase=titlebase, ylab=ylab, ybreaks=ybreaks)
+
+```
+
+::: {style="font-size: 0.4em;"}
+Caveat: Perhaps this reflects a concentration of senior housing?
+:::
+
+
+### Jackson and White Creek towns are older than nearby towns
+
+```{r}
+#| label: plot_age_cousub
+
+barline(gtype = "cousub", barvar, data,
+         constants = constants,
+         titlebase=titlebase, ylab=ylab, ybreaks=ybreaks)
+
+```
+

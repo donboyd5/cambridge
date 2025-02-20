@@ -1,0 +1,15 @@
+# Demographics
+
+- [Population trends](#demographics-population-trends)
+
+- [Age](#demographics-age)
+
+- [Educational attainment](#demographics-educational-attainment)
+
+
+{{< include parts/demographics_poptrends.qmd >}}
+
+{{< include parts/demographics_education.qmd >}}
+
+{{< include parts/demographics_age.qmd >}}
+

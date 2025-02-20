@@ -1,0 +1,18 @@
+<script>
+Reveal.on('slidechanged', function(event) {
+    let footer = document.querySelector('div.footer');
+    if (Reveal.isFirstSlide()) {
+        footer.innerHTML = '<a href="https://cambridgeny.netlify.app">cambridgeny.netlify.app</a>';
+    } else {
+        footer.innerHTML = '<a href="#/TOC">Go to Table of Contents</a>';
+    }
+});
+
+// Handle initial load
+window.onload = function() {
+    let footer = document.querySelector('div.footer');
+    if (Reveal.isFirstSlide()) {
+        footer.innerHTML = '<a href="https://cambridgeny.netlify.app">cambridgeny.netlify.app</a>';
+    }
+}
+</script>

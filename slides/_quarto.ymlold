@@ -1,0 +1,43 @@
+project:
+  title: "Cambridge, New York"
+  type: website
+  output-dir: _slides
+  render:
+    - index.qmd
+    - intro.qmd
+
+format:
+  revealjs:  # Replace with your desired format, e.g., "beamer" or "pptx".
+    theme: simple # You can customize the theme.
+
+# project:
+#   title: "Cambridge, New York"
+#   type: website
+#   output-dir: _slides
+#   render:
+#     - index.qmd
+#     - intro.qmd
+#     # - slides/*.qmd
+# 
+# execute:
+#   echo: false
+# 
+# format:
+#   revealjs:
+#     toc: true
+    # slide-number: true
+    # chalkboard: 
+    #   buttons: false
+    # preview-links: auto
+    # theme: [white, mycss.scss] # use white, with modifications; default also ok
+
+# execute:
+#   eval: true
+#   echo: false
+#   error: false
+#   warning: false
+#   message: false  # not sure if allowed
+#   note: false  # not sure if allowed
+#   freeze: auto  # during global project renders, re-render only when source changes
+# editor_options: 
+#   chunk_output_type: console
