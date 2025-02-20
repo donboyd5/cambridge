@@ -1,3 +1,4 @@
+# Population trends
 
 ```{r}
 #| output: false
@@ -5,15 +6,12 @@
 
 source(here::here("book", "setup.R"))
 
-# get data
+# get data now
 # acs_data <- readRDS(fs::path(ddir, "acs_data.rds"))
 pop <- readRDS(fs::path(ddir, "population", "county_population.rds"))
 placepop <- readRDS(fs::path(popdir, "popests_raw.rds"))
 
 ```
-
-
-# Demographics: Population trends
 
 ## County fortunes have differed widely over last half-century
 
@@ -138,9 +136,11 @@ pdata |>
 ```
 
 
-:::{.notes}
 Unfortunately the Census Bureau has removed annual population data after 2010 from their website as a result of the village dissolution, which occurred in 2016.
-:::
+
+<!-- :::{.notes}
+Unfortunately the Census Bureau has removed annual population data after 2010 from their website as a result of the village dissolution, which occurred in 2016.
+::: -->
 
 ## Cambridge village's population loss has not been as severe as most other area villages
 

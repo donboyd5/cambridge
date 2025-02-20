@@ -24,7 +24,8 @@ book:
     - index.qmd
     - part: "Demographics"
       chapters:    
-      - demographics_poptrends.qmd    
+      - demographics_poptrends.qmd
+      - demographics_age.qmd
   
 execute:
   eval: true

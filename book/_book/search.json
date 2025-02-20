@@ -12,56 +12,89 @@
   {
     "objectID": "demographics_poptrends.html",
     "href": "demographics_poptrends.html",
-    "title": "2  Demographics: Population trends",
+    "title": "2  Population trends",
     "section": "",
     "text": "2.1 County fortunes have differed widely over last half-century",
     "crumbs": [
       "Demographics",
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>get data</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Population trends</span>"
     ]
   },
   {
     "objectID": "demographics_poptrends.html#population-declines-in-washington-county-have-been-persistent-and-severe",
     "href": "demographics_poptrends.html#population-declines-in-washington-county-have-been-persistent-and-severe",
-    "title": "2  Demographics: Population trends",
+    "title": "2  Population trends",
     "section": "2.2 Population declines in Washington County have been persistent and severe",
     "text": "2.2 Population declines in Washington County have been persistent and severe",
     "crumbs": [
       "Demographics",
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>get data</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Population trends</span>"
     ]
   },
   {
     "objectID": "demographics_poptrends.html#population-declines-in-most-area-villages-have-been-sharp",
     "href": "demographics_poptrends.html#population-declines-in-most-area-villages-have-been-sharp",
-    "title": "2  Demographics: Population trends",
+    "title": "2  Population trends",
     "section": "2.3 Population declines in most area villages have been sharp",
-    "text": "2.3 Population declines in most area villages have been sharp\n\n\n\n\n\n\n\n\n\n\nUnfortunately the Census Bureau has removed annual population data after 2010 from their website as a result of the village dissolution, which occurred in 2016.",
+    "text": "2.3 Population declines in most area villages have been sharp\n\n\n\n\n\n\n\n\n\nUnfortunately the Census Bureau has removed annual population data after 2010 from their website as a result of the village dissolution, which occurred in 2016.",
     "crumbs": [
       "Demographics",
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>get data</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Population trends</span>"
     ]
   },
   {
     "objectID": "demographics_poptrends.html#cambridge-villages-population-loss-has-not-been-as-severe-as-most-other-area-villages",
     "href": "demographics_poptrends.html#cambridge-villages-population-loss-has-not-been-as-severe-as-most-other-area-villages",
-    "title": "2  Demographics: Population trends",
+    "title": "2  Population trends",
     "section": "2.4 Cambridge village’s population loss has not been as severe as most other area villages",
     "text": "2.4 Cambridge village’s population loss has not been as severe as most other area villages",
     "crumbs": [
       "Demographics",
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>get data</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Population trends</span>"
     ]
   },
   {
     "objectID": "demographics_poptrends.html#school-district-child-poverty-rates-generally-have-declined-over-the-past-5-or-more-years",
     "href": "demographics_poptrends.html#school-district-child-poverty-rates-generally-have-declined-over-the-past-5-or-more-years",
-    "title": "2  Demographics: Population trends",
+    "title": "2  Population trends",
     "section": "2.5 School district child poverty rates generally have declined over the past 5 or more years",
     "text": "2.5 School district child poverty rates generally have declined over the past 5 or more years",
     "crumbs": [
       "Demographics",
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>get data</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Population trends</span>"
+    ]
+  },
+  {
+    "objectID": "demographics_age.html",
+    "href": "demographics_age.html",
+    "title": "3  Age",
+    "section": "",
+    "text": "3.1 Washington County is older than most area counties",
+    "crumbs": [
+      "Demographics",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Age</span>"
+    ]
+  },
+  {
+    "objectID": "demographics_age.html#cambridge-village-is-older-than-nearby-places",
+    "href": "demographics_age.html#cambridge-village-is-older-than-nearby-places",
+    "title": "3  Age",
+    "section": "3.2 Cambridge village is older than nearby places",
+    "text": "3.2 Cambridge village is older than nearby places\n\n\n\n\n\n\n\n\n\nCaveat: Perhaps this reflects a concentration of senior housing?",
+    "crumbs": [
+      "Demographics",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Age</span>"
+    ]
+  },
+  {
+    "objectID": "demographics_age.html#jackson-and-white-creek-towns-are-older-than-nearby-towns",
+    "href": "demographics_age.html#jackson-and-white-creek-towns-are-older-than-nearby-towns",
+    "title": "3  Age",
+    "section": "3.3 Jackson and White Creek towns are older than nearby towns",
+    "text": "3.3 Jackson and White Creek towns are older than nearby towns",
+    "crumbs": [
+      "Demographics",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Age</span>"
     ]
   }
 ]
