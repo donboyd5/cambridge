@@ -1,4 +1,5 @@
 
+
 ```{r}
 #| output: false
 #| eval: true
@@ -176,13 +177,13 @@ pdata2 |>
 ```
 
 
-### Child poverty
+### School district child poverty rates generally have declined over the past 5 or more years
 
 ```{r}
-#| output: false
-#| eval: false
+#| output: true
+#| eval: true
 
-
+df <- readRDS(fs::path(ddir, "sd_saipe.rds"))
 
 # argyle 03210
 # cambridge 06210
@@ -202,6 +203,23 @@ pdata <- df |>
                             distid=="26160" ~ "Schuylerville",
                             distid=="14760" ~ "Hoosick Falls")) |> 
   arrange(distid)
+
+capt <- "Source: U.S. Census Bureau, Small Area Income and Poverty Estimates (SAIPE)"
+
+ pdata |> 
+  ggplot(aes(year, cpovrate)) +
+  geom_line(colour="blue",
+            linewidth = 1,
+            linetype="solid") +
+  # geom_point() +
+  scale_x_continuous(name = NULL, breaks = seq(2000, 2025, 5)) +
+  scale_y_continuous(name = "Child poverty rate", breaks = seq(0, 30, 2)) +
+  ggtitle(label="Child poverty rate in area school districts") +
+  labs(caption = capt) +
+  facet_wrap(~trimname, scales="fixed", ncol=3) +
+  theme_minimal() +
+  legend_notitle +
+  caption_left
 
 
 ```
