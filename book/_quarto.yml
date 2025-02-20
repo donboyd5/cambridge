@@ -26,6 +26,7 @@ book:
       chapters:    
       - demographics_poptrends.qmd
       - demographics_age.qmd
+      - demographics_education.qmd
   
 execute:
   eval: true

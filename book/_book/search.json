@@ -96,5 +96,38 @@
       "Demographics",
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>Age</span>"
     ]
+  },
+  {
+    "objectID": "demographics_education.html",
+    "href": "demographics_education.html",
+    "title": "4  Demographics: Educational attainment",
+    "section": "",
+    "text": "4.1 Washington County college educational attainment is lower than in other area counties",
+    "crumbs": [
+      "Demographics",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Demographics: Educational attainment</span>"
+    ]
+  },
+  {
+    "objectID": "demographics_education.html#cambridge-village-college-educational-attainment-is-higher-than-in-other-area-places",
+    "href": "demographics_education.html#cambridge-village-college-educational-attainment-is-higher-than-in-other-area-places",
+    "title": "4  Demographics: Educational attainment",
+    "section": "4.2 Cambridge village college educational attainment is higher than in other area places",
+    "text": "4.2 Cambridge village college educational attainment is higher than in other area places",
+    "crumbs": [
+      "Demographics",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Demographics: Educational attainment</span>"
+    ]
+  },
+  {
+    "objectID": "demographics_education.html#cambridge-town-college-educational-attainment-is-higher-than-in-other-area-towns",
+    "href": "demographics_education.html#cambridge-town-college-educational-attainment-is-higher-than-in-other-area-towns",
+    "title": "4  Demographics: Educational attainment",
+    "section": "4.3 Cambridge town college educational attainment is higher than in other area towns",
+    "text": "4.3 Cambridge town college educational attainment is higher than in other area towns",
+    "crumbs": [
+      "Demographics",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Demographics: Educational attainment</span>"
+    ]
   }
 ]

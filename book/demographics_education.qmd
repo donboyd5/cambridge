@@ -1,0 +1,89 @@
+# Demographics: Educational attainment
+
+
+```{r}
+#| output: false
+
+source(here::here("slides", "setup.R"))
+
+# get acs data ----
+acs_data <- readRDS(fs::path(ddir, "acs_data.rds"))
+
+# count(acs_data, variable, concept, label)
+
+# acs_data  |> 
+#   filter(stabbr=="NY", geotype=="state", table == "B15003")
+
+```
+
+
+```{r}
+#| output: false
+
+# data preparation ----
+
+ed_data <- acs_data |> 
+  filter(table == "B15003") |> 
+  filter(as.numeric(vnum) %in% c(1, 22:25)) |> 
+  # filter(geoid %in% c("36", "50", keep_cos, keep_places, keep_cousubs)) |> 
+  mutate(edgroup=ifelse(vnum=="001", "total", "college")) |> 
+  summarise(estimate = sum(estimate), .by=c(geoid, stabbr, trimname, geotype, edgroup)) |>
+  pivot_wider(names_from=edgroup, values_from=estimate) |> 
+  mutate(variable = "college_pct",
+         estimate = college / total * 100)
+ed_data
+
+```
+
+
+```{r}
+#| output: false
+
+# set graph constants ----
+barvar <- "college_pct"
+titlebase <- "Number with bachelor's degree or higher as % of age 25+ population"
+ylab <- "% of age 25+ population"
+ybreaks <- seq(0, 100, 5)
+data <- ed_data
+
+```
+
+
+## Washington County college educational attainment is lower than in other area counties
+
+```{r}
+#| label: plot_collegepct_county
+#| output: true
+
+barline(gtype = "county", barvar,
+         data,
+         constants = constants,
+         titlebase=titlebase, ylab=ylab, ybreaks=ybreaks)
+
+```
+
+## Cambridge village college educational attainment is higher than in other area places
+
+```{r}
+#| label: plot_collegepct_place
+#| output: true
+
+barline(gtype = "place", barvar, data,
+         constants,
+         titlebase=titlebase, ylab=ylab, ybreaks=ybreaks)
+
+```
+
+
+## Cambridge town college educational attainment is higher than in other area towns
+
+```{r}
+#| label: plot_collegepct_cousub
+#| output: true
+
+barline(gtype = "cousub", barvar, data,
+         constants = constants,
+         titlebase=titlebase, ylab=ylab, ybreaks=ybreaks)
+
+```
+
