@@ -12,7 +12,11 @@ format:
     code-fold: true
     number-depth: 5
     toc-depth: 5
-    toc-expand: false    
+    toc-expand: false
+    grid:
+      sidebar-width: 250px
+      body-width: 800px
+      margin-width: 300px
 
 book:
   title: "Cambridge, New York"
@@ -24,18 +28,28 @@ book:
     - index.qmd
     - part: "Demographics"
       chapters:    
-      - demographics_poptrends.qmd
-      - demographics_age.qmd
-      - demographics_education.qmd
+        - demographics_poptrends.qmd
+        - demographics_age.qmd
+        - demographics_education.qmd
     - part: "Economy"
       chapters: 
-      - economy_income.qmd
-      - economy_poverty.qmd
-      - economy_migration.qmd
+        - economy_income.qmd
+        - economy_poverty.qmd
+        - economy_migration.qmd
     - part: "Housing"
       chapters: 
-      - housing_ownership.qmd
-      - housing_rental_costs.qmd
+        - housing_ownership.qmd
+        - housing_rental_costs.qmd
+    - part: "Health"
+      chapters: 
+        - health.qmd
+    - part: "Outlook and implications"
+      chapters: 
+        - outlook.qmd
+        - implications.qmd
+    - part: "Appendices"
+      chapters: 
+        - todos.qmd
   
 execute:
   eval: true

@@ -28,6 +28,7 @@ legend_none <- theme(legend.position = "None")
 legend_notitle <- theme(legend.title = element_blank())
 caption_left <- theme(plot.caption = element_text(hjust = 0))
 x90 <- theme(axis.text.x = element_text(angle = -90, vjust = 0, hjust=0.5))
+x45 <- theme(axis.text.x = element_text(angle = -45, vjust = 0, hjust=0.0))
 
 
 # constants geo -----------------------------------------------------------
@@ -106,6 +107,7 @@ barline <- function(gtype, barvar, data,
        x = NULL) +
     theme_minimal() +
     theme(legend.position = "None") +
+    x45 +
     labs(caption = capt) +
     caption_left
 }
