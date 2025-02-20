@@ -1,0 +1,67 @@
+project:
+  type: book
+  output-dir: _web
+  
+execute:
+  eval: true
+  echo: false
+  output: false
+  freeze: auto  # auto: during global project renders, re-render only when source changes
+  
+# rm _book/bill_outline.html; quarto render bill_outline.qmd  
+
+book:
+  title: "MTA PMT Analysis"
+  subtitle: ""
+  author: "Don Boyd"
+  date: today
+  date-format: long
+  chapters:
+    - index.qmd
+    - part: "PMT rules"
+      chapters:    
+      - pmt_rules.qmd
+    - part: "Prepare data"
+      chapters:
+      # - get_cbp_data.qmd # I THINK WE USE THIS BUT VERIFY
+      # - get_qcew_data.qmd # I THINK WE USE THIS BUT VERIFY
+      # - simple_estabs_basis # THIS IS THE ONE TO USE AFTER GETTING CBP AND QCEW DATA
+      # - method_steps.qmd # SHOULD BE JUST INFO
+      # - get_susb_data.qmd # NO LONGER USED
+      # - create_pmt_file.qmd # NO LONGER USED
+      - pmt_model.qmd  # after we've saved data use this
+
+     # which of these qcew files did I use?      
+      # - get_qcew_data.qmd
+      # - clean_qcew_save_mta_subset.qmd
+    
+      # - fillin_qcew.qmd
+      # - employer_size.qmd
+      # - make_pmt_base.qmd
+
+# bibliography: references.bib
+
+format:
+  html:
+    theme: cosmo
+    code-fold: true
+    number-depth: 5
+    toc-depth: 5
+    toc-expand: false
+    # css: styles.css
+  # pdf:
+  #   documentclass: scrreprt
+
+# editor: console or visual
+
+editor_options:
+  chunk_output_type: console
+  
+# ```{r stop_here, echo=FALSE}
+# knitr::knit_exit()
+# ```
+
+# useful reminders of quarto commands:
+# quarto publish netlify --no-render
+# quarto publish netlify --no-browser --no-prompt
+# quarto publish netlify --no-render --no-browser --no-prompt 

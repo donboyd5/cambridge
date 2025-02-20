@@ -1,0 +1,67 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Cambridge, New York",
+    "section": "",
+    "text": "1 Introduction\nThis is the start.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction</span>"
+    ]
+  },
+  {
+    "objectID": "demographics_poptrends.html",
+    "href": "demographics_poptrends.html",
+    "title": "2  Demographics: Population trends",
+    "section": "",
+    "text": "2.1 County fortunes have differed widely over last half-century",
+    "crumbs": [
+      "Demographics",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>get data</span>"
+    ]
+  },
+  {
+    "objectID": "demographics_poptrends.html#population-declines-in-washington-county-have-been-persistent-and-severe",
+    "href": "demographics_poptrends.html#population-declines-in-washington-county-have-been-persistent-and-severe",
+    "title": "2  Demographics: Population trends",
+    "section": "2.2 Population declines in Washington County have been persistent and severe",
+    "text": "2.2 Population declines in Washington County have been persistent and severe",
+    "crumbs": [
+      "Demographics",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>get data</span>"
+    ]
+  },
+  {
+    "objectID": "demographics_poptrends.html#population-declines-in-most-area-villages-have-been-sharp",
+    "href": "demographics_poptrends.html#population-declines-in-most-area-villages-have-been-sharp",
+    "title": "2  Demographics: Population trends",
+    "section": "2.3 Population declines in most area villages have been sharp",
+    "text": "2.3 Population declines in most area villages have been sharp\n\n\n\n\n\n\n\n\n\n\nUnfortunately the Census Bureau has removed annual population data after 2010 from their website as a result of the village dissolution, which occurred in 2016.",
+    "crumbs": [
+      "Demographics",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>get data</span>"
+    ]
+  },
+  {
+    "objectID": "demographics_poptrends.html#cambridge-villages-population-loss-has-not-been-as-severe-as-most-other-area-villages",
+    "href": "demographics_poptrends.html#cambridge-villages-population-loss-has-not-been-as-severe-as-most-other-area-villages",
+    "title": "2  Demographics: Population trends",
+    "section": "2.4 Cambridge village’s population loss has not been as severe as most other area villages",
+    "text": "2.4 Cambridge village’s population loss has not been as severe as most other area villages",
+    "crumbs": [
+      "Demographics",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>get data</span>"
+    ]
+  },
+  {
+    "objectID": "demographics_poptrends.html#school-district-child-poverty-rates-generally-have-declined-over-the-past-5-or-more-years",
+    "href": "demographics_poptrends.html#school-district-child-poverty-rates-generally-have-declined-over-the-past-5-or-more-years",
+    "title": "2  Demographics: Population trends",
+    "section": "2.5 School district child poverty rates generally have declined over the past 5 or more years",
+    "text": "2.5 School district child poverty rates generally have declined over the past 5 or more years",
+    "crumbs": [
+      "Demographics",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>get data</span>"
+    ]
+  }
+]
