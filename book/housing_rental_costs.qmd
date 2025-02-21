@@ -9,7 +9,7 @@
 ```{r}
 #| output: false
 
-source(here::here("slides", "setup.R"))
+source(here::here("book", "setup.R"))
 
 # get acs data ----
 acs_data <- readRDS(fs::path(ddir, "acs_data.rds"))
