@@ -139,9 +139,6 @@ pdata |>
 
 Unfortunately the Census Bureau has removed annual population data after 2010 from their website as a result of the village dissolution, which occurred in 2016.
 
-<!-- :::{.notes}
-Unfortunately the Census Bureau has removed annual population data after 2010 from their website as a result of the village dissolution, which occurred in 2016.
-::: -->
 
 ## Cambridge village's population loss has not been as severe as most other area villages
 
@@ -176,54 +173,6 @@ pdata2 |>
   theme_minimal() +
   legend_notitle +
   caption_left
-
-```
-
-
-## School district child poverty rates generally have declined over the past 5 or more years
-
-```{r}
-#| output: true
-#| eval: true
-
-df <- readRDS(fs::path(ddir, "sd_saipe.rds"))
-
-# argyle 03210
-# cambridge 06210
-# greenwich 12900
-# salem 25470
-# schuylerville 26160
-# hoosick falls 14760
- 
-keep_sds <- c("03210", "06210", "12900", "25470", "26160", "14760")
-
-pdata <- df |> 
-  filter(stfips == "36", distid %in% keep_sds) |> 
-  mutate(trimname=case_when(distid=="06210" ~ "Cambridge",
-                            distid=="03210" ~ "Argyle",
-                            distid=="12900" ~ "Greenwich",
-                            distid=="25470" ~ "Salem",
-                            distid=="26160" ~ "Schuylerville",
-                            distid=="14760" ~ "Hoosick Falls")) |> 
-  arrange(distid)
-
-capt <- "Source: U.S. Census Bureau, Small Area Income and Poverty Estimates (SAIPE)"
-
- pdata |> 
-  ggplot(aes(year, cpovrate)) +
-  geom_line(colour="blue",
-            linewidth = 1,
-            linetype="solid") +
-  # geom_point() +
-  scale_x_continuous(name = NULL, breaks = seq(2000, 2025, 5)) +
-  scale_y_continuous(name = "Child poverty rate", breaks = seq(0, 30, 2)) +
-  ggtitle(label="Child poverty rate in area school districts") +
-  labs(caption = capt) +
-  facet_wrap(~trimname, scales="fixed", ncol=3) +
-  theme_minimal() +
-  legend_notitle +
-  caption_left
-
 
 ```
 

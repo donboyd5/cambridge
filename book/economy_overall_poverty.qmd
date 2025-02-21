@@ -1,5 +1,4 @@
-
-# Poverty
+# Poverty in the general population
 
 
 ```{r}
@@ -59,7 +58,7 @@ barline(gtype = "county", barvar,
 
 ```
 
-## Cambridge village poverty rate is higher than in other area places
+## Cambridge village poverty rate is higher than in other area villages
 
 ```{r}
 #| label: plot_povrate_place
