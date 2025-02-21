@@ -24,7 +24,7 @@ acs_data <- readRDS(fs::path(ddir, "acs_data.rds"))
 
 pov_data <- acs_data |> 
   filter(variable %in% c("B17001_001", "B17001_002")) |>
-  select(stabbr, stname, geoid, geotype, geoname, trimname, variable, estimate) |> 
+  select(stabbr, stname, geoid, geotype, geoname, trimname, trimname_base, variable, estimate) |> 
   pivot_wider(names_from=variable, values_from=estimate) |> 
   mutate(variable = "povrate",
          estimate = B17001_002 / B17001_001 * 100)

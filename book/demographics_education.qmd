@@ -27,7 +27,7 @@ ed_data <- acs_data |>
   filter(as.numeric(vnum) %in% c(1, 22:25)) |> 
   # filter(geoid %in% c("36", "50", keep_cos, keep_places, keep_cousubs)) |> 
   mutate(edgroup=ifelse(vnum=="001", "total", "college")) |> 
-  summarise(estimate = sum(estimate), .by=c(geoid, stabbr, trimname, geotype, edgroup)) |>
+  summarise(estimate = sum(estimate), .by=c(geoid, stabbr, trimname, trimname_base, geotype, edgroup)) |>
   pivot_wider(names_from=edgroup, values_from=estimate) |> 
   mutate(variable = "college_pct",
          estimate = college / total * 100)

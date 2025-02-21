@@ -58,58 +58,58 @@ rm(keep_cos, keep_places, keep_cousubs, nycos, vtcos)
 
 # functions ---------------------------------------------------------------
 
+# https://bookdown.org/yihui/rmarkdown-cookbook/reuse-chunks.html
+
 barline <- function(gtype, barvar, data,
-                     constants,
-                     ybreaks = ybreaks, 
-                     titlebase = NULL, 
-                     ylab = NULL){
-  # data must have variable, geotype, geoid, trimname, estimate
-  
-  title <- titlebase
+  constants,
+  ybreaks = ybreaks, 
+  titlebase = NULL, 
+  ylab = NULL){
+# data must have variable, geotype, geoid, trimname_base, estimate
+
+title <- titlebase
   if(gtype == "county"){
-    keepgeos <- constants$keep_counties
-    compgeo <- constants$comp_county
-    subtitle <- paste0("Selected area counties")
+  keepgeos <- constants$keep_counties
+  compgeo <- constants$comp_county
+  subtitle <- paste0("Selected area counties")
   } else if(gtype == "place"){
-    keepgeos <- constants$keep_places
-    compgeo <- constants$comp_place
-    subtitle <- paste0("Selected area places")
+  keepgeos <- constants$keep_places
+  compgeo <- constants$comp_place
+  subtitle <- paste0("Selected area villages and Census places")
   } else if(gtype == "cousub"){
-    keepgeos <- constants$keep_cousubs
-    compgeo <- constants$comp_cousub
-    subtitle <- paste0("Selected area townss")
+  keepgeos <- constants$keep_cousubs
+  compgeo <- constants$comp_cousub
+  subtitle <- paste0("Selected area towns")
   } else {
-    stop("gtype must be county, place, or cousub")
-  }
-  
-  data <- data |> 
-    filter(variable == barvar, geotype == gtype, geoid %in% keepgeos) |> 
-    mutate(compgeo=geoid==compgeo)
-  
-  yint <- data |> filter(compgeo) |> pull(estimate)
-  
-  capt1 <- "Source: U.S. Census Bureau, 2019-2023 American Community Survey"
-  capt2 <- NULL
-  if(gtype %in% c("place", "cousub")) capt2 <- "Caution: Village and town data may be subject to considerable sampling error."
-  capt <- paste0("\n", capt1, "\n", capt2)
-  
-  data |> 
-    ggplot(aes(x = reorder(trimname, estimate), y = estimate, fill = compgeo)) +
-    geom_col(width = 0.2) +
-    scale_fill_manual(values = c("lightblue", "blue")) +
-    geom_hline(yintercept = yint, color = "red", linetype = "solid", linewidth = .75) +
-    scale_y_continuous(name=ylab, 
-                       labels = scales::label_comma(),
-                       breaks = ybreaks) +
-    labs(
-      title = title,
-      subtitle = subtitle,
-       x = NULL) +
-    theme_minimal() +
-    theme(legend.position = "None") +
-    x45 +
-    labs(caption = capt) +
-    caption_left
+  stop("gtype must be county, place, or cousub")
 }
 
-# https://bookdown.org/yihui/rmarkdown-cookbook/reuse-chunks.html
+data <- data |> 
+  filter(variable == barvar, geotype == gtype, geoid %in% keepgeos) |> 
+  mutate(compgeo=geoid==compgeo)
+
+yint <- data |> filter(compgeo) |> pull(estimate)
+
+capt1 <- "Source: U.S. Census Bureau, 2019-2023 American Community Survey"
+capt2 <- NULL
+if(gtype %in% c("place", "cousub")) capt2 <- "Caution: Village and town data may be subject to considerable sampling error."
+capt <- paste0("\n", capt1, "\n", capt2)
+
+data |> 
+  ggplot(aes(x = reorder(trimname_base, estimate), y = estimate, fill = compgeo)) +
+  geom_col(width = 0.2) +
+  scale_fill_manual(values = c("lightblue", "blue")) +
+  geom_hline(yintercept = yint, color = "red", linetype = "solid", linewidth = .75) +
+  scale_y_continuous(name=ylab, 
+      labels = scales::label_comma(),
+      breaks = ybreaks) +
+  labs(
+  title = title,
+  subtitle = subtitle,
+  x = NULL) +
+  theme_minimal() +
+  theme(legend.position = "None") +
+  # x45 +
+  labs(caption = capt) +
+  caption_left
+}

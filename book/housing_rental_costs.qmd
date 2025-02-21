@@ -13,8 +13,8 @@ source(here::here("book", "setup.R"))
 
 # get acs data ----
 acs_data <- readRDS(fs::path(ddir, "acs_data.rds"))
-acs_tables <- readRDS(fs::path(ddir, "acs_tables.rds"))
-acs_variables <- readRDS(fs::path(ddir, "acs_variables.rds"))
+# acs_tables <- readRDS(fs::path(ddir, "acs_tables.rds"))
+# acs_variables <- readRDS(fs::path(ddir, "acs_variables.rds"))
 
 # count(acs_data, variable, concept, label)
 

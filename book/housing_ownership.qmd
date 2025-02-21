@@ -10,14 +10,15 @@
 ```{r}
 #| output: false
 
-source(here::here("slides", "setup.R"))
+source(here::here("book", "setup.R"))
 
 # get acs data ----
 acs_data <- readRDS(fs::path(ddir, "acs_data.rds"))
-acs_tables <- readRDS(fs::path(ddir, "acs_tables.rds"))
-acs_variables <- readRDS(fs::path(ddir, "acs_variables.rds"))
+# acs_tables <- readRDS(fs::path(ddir, "acs_tables.rds"))
+# acs_variables <- readRDS(fs::path(ddir, "acs_variables.rds"))
 
 # count(acs_data, variable, concept, label)
+
 
 ```
 
@@ -33,7 +34,7 @@ acs_variables <- readRDS(fs::path(ddir, "acs_variables.rds"))
 pdata <- acs_data |> 
   filter(variable %in% c("B25003_001", "B25003_002", "B25003_003")) |> 
   filter(geoid %in% c(constants$keep_counties, constants$keep_places, constants$keep_cousubs)) |>
-  select(geoid, geotype, geoname, trimname, variable, estimate) |>
+  select(geoid, geotype, geoname, trimname, trimname_base, variable, estimate) |>
   pivot_wider(names_from = variable, values_from = estimate) |>
   mutate(variable = "oo_pct",
          estimate = B25003_002 / B25003_001 * 100)

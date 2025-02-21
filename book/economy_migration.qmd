@@ -28,7 +28,7 @@ acs_data <- readRDS(fs::path(ddir, "acs_data.rds"))
 mig_data <- acs_data |> 
   filter(table == "B07003") |> 
   filter(as.numeric(vnum) %in% c(1, 4, 7)) |> 
-  select(geoid, geotype, geoname, trimname, stabbr, variable, estimate) |> 
+  select(geoid, geotype, geoname, trimname, trimname_base, stabbr, variable, estimate) |> 
   pivot_wider(names_from=variable, values_from=estimate) |> 
   mutate(moved_ooc = B07003_001 - B07003_004 - B07003_007, # number moved from out of county
          estimate = moved_ooc / B07003_001 * 100, # % moved in from ooc
