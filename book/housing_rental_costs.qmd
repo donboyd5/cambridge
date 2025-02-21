@@ -48,7 +48,7 @@ barline(gtype = "county", barvar,
 ```
 
 
-## Cambridge village rent % of income is high relative to nearby places
+## Cambridge village rent % of income is high relative to nearby villages
 
 ```{r}
 #| label: plot_rentpct_place

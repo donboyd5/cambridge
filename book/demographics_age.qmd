@@ -39,7 +39,7 @@ barline(gtype = "county", barvar, data,
 
 ```
 
-## Cambridge village is older than nearby places
+## Cambridge village is older than nearby villages
 
 ```{r}
 #| label: plot_age_place

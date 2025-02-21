@@ -62,7 +62,7 @@ barline(gtype = "county", barvar,
 
 ```
 
-## Cambridge village college educational attainment is higher than in other area places
+## Cambridge village college educational attainment is higher than in other area villages
 
 ```{r}
 #| label: plot_collegepct_place

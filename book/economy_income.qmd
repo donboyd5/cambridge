@@ -37,7 +37,7 @@ barline(gtype = "county", barvar, data,
 
 ```
 
-## Cambridge village household income is about middle for nearby places
+## Cambridge village household income is near the middle for nearby villages
 
 ```{r}
 #| label: plot_income_place

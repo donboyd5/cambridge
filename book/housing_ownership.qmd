@@ -63,7 +63,7 @@ barline(gtype = "county", barvar,
 ```
 
 
-## Cambridge village's home-ownership rate is high compared to other area places
+## Cambridge village's home-ownership rate is high compared to other area villages
 
 ```{r}
 #| label: plot_ownocc_place

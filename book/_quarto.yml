@@ -35,7 +35,8 @@ book:
     - part: "Economy"
       chapters: 
         - economy_income.qmd
-        - economy_poverty.qmd
+        - economy_overall_poverty.qmd
+        - economy_child_poverty.qmd
         - economy_migration.qmd
     - part: "Housing"
       chapters: 
