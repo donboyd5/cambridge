@@ -12,7 +12,7 @@ sdsaipe <- readRDS(fs::path(ddir, "sd_saipe.rds"))
 ```
 
 
-## School district child poverty rates generally have declined over the past 5 or more years
+## School district child poverty rates generally have declined over the past 5+ years
 
 ```{r}
 #| output: true

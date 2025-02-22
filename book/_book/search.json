@@ -65,11 +65,11 @@
     ]
   },
   {
-    "objectID": "demographics_age.html#cambridge-village-is-older-than-nearby-places",
-    "href": "demographics_age.html#cambridge-village-is-older-than-nearby-places",
+    "objectID": "demographics_age.html#cambridge-village-is-older-than-nearby-villages",
+    "href": "demographics_age.html#cambridge-village-is-older-than-nearby-villages",
     "title": "2  Age",
-    "section": "2.2 Cambridge village is older than nearby places",
-    "text": "2.2 Cambridge village is older than nearby places\n\n\n\n\n\n\n\n\n\nCaveat: Perhaps this reflects a concentration of senior housing?",
+    "section": "2.2 Cambridge village is older than nearby villages",
+    "text": "2.2 Cambridge village is older than nearby villages\n\n\n\n\n\n\n\n\n\nCaveat: Perhaps this reflects a concentration of senior housing?",
     "crumbs": [
       "Demographics",
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Age</span>"
@@ -98,11 +98,11 @@
     ]
   },
   {
-    "objectID": "demographics_education.html#cambridge-village-college-educational-attainment-is-higher-than-in-other-area-places",
-    "href": "demographics_education.html#cambridge-village-college-educational-attainment-is-higher-than-in-other-area-places",
+    "objectID": "demographics_education.html#cambridge-village-college-educational-attainment-is-higher-than-in-other-area-villages",
+    "href": "demographics_education.html#cambridge-village-college-educational-attainment-is-higher-than-in-other-area-villages",
     "title": "3  Demographics: Educational attainment",
-    "section": "3.2 Cambridge village college educational attainment is higher than in other area places",
-    "text": "3.2 Cambridge village college educational attainment is higher than in other area places",
+    "section": "3.2 Cambridge village college educational attainment is higher than in other area villages",
+    "text": "3.2 Cambridge village college educational attainment is higher than in other area villages",
     "crumbs": [
       "Demographics",
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>Demographics: Educational attainment</span>"
@@ -131,11 +131,11 @@
     ]
   },
   {
-    "objectID": "economy_income.html#cambridge-village-household-income-is-about-middle-for-nearby-places",
-    "href": "economy_income.html#cambridge-village-household-income-is-about-middle-for-nearby-places",
+    "objectID": "economy_income.html#cambridge-village-household-income-is-near-the-middle-for-nearby-villages",
+    "href": "economy_income.html#cambridge-village-household-income-is-near-the-middle-for-nearby-villages",
     "title": "4  Income",
-    "section": "4.2 Cambridge village household income is about middle for nearby places",
-    "text": "4.2 Cambridge village household income is about middle for nearby places",
+    "section": "4.2 Cambridge village household income is near the middle for nearby villages",
+    "text": "4.2 Cambridge village household income is near the middle for nearby villages",
     "crumbs": [
       "Economy",
       "<span class='chapter-number'>4</span>  <span class='chapter-title'>Income</span>"
@@ -155,34 +155,34 @@
   {
     "objectID": "economy_overall_poverty.html",
     "href": "economy_overall_poverty.html",
-    "title": "5  Overall Poverty",
+    "title": "5  Poverty in the general population",
     "section": "",
     "text": "5.1 Washington County poverty rate is lower than in other area counties",
     "crumbs": [
       "Economy",
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Overall Poverty</span>"
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Poverty in the general population</span>"
     ]
   },
   {
-    "objectID": "economy_overall_poverty.html#cambridge-village-poverty-rate-is-higher-than-in-other-area-places",
-    "href": "economy_overall_poverty.html#cambridge-village-poverty-rate-is-higher-than-in-other-area-places",
-    "title": "5  Overall Poverty",
-    "section": "5.2 Cambridge village poverty rate is higher than in other area places",
-    "text": "5.2 Cambridge village poverty rate is higher than in other area places",
+    "objectID": "economy_overall_poverty.html#cambridge-village-poverty-rate-is-higher-than-in-other-area-villages",
+    "href": "economy_overall_poverty.html#cambridge-village-poverty-rate-is-higher-than-in-other-area-villages",
+    "title": "5  Poverty in the general population",
+    "section": "5.2 Cambridge village poverty rate is higher than in other area villages",
+    "text": "5.2 Cambridge village poverty rate is higher than in other area villages",
     "crumbs": [
       "Economy",
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Overall Poverty</span>"
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Poverty in the general population</span>"
     ]
   },
   {
     "objectID": "economy_overall_poverty.html#cambridge-town-poverty-rate-is-similar-to-other-area-towns",
     "href": "economy_overall_poverty.html#cambridge-town-poverty-rate-is-similar-to-other-area-towns",
-    "title": "5  Overall Poverty",
+    "title": "5  Poverty in the general population",
     "section": "5.3 Cambridge town poverty rate is similar to other area towns",
     "text": "5.3 Cambridge town poverty rate is similar to other area towns",
     "crumbs": [
       "Economy",
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Overall Poverty</span>"
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Poverty in the general population</span>"
     ]
   },
   {
@@ -190,7 +190,7 @@
     "href": "economy_child_poverty.html",
     "title": "6  Child Poverty",
     "section": "",
-    "text": "6.1 School district child poverty rates generally have declined over the past 5 or more years",
+    "text": "6.1 School district child poverty rates generally have declined over the past 5+ years",
     "crumbs": [
       "Economy",
       "<span class='chapter-number'>6</span>  <span class='chapter-title'>Child Poverty</span>"
@@ -241,11 +241,11 @@
     ]
   },
   {
-    "objectID": "housing_ownership.html#cambridge-villages-home-ownership-rate-is-high-compared-to-other-area-places",
-    "href": "housing_ownership.html#cambridge-villages-home-ownership-rate-is-high-compared-to-other-area-places",
+    "objectID": "housing_ownership.html#cambridge-villages-home-ownership-rate-is-high-compared-to-other-area-villages",
+    "href": "housing_ownership.html#cambridge-villages-home-ownership-rate-is-high-compared-to-other-area-villages",
     "title": "8  Homeownership as percent of occupied units",
-    "section": "8.2 Cambridge village’s home-ownership rate is high compared to other area places",
-    "text": "8.2 Cambridge village’s home-ownership rate is high compared to other area places",
+    "section": "8.2 Cambridge village’s home-ownership rate is high compared to other area villages",
+    "text": "8.2 Cambridge village’s home-ownership rate is high compared to other area villages",
     "crumbs": [
       "Housing",
       "<span class='chapter-number'>8</span>  <span class='chapter-title'>Homeownership as percent of occupied units</span>"
@@ -274,11 +274,11 @@
     ]
   },
   {
-    "objectID": "housing_rental_costs.html#cambridge-village-rent-of-income-is-high-relative-to-nearby-places",
-    "href": "housing_rental_costs.html#cambridge-village-rent-of-income-is-high-relative-to-nearby-places",
+    "objectID": "housing_rental_costs.html#cambridge-village-rent-of-income-is-high-relative-to-nearby-villages",
+    "href": "housing_rental_costs.html#cambridge-village-rent-of-income-is-high-relative-to-nearby-villages",
     "title": "9  Rental costs as percent of income",
-    "section": "9.2 Cambridge village rent % of income is high relative to nearby places",
-    "text": "9.2 Cambridge village rent % of income is high relative to nearby places",
+    "section": "9.2 Cambridge village rent % of income is high relative to nearby villages",
+    "text": "9.2 Cambridge village rent % of income is high relative to nearby villages",
     "crumbs": [
       "Housing",
       "<span class='chapter-number'>9</span>  <span class='chapter-title'>Rental costs as percent of income</span>"

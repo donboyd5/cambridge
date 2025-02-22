@@ -1,6 +1,5 @@
 # Poverty in the general population
 
-
 ```{r}
 #| output: false
 
